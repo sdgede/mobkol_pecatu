@@ -1,6 +1,6 @@
-# edm_mobile
+# MOBILE_KOLEKTOR
 
-Digital Service
+APLIKASI PEGAWAI KOPERASI
 
 ## Getting Started
 
