@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart';
+
+class InfoDialog extends StatelessWidget {
+  String title;
+  String text;
+  String clickOKText;
+  String clickCancelText;
+  Function onClickOK;
+  Function onClickCancel;
+  bool isCancel;
+
+  InfoDialog({
+    @required this.text,
+    @required this.onClickOK,
+    this.title,
+    this.clickOKText,
+    this.clickCancelText,
+    this.onClickCancel,
+    this.isCancel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      title: Text(title ?? "Peringatan!"),
+      content: Text(text),
+      actions: <Widget>[
+        isCancel
+            ? FlatButton(
+                color: Colors.red,
+                child: Text(
+                  clickCancelText ?? "TIDAK",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  onClickCancel == null
+                      ? Navigator.of(context).pop(false)
+                      : onClickCancel();
+                },
+              )
+            : Container(),
+        FlatButton(
+          color: Colors.green,
+          child: Text(
+            clickOKText ?? "YAKIN",
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+            onClickOK == null ? Navigator.of(context).pop(true) : onClickOK();
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class ErrorDialog extends StatelessWidget {
+  String text;
+  ErrorDialog({this.text});
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      title: Text("Opps...!"),
+      content:
+          Text(text ?? "Terjadi kesalahan saat terhubung ke server. CODE:500"),
+      actions: <Widget>[
+        FlatButton(
+          color: Colors.green,
+          child: Text(
+            "TUTUP",
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+        ),
+      ],
+    );
+  }
+}

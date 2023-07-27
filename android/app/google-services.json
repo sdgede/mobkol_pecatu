@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "487768339618",
+    "project_id": "lpd-nyanglan-mobile",
+    "storage_bucket": "lpd-nyanglan-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487768339618:android:3111e56e50756ca22c93fb",
+        "android_client_info": {
+          "package_name": "com.sevanam.awbp_mobkol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487768339618-c24epq583oppo4rvi4m9eb6ttmgjfth2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1UUexzXARl-k2USIGnSeYXDucba_FyZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487768339618-c24epq583oppo4rvi4m9eb6ttmgjfth2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

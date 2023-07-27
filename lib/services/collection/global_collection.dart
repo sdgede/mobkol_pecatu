@@ -1,0 +1,208 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+
+import '../../database/databaseHelper.dart';
+import '../../services/viewmodel/global_provider.dart';
+import '../../model/daftar_online_model.dart';
+import '../base/base_services.dart';
+import '../config/config.dart';
+import '../utils/mcrypt_utils.dart';
+import '../utils/text_utils.dart';
+
+class GlobalCollectionServices extends BaseServices {
+  GlobalProvider globalProv;
+  final dbHelper = DatabaseHelper.instance;
+
+  Future<List<ListChoiceModel>> getDataCustom({
+    BuildContext context,
+    String jenis,
+  }) async {
+    var dataCustom = Map<String, dynamic>();
+    dataCustom["req"] = "getDataCustom";
+    dataCustom["code"] = McryptUtils.instance.encrypt(jenis ?? "");
+
+    var resp = await request(
+      context: context,
+      url: urlApiLogin,
+      type: RequestType.POST,
+      data: dataCustom,
+    );
+
+    var customCollection;
+
+    if (resp != null) {
+      var jsonData = json.decode(resp);
+      customCollection = new List<ListChoiceModel>();
+      jsonData.forEach((val) {
+        customCollection.add(ListChoiceModel.fromJson(val));
+      });
+    }
+
+    return customCollection;
+  }
+
+  dynamic getLogin({
+    BuildContext context,
+    String username,
+    String password,
+  }) async {
+    globalProv = Provider.of<GlobalProvider>(context, listen: false);
+    var dataLogin = Map<String, dynamic>();
+    dataLogin["req"] = "getLogin";
+    dataLogin["username"] = McryptUtils.instance.encrypt(username);
+    dataLogin["pwd"] = McryptUtils.instance.encrypt(password);
+    dataLogin["platform"] =
+        McryptUtils.instance.encrypt(Platform.isAndroid ? "ANDROID" : "IOS");
+    dataLogin["imei"] = McryptUtils.instance.encrypt(platform);
+    dataLogin["sn"] = McryptUtils.instance.encrypt(platform);
+    dataLogin["versi"] = McryptUtils.instance
+        .encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
+    dataLogin["reg_firebase_id"] = McryptUtils.instance.encrypt(firebaseId);
+
+    print(dataLogin);
+
+    var resp;
+
+    if (globalProv.getConnectionMode == offlineMode)
+      resp = dbHelper.getLoginOffline(dataLogin);
+    else
+      resp = await request(
+        context: context,
+        url: urlApiLogin,
+        type: RequestType.POST,
+        data: dataLogin,
+      );
+
+    return resp;
+  }
+
+  dynamic getLoginPin({
+    BuildContext context,
+    String username,
+    String pin,
+  }) async {
+    var dataLogin = Map<String, dynamic>();
+    dataLogin["req"] = "getLoginPin";
+    dataLogin["username"] = McryptUtils.instance.encrypt(username);
+    dataLogin["pin"] = McryptUtils.instance.encrypt(pin);
+    dataLogin["platform"] =
+        McryptUtils.instance.encrypt(Platform.isAndroid ? "ANDROID" : "IOS");
+    dataLogin["imei"] = McryptUtils.instance.encrypt(platform);
+    dataLogin["sn"] = McryptUtils.instance.encrypt(platform);
+    dataLogin["versi"] = McryptUtils.instance
+        .encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
+    dataLogin["reg_firebase_id"] = McryptUtils.instance.encrypt(firebaseId);
+
+    var resp = await request(
+      context: context,
+      url: urlApiLogin,
+      type: RequestType.POST,
+      data: dataLogin,
+    );
+
+    return resp;
+  }
+
+  dynamic resetPassword({
+    BuildContext context,
+    String password,
+  }) async {
+    var dataReset = Map<String, dynamic>();
+    dataReset["req"] = "gantiPassword";
+    dataReset["password"] = McryptUtils.instance.encrypt(password);
+    dataReset["id_user"] = McryptUtils.instance.encrypt(dataLogin['ID_USER']);
+    dataReset["username"] = McryptUtils.instance.encrypt(dataLogin['username']);
+
+    var resp = await request(
+      context: context,
+      url: urlApiLogin,
+      type: RequestType.POST,
+      data: dataReset,
+    );
+
+    return resp;
+  }
+
+  dynamic resetPin({
+    BuildContext context,
+    String pin,
+  }) async {
+    var dataReset = Map<String, dynamic>();
+    dataReset["req"] = "gantiPIN";
+    dataReset["pin"] = McryptUtils.instance.encrypt(pin);
+    dataReset["id_user"] = McryptUtils.instance.encrypt(dataLogin['ID_USER']);
+    dataReset["username"] = McryptUtils.instance.encrypt(dataLogin['username']);
+
+    var resp = await request(
+      context: context,
+      url: urlApiLogin,
+      type: RequestType.POST,
+      data: dataReset,
+    );
+
+    return resp;
+  }
+
+  dynamic checkReEncryptData({
+    BuildContext context,
+    String data,
+  }) async {
+    var decrypt = McryptUtils.instance.decryptMerchant(data);
+    if (decrypt == null) {
+      var dataReset = Map<String, dynamic>();
+      dataReset["req"] = "getReEncryptData";
+      dataReset["data"] = data;
+
+      var resp = await request(
+        context: context,
+        url: urlApiLogin,
+        type: RequestType.POST,
+        typeEncrypt: TypeEncrypt.MERCHANT,
+        data: dataReset,
+      );
+      return resp;
+    } else {
+      return TextUtils.instance.customDecrypt(decrypt);
+    }
+  }
+
+  Future checkNomorRekening({
+    BuildContext context,
+    String noRekening,
+  }) async {
+    var dataLogin = Map<String, dynamic>();
+    dataLogin["req"] = "checkNomorRekening";
+    dataLogin["norek"] = McryptUtils.instance.encrypt(noRekening);
+    print(dataLogin);
+    var resp = await request(
+      context: context,
+      url: urlApiLogin,
+      type: RequestType.POST,
+      data: dataLogin,
+    );
+    print(resp);
+    return resp;
+  }
+
+  Future checkHPNIK({
+    BuildContext context,
+    String type,
+    String nomor,
+  }) async {
+    var dataLogin = Map<String, dynamic>();
+    dataLogin["req"] = "checkHPNIK";
+    dataLogin["type"] = McryptUtils.instance.encrypt(type);
+    dataLogin["nomor"] = McryptUtils.instance.encrypt(nomor);
+
+    var resp = await request(
+      context: context,
+      url: urlApiLogin,
+      type: RequestType.POST,
+      data: dataLogin,
+    );
+
+    return resp;
+  }
+}

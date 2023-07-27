@@ -1,0 +1,410 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
+
+import '../config/config.dart' as config;
+import '../config/router_generator.dart';
+import '../utils/dialog_utils.dart';
+import '../utils/location_utils.dart';
+import '../collection/global_collection.dart';
+import '../../setup.dart';
+
+class GlobalProvider extends ChangeNotifier {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  GlobalCollectionServices globalCollectionServices =
+      setup<GlobalCollectionServices>();
+
+  bool _isLoading = true;
+  bool get isLoading => _isLoading;
+  void setLoading(bool isLoading) {
+    _isLoading = isLoading;
+    notifyListeners();
+  }
+
+  BluetoothDevice _selectedPrinter;
+  BluetoothDevice get getSelectedPrinter => _selectedPrinter;
+
+  void setSelectedPrinter(BluetoothDevice printer) {
+    _selectedPrinter = printer;
+    notifyListeners();
+  }
+
+  String _selectedPrinterName;
+  String get getSelectedPrinterName => _selectedPrinterName;
+
+  void setSelectedPrinterName(String printerName) {
+    _selectedPrinterName = printerName;
+    notifyListeners();
+  }
+
+  String _invoiceImage;
+  String get getInvoiceImage => _invoiceImage;
+
+  void setInvoiceImage(String val) {
+    _invoiceImage = val;
+    notifyListeners();
+  }
+
+  String _connectionMode = config.onlineMode;
+  String get getConnectionMode => _connectionMode;
+
+  void setConnectionMode(String mode) {
+    _connectionMode = mode;
+    notifyListeners();
+  }
+
+  Future getLogin(
+      BuildContext context, String username, String password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    EasyLoading.show(status: config.Loading);
+    try {
+      var res = await globalCollectionServices.getLogin(
+        context: context,
+        username: username,
+        password: password,
+      );
+      var result = res;
+      if (_connectionMode == config.onlineMode)
+        result = res == null ? null : json.decode(res);
+
+      if (result == null) {
+        EasyLoading.dismiss();
+        DialogUtils.instance.showError(context: context);
+        return null;
+      } else if (result['responLogin']['status'] == "Gagal") {
+        EasyLoading.dismiss();
+        DialogUtils.instance
+            .showError(context: context, text: result['responLogin']['pesan']);
+      } else {
+        config.dataLogin = result['responLogin'];
+        config.dataSetting = result['dataSetting'];
+        config.dataUser = result['dataUser'];
+        //config.dataProvider = result['formatNomorHpIna'];
+        //config.plnWarning = result['ketentuan_plntoken'];
+
+        var navigator, arguments;
+
+        if (result['responLogin']['active_flag'] == "N") {
+          navigator = RouterGenerator.resetPassword;
+          arguments = {'isBuat': true};
+        } else {
+          prefs.setBool('first_time_login', false);
+          prefs.setString('username', result['responLogin']['username']);
+          prefs.setString('nama', result['responLogin']['nama']);
+          navigator = RouterGenerator.homeKolektor;
+        }
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          navigator,
+          (Route<dynamic> route) => false,
+          arguments: arguments,
+        );
+        EasyLoading.dismiss();
+      }
+    } on Exception {
+      EasyLoading.dismiss();
+      DialogUtils.instance.showError(context: context);
+      return null;
+    } catch (e) {
+      print(e);
+      EasyLoading.dismiss();
+      DialogUtils.instance.showError(context: context);
+      return null;
+    }
+  }
+
+  dynamic getLoginPin(BuildContext context, String pin) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    EasyLoading.show(status: config.Loading);
+    try {
+      var res = await globalCollectionServices.getLoginPin(
+        context: context,
+        username: prefs.getString('username'),
+        pin: pin,
+      );
+      var result = res == null ? null : json.decode(res);
+      if (result == null) {
+        EasyLoading.dismiss();
+        DialogUtils.instance.showError(context: context);
+        return null;
+      } else if (result['responLogin']['status'] == "Gagal") {
+        EasyLoading.dismiss();
+        DialogUtils.instance
+            .showError(context: context, text: result['responLogin']['pesan']);
+      } else {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            RouterGenerator.homePage, (Route<dynamic> route) => false);
+
+        config.dataLogin = result['responLogin'];
+        config.dataSetting = result['dataSetting'];
+        config.dataProvider = result['formatNomorHpIna'];
+        config.plnWarning = result['ketentuan_plntoken'];
+        EasyLoading.dismiss();
+      }
+    } on Exception {
+      EasyLoading.dismiss();
+      DialogUtils.instance.showError(context: context);
+      return null;
+    } catch (e) {
+      print(e);
+      EasyLoading.dismiss();
+      DialogUtils.instance.showError(context: context);
+      return null;
+    }
+  }
+
+  dynamic resetPassword(
+    BuildContext context,
+    String password,
+    bool isBuat,
+  ) async {
+    if (isBuat) EasyLoading.show(status: config.Loading);
+    try {
+      var result = await globalCollectionServices.resetPassword(
+          context: context, password: password);
+      var res = result == null ? null : json.decode(result);
+      EasyLoading.dismiss();
+      if (res == null) {
+        DialogUtils.instance.showError(context: context);
+        return false;
+      } else {
+        if (res[0]['status'] == 'Gagal') {
+          DialogUtils.instance.showError(
+            context: context,
+            text: res[0]['pesan'],
+          );
+          return false;
+        } else {
+          if (isBuat) {
+            await DialogUtils.instance.showInfo(
+              context: context,
+              title: "Pemberitahuan!",
+              text:
+                  "Password berhasil dibuat, Anda akan segera dialihkan ke halaman PIN",
+              isCancel: false,
+              clickOKText: "OK",
+            );
+          } else {
+            await DialogUtils.instance.showInfo(
+              context: context,
+              title: "Pemberitahuan!",
+              text: res[0]['pesan'],
+              isCancel: false,
+              clickOKText: "OK",
+            );
+          }
+          return true;
+        }
+      }
+    } on Exception {
+      EasyLoading.dismiss();
+      DialogUtils.instance.showError(context: context);
+      return false;
+    } catch (e) {
+      print(e);
+      EasyLoading.dismiss();
+      DialogUtils.instance.showError(context: context);
+      return false;
+    }
+  }
+
+  dynamic resetPin(
+    BuildContext context,
+    String pin,
+    bool isBuat,
+  ) async {
+    if (isBuat) EasyLoading.show(status: config.Loading);
+    try {
+      var result =
+          await globalCollectionServices.resetPin(context: context, pin: pin);
+      var res = result == null ? null : json.decode(result);
+      EasyLoading.dismiss();
+      if (res == null) {
+        DialogUtils.instance.showError(context: context);
+        return false;
+      } else {
+        if (res[0]['status'] == 'Gagal') {
+          DialogUtils.instance.showError(
+            context: context,
+            text: res[0]['pesan'],
+          );
+          return false;
+        } else {
+          if (isBuat) {
+            await DialogUtils.instance.showInfo(
+              context: context,
+              title: "Pemberitahuan!",
+              text:
+                  "PIN berhasil dibuat, Anda akan segera dialihkan ke halaman Login",
+              isCancel: false,
+              clickOKText: "OK",
+            );
+          } else {
+            await DialogUtils.instance.showInfo(
+              context: context,
+              title: "Pemberitahuan!",
+              text: res[0]['pesan'],
+              isCancel: false,
+              clickOKText: "OK",
+            );
+          }
+          return true;
+        }
+      }
+    } on Exception {
+      EasyLoading.dismiss();
+      DialogUtils.instance.showError(context: context);
+      return false;
+    } catch (e) {
+      print(e);
+      EasyLoading.dismiss();
+      DialogUtils.instance.showError(context: context);
+      return false;
+    }
+  }
+
+  dynamic checkReEncryptData(
+    BuildContext context,
+    String data,
+  ) async {
+    EasyLoading.show(status: config.Loading);
+    try {
+      var result = await globalCollectionServices.checkReEncryptData(
+        context: context,
+        data: data,
+      );
+      var res = result == null ? null : json.decode(result);
+      EasyLoading.dismiss();
+      if (res == null) {
+        DialogUtils.instance.showError(context: context);
+        return null;
+      } else {
+        return res;
+      }
+    } on Exception {
+      EasyLoading.dismiss();
+      DialogUtils.instance.showError(context: context);
+      return null;
+    } catch (e) {
+      print(e);
+      EasyLoading.dismiss();
+      DialogUtils.instance.showError(context: context);
+      return null;
+    }
+  }
+
+  //my location service
+  String _myAddress;
+  String get myAddress => _myAddress;
+
+  double _myLatitude;
+  double get myLatitude => _myLatitude;
+  double _myLongitude;
+  double get myLongitude => _myLongitude;
+
+  //location service
+  String _address;
+  String get address => _address;
+
+  double _latitude;
+  double get latitude => _latitude;
+  double _longitude;
+  double get longitude => _longitude;
+
+  LocationUtils locationUtils = setup<LocationUtils>();
+
+  dynamic loadLocation(BuildContext context) async {
+    bool res = await locationUtils.getLocation(context) ?? false;
+    if (res) {
+      _myAddress = await locationUtils.getAddress();
+      _myLatitude = locationUtils.latitude;
+      _myLongitude = locationUtils.longitude;
+      notifyListeners();
+    }
+  }
+
+  dynamic setLocation({
+    double latitude,
+    double longitude,
+  }) async {
+    _address = await locationUtils.getAddressByCoordinates(
+      latitude: latitude,
+      longitude: longitude,
+    );
+    _latitude = latitude;
+    _longitude = longitude;
+    notifyListeners();
+  }
+
+  String getImageProduk(String produk) {
+    String img = 'assets/images/tab-slide.png';
+    if (produk == 'TABUNGAN') img = 'assets/images/tab-slide.png';
+    if (produk == 'DEPOSITO') img = 'assets/images/dep-slide.png';
+    if (produk == 'PINJAMAN') img = 'assets/images/kredit-slide.png';
+    return img;
+  }
+
+  String getIconProduk(String rekCd) {
+    String img = 'assets/images/tab-slide.png';
+    if (rekCd == 'SIMP_SUKARELA') img = 'assets/icon/tab-slide.png';
+    if (rekCd == 'SIMP_ANGGOTA') img = 'assets/images/dep-slide.png';
+    if (rekCd == 'SIMP_BERJANGKA') img = 'assets/images/kredit-slide.png';
+    if (rekCd == 'KREDIT') img = 'assets/images/kredit-slide.png';
+    return img;
+  }
+
+  String getTransCd(String groupProduk, String tipeTrans) {
+    String transCd = '-';
+    if (groupProduk == 'TABUNGAN') {
+      if (tipeTrans == 'SETOR')
+        transCd = 'STT';
+      else
+        transCd = 'TTT';
+    } else if (groupProduk == 'ANGGOTA') {
+      if (tipeTrans == 'SETOR')
+        transCd = 'STW';
+      else
+        transCd = 'TTW';
+    } else if (groupProduk == 'DEPOSITO' || groupProduk == 'BERENCANA') {
+      if (tipeTrans == 'SETOR')
+        transCd = 'STJ';
+      else
+        transCd = 'PTJ';
+    } else if (groupProduk == 'KREDIT') {
+      transCd = 'PKT';
+    }
+
+    return transCd;
+  }
+
+  Future<dynamic> uploadProgressLocalNotification(
+    int maxProgress,
+    int progress,
+  ) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      Platform.isAndroid ? "ANDROID" : "IOS",
+      config.companyName,
+      config.companyFullName,
+      importance: Importance.Max,
+      priority: Priority.High,
+      onlyAlertOnce: true,
+      showProgress: true,
+      maxProgress: maxProgress,
+      progress: progress,
+    );
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        123,
+        "Upload transaksi offline",
+        progress.toString() + " of " + maxProgress.toString() + " Uploaded",
+        platformChannelSpecifics);
+  }
+}
