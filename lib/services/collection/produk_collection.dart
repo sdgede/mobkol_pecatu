@@ -19,7 +19,6 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["req"] = "getIconProdukApp";
     dataProduk["id_user"] =
         McryptUtils.instance.encrypt(config.dataLogin['ID_USER']);
-    print(dataProduk);
 
     var resp;
 
@@ -33,7 +32,7 @@ class ProdukCollectionServices extends BaseServices {
     else
       resp = await dbHelper.getIconProdukOffline(dataParse: dataProduk);
 
-    print(resp);
+    print("response ${resp}");
 
     var produkCollection;
 
