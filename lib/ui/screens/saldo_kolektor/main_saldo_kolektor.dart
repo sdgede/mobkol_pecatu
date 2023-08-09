@@ -32,6 +32,14 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
         Provider.of<ProdukCollectionProvider>(context, listen: false);
     globalProvider = Provider.of<GlobalProvider>(context, listen: false);
     //produkProvider.refreshSaldoKolektor();
+    produkProvider.getDataSaldoKolektorMenu(context);
+    print("mock from screen: ${produkProvider.saldoKolektorMenu}");
+  }
+
+  void _refresh(){
+    print('mock refresh');
+    produkProvider.refreshSaldoKolektor();
+    produkProvider.refreshSaldoKolektorMenu();
   }
 
   @override
@@ -43,13 +51,14 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
         "Saldo Kolektor",
         isCenter: true,
         isRefresh: true,
-        onRefresh: () => produkProvider.refreshSaldoKolektor(),
+        onRefresh: _refresh,
       ),
       key: scaffoldKey,
       body: Consumer<ProdukCollectionProvider>(
         builder: (contex, produkProv, _) {
-          if (produkProv.saldoKolektorCollection == null) {
-            produkProv.getDataSaldoKolektor(context);
+          if (produkProv.saldoKolektorCollection == null || produkProv.saldoKolektorMenu == null) {
+            if (produkProv.saldoKolektorCollection == null) produkProv.getDataSaldoKolektor(context);
+            if (produkProv.saldoKolektorMenu == null) produkProv.getDataSaldoKolektorMenu(context);
             return LottiePrimaryLoader();
           }
           return Container(
@@ -112,109 +121,7 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
                         Column(
                           children: [
                             if (globalProvider.getConnectionMode == onlineMode)
-                              Column(
-                                children: [
-                                  _fieldTicketViewProduk(
-                                    isHeader: true,
-                                    headerTxt: 'Kas Awal',
-                                  ),
-                                  _fieldTicketViewProduk(
-                                    firstField: 'Kas Awal Kolektor',
-                                    secondField: produkProv.kas_awal,
-                                    isCurrency: true,
-                                  ),
-                                  Divider(),
-                                ],
-                              ),
-                            _fieldTicketViewProduk(
-                              isHeader: true,
-                              headerTxt: 'Kas Dari Transaksi',
-                            ),
-                            _fieldTicketViewProduk(
-                              firstField: 'Kas Masuk',
-                              secondField: produkProv.tot_kredit,
-                              isCurrency: true,
-                            ),
-                            _fieldTicketViewProduk(
-                              firstField: 'Kas Keluar',
-                              secondField: produkProv.tot_debet,
-                              isCurrency: true,
-                            ),
-                            _fieldTicketViewProduk(
-                              firstField: 'Selisih Saldo',
-                              secondField: produkProv.tot_saldo,
-                              isCurrency: true,
-                            ),
-                            Divider(),
-                            if (globalProvider.getConnectionMode == onlineMode)
-                              Column(
-                                children: [
-                                  _fieldTicketViewProduk(
-                                    isHeader: true,
-                                    headerTxt: 'Rincian Kas Fisik',
-                                  ),
-                                  _fieldTicketViewProduk(
-                                    firstField: 'Kas Fisik Keluar 1',
-                                    secondField: produkProv.kas_keluar1,
-                                    isCurrency: true,
-                                  ),
-                                  _fieldTicketViewProduk(
-                                    firstField: 'Kas Fisik Keluar 2',
-                                    secondField: produkProv.kas_keluar2,
-                                    isCurrency: true,
-                                  ),
-                                  _fieldTicketViewProduk(
-                                    firstField: 'Sisa Kas Fisik',
-                                    secondField: produkProv.kas_sisa,
-                                    isCurrency: true,
-                                  ),
-                                  Divider(),
-                                ],
-                              ),
-                            _fieldTicketViewProduk(
-                              isHeader: true,
-                              headerTxt: 'Transaksi Simpanan Sukarela',
-                            ),
-                            _fieldTicketViewProduk(
-                              firstField: 'Kas Masuk',
-                              secondField: produkProv.kredit_tab.toString(),
-                              isCurrency: true,
-                            ),
-                            _fieldTicketViewProduk(
-                              firstField: 'Kas Keluar',
-                              secondField: produkProv.debet_tab.toString(),
-                              isCurrency: true,
-                            ),
-                            _fieldTicketViewProduk(
-                              firstField: 'Selisih Saldo',
-                              secondField: produkProv.saldo_tab.toString(),
-                              isCurrency: true,
-                            ),
-                            Divider(),
-                            _fieldTicketViewProduk(
-                              isHeader: true,
-                              headerTxt: 'Transaksi Produk Lainnya',
-                            ),
-                            _fieldTicketViewProduk(
-                              firstField: 'Simpanan Anggota',
-                              secondField: produkProv.kredit_agt.toString(),
-                              isCurrency: true,
-                            ),
-                            _fieldTicketViewProduk(
-                              firstField: 'Tirtayatra',
-                              secondField: produkProv.kredit_taberna.toString(),
-                              isCurrency: true,
-                            ),
-                            if (globalProvider.getConnectionMode == onlineMode)
-                              Column(
-                                children: [
-                                  _fieldTicketViewProduk(
-                                    firstField: 'Pembayaran Pinjaman',
-                                    secondField: produkProv.kredit_kredit,
-                                    isCurrency: true,
-                                  ),
-                                ],
-                              ),
+                              _dynamicData(data: produkProvider.saldoKolektorMenu),
                             SizedBox(height: 20),
                           ],
                         ),
@@ -229,6 +136,34 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
       ),
     );
   }
+
+  Widget _dynamicData({
+    var data
+  }){
+    return Column(
+      children: data.asMap().entries.map<Widget>((entry) {
+                  int index = entry.key;
+                  var item = entry.value;
+                  return Column(
+                    children: [
+                      _fieldTicketViewProduk(
+                              isHeader: true,
+                              headerTxt: item.title,
+                            ),
+                      Column(
+                        children: 
+                          item.data.map<Widget>((dt) =>  _fieldTicketViewProduk(
+                                        firstField: dt['subtitle'],
+                                        secondField:dt['value'].toString(),
+                                        isCurrency: true,
+                                      )).toList(),
+                      ),
+                      if(index != data.length - 1) Divider(),
+                  ],);
+                }).toList(),
+    );
+  }
+  
 
   Widget _fieldTicketViewProduk({
     bool isHeader: false,

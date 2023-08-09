@@ -34,7 +34,7 @@ String apiBeritaLink =
 
 // api ws link
 String vendorApp = 'Sevanam Enterprise';
-String baseURL = "https://secureapp.id/awbp/ws_mobile_kolektor/";
+String baseURL = "https://microfis.net/kop_awbp_dev/ws_mobile_kolektor/";
 String iconLink = "${baseURL}assets/icon/";
 String urlApiLogin = "${baseURL}Login";
 String urlApiNasabah = "${baseURL}Nasabah";

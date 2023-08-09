@@ -221,6 +221,41 @@ class ProdukCollectionServices extends BaseServices {
     return listProdukCollection;
   }
 
+  Future<List<SaldoKolektor>> getSaldoKolektor({
+    BuildContext context,
+  }) async {
+    _globalProv = Provider.of<GlobalProvider>(context, listen: false);
+    var dataProduk = Map<String, dynamic>();
+
+    var urlWs = config.urlApiNasabahProduk;
+    dataProduk["req"] = "getSaldoKolektor"; 
+
+    var resp;
+
+    if (_globalProv.getConnectionMode == config.offlineMode)
+      resp = await dbHelper.getSaldoKolOffline(dataParse: dataProduk);
+    else{
+      resp = await request(
+        context: context,
+        url: urlWs,
+        type: RequestType.POST,
+        data: dataProduk
+      );
+    }
+
+    var listProdukCollection;
+
+    if (resp != null) {
+      var jsonData = json.decode(resp);
+
+      listProdukCollection = new List<SaldoKolektor>();
+      jsonData.forEach((val) {
+        listProdukCollection.add(SaldoKolektor.fromJson(val));
+      });
+    }
+    return listProdukCollection;
+  }
+
   Future<List<NasabahProdukModel>> getDataSearchNasabah({
     BuildContext context,
     String keyword,

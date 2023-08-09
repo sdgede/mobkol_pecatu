@@ -556,3 +556,20 @@ class DataMigrasiCollection {
     );
   }
 }
+
+class SaldoKolektor {
+  String title;
+  dynamic data;
+
+  SaldoKolektor({
+    this.title,
+    this.data
+  });
+
+  factory SaldoKolektor.fromJson(Map<String, dynamic> json) {
+    return SaldoKolektor(
+      title: json["title"] ?? "",
+      data: json["data"] ?? [],
+    );
+  }
+}

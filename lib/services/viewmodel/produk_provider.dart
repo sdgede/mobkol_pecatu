@@ -239,6 +239,31 @@ class ProdukCollectionProvider extends ChangeNotifier {
     // }
   }
 
+  //saldokol menu
+  List<SaldoKolektor> _saldoKolektorMenu;
+  List<SaldoKolektor> get saldoKolektorMenu =>
+      _saldoKolektorMenu;
+
+  void refreshSaldoKolektorMenu() {
+    _saldoKolektorMenu = null;
+    notifyListeners();
+  }
+
+  void getDataSaldoKolektorMenu(
+    BuildContext context,
+  ) async {
+    var listSaldokol = await produkCollectionServices.getSaldoKolektor(
+      context: context,
+    );
+    if (listSaldokol == null) {
+      DialogUtils.instance.showError(context: context);
+      return null;
+    } else {
+      _saldoKolektorMenu = listSaldokol;
+      setListLoading(false);
+    }
+  }
+
   //pencarian
 
   List<NasabahProdukModel> _nasabahList;
