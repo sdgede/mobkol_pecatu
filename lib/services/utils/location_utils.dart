@@ -64,6 +64,12 @@ class LocationUtils {
     return true;
   }
 
+  Future getLocationOnly() async {
+    Location location = new Location();
+    bool _serviceEnabled = await location.serviceEnabled();
+    return _serviceEnabled;
+  }
+  
   Future<String> getAddress() async {
     var addresses = await Geocoder.local
         .findAddressesFromCoordinates(Coordinates(latitude, longitude));

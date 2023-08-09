@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:animations/animations.dart';
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -8,6 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mitraku_kolektor/services/utils/location_utils.dart';
+import 'package:mitraku_kolektor/ui/widgets/dialog/info_dialog.dart';
+import 'package:mitraku_kolektor/services/config/config.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -104,6 +108,7 @@ class _MyAppState extends State<MyApp> {
   final MethodChannel platform =
       MethodChannel('crossingthestreams.io/resourceResolver');
   bool _initialized = false;
+  bool _modalOpened = false;
 
   @override
   void initState() {
@@ -239,6 +244,31 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _checkLocation() async {
+    bool location = await LocationUtils.instance.getLocationOnly();
+    if(!_modalOpened && !location){
+      _modalOpened = true;
+      return showModal(
+          context: navigatorKey.currentState.overlay.context,
+          configuration:
+              FadeScaleTransitionConfiguration(barrierDismissible: false),
+          builder: (context) {
+            return InfoDialog(
+              title: "Opps...",
+              text: "Pastikan Anda mengizinkan ${companyName} untuk mengakses lokasi Anda.",
+              clickOKText: "OK",
+              onClickOK: () async {
+                Navigator.of(navigatorKey.currentState.overlay.context, rootNavigator: true).pop();
+                location = await LocationUtils.instance.getLocationOnly();
+                if(!location) AppSettings.openLocationSettings();
+              },
+              isCancel: false,
+            );
+          },
+        ).then((value) => _modalOpened = false);
+    }
+  }
+
   @override
   void dispose() {
     didReceiveLocalNotificationSubject.close();
@@ -310,7 +340,10 @@ class _MyAppState extends State<MyApp> {
                   currentFocus.unfocus();
                 }
               },
-              child: child,
+              child: Listener(
+                onPointerUp: (PointerEvent details) => _checkLocation(),
+                child: child
+              ),
             ),
           );
         },
