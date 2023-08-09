@@ -27,6 +27,7 @@ class _MainMigrasiData extends State<MainMigrasiData> {
   DateTime _tglAkhir = DateTime.now();
   String tglAwalParse, tglAkhirParse;
 
+
   var masterDataListMigrasi = [
         {
         'title': 'Master Nasabah',
@@ -114,7 +115,7 @@ class _MainMigrasiData extends State<MainMigrasiData> {
                 ),
                 SizedBox(height: 15),
                 Divider(),
-                _listDaftarMigrasiData(produkProv.produkCollection),
+                _listDaftarMigrasiData(dataListMigrasi),
               ],
             ),
           );
@@ -139,7 +140,7 @@ class _MainMigrasiData extends State<MainMigrasiData> {
                     text: "Layanan sedang dalam fase pengembangan!",
                   );
                 } else {
-                  mutasiProdukProvider.getDataMigrasi(
+                  produkProv.getDataMigrasi(
                     context: context,
                     rekCd: dataListMigrasi[index]['rekCd'],
                     groupProduk: dataListMigrasi[index]['groupProduk'],

@@ -602,7 +602,6 @@ class DatabaseHelper {
           dataVal['suku_bunga'] = val['suku_bunga'];
         }
 
-        print('jml diterima :' + val['jumlah_diterima']);
 
         dataVal['create_who'] = val['create_who'];
         dataVal['create_date'] = val['create_date'];
