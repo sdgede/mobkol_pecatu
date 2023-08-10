@@ -78,6 +78,11 @@ class GlobalCollectionServices extends BaseServices {
     return resp;
   }
 
+  dynamic syncAccount(dynamic val) async {
+    var res = await dbHelper.manageSyncAccount(val);
+    return res;
+  }
+
   dynamic getLoginPin({
     BuildContext context,
     String username,

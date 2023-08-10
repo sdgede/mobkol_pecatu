@@ -59,7 +59,9 @@ class GlobalProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getLogin(
+dynamic _dataLogin;
+dynamic get dataLogin => _dataLogin;
+Future getLogin(
       BuildContext context, String username, String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     EasyLoading.show(status: config.Loading);
@@ -72,6 +74,7 @@ class GlobalProvider extends ChangeNotifier {
       var result = res;
       if (_connectionMode == config.onlineMode)
         result = res == null ? null : json.decode(res);
+        _dataLogin = result;
 
       if (result == null) {
         EasyLoading.dismiss();
@@ -117,6 +120,18 @@ class GlobalProvider extends ChangeNotifier {
       DialogUtils.instance.showError(context: context);
       return null;
     }
+  }
+
+  Future syncAcount() async {
+      try {
+        print("dataLogin ${dataLogin['dataUser']}");
+        if(dataLogin != null){
+          var syncData = await globalCollectionServices.syncAccount(dataLogin['dataUser']);
+          print("Account sync was successful with response $syncData");
+        }
+      } catch (e) {
+        print("Error sync data user: $e");
+      }
   }
 
   dynamic getLoginPin(BuildContext context, String pin) async {

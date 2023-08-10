@@ -159,13 +159,13 @@ class DatabaseHelper {
     if (row.length == 0) {
       result = {"status": "Gagal", "pesan": "Username tidak ditemukan"};
     } else {
-      if (row.first['password'] != _decrypt(dataParse['pwd'])) {
+      if (_decrypt(row.first['password']) != _decrypt(dataParse['pwd'])) {
         result = {
           "status": "Gagal",
           "pesan": "Username atau password tidak valid"
         };
       } else {
-        if (row.first['imei'] != _decrypt(dataParse['imei'])) {
+        if (_decrypt(row.first['imei']) != _decrypt(dataParse['imei'])) {
           result = {
             "status": "Gagal",
             "pesan":
@@ -667,6 +667,51 @@ class DatabaseHelper {
         if (actionQuery && actionType == 'UPDATE') rowEffectedEdit++;
       },
     );
+    return {'row_edit': rowEffectedEdit ?? 0, 'row_add': rowEffectedAdd ?? 0};
+  }
+
+  Future manageSyncAccount(dynamic val) async {
+    int isDataExist = 0, rowEffectedAdd = 0, rowEffectedEdit = 0;
+    bool actionQuery = false;
+    String actionType = '';
+    var dataVal = Map<String, dynamic>();
+
+    isDataExist = await queryRowCountWithClause(
+      's_user_kolektor',
+      'kolektor_id',
+      val['ID_USER'],
+    );
+
+    // Database db = await instance.database;
+    // await db.delete("s_user_kolektor");
+    // var users = await db.query("s_user_kolektor");
+
+    // print("user from db $users");
+    // return 'deleted';
+
+    dataVal['kolektor_id'] = val['ID_USER'];
+    dataVal['username'] = val['username'];
+    dataVal['password'] = val['password'];
+    dataVal['imei'] = val['imei'];
+    dataVal['sn_number'] = val['sn_number'];
+    dataVal['apk_version'] = val['apk_version'];
+    dataVal['status'] = val['status'];
+
+    if (isDataExist != 0) {
+      actionType = 'UPDATE';
+      actionQuery = await updateDataGlobal(
+        's_user_kolektor',
+        dataVal,
+        'kolektor_id',
+        int.parse(val['ID_USER']),
+      );
+    } else {
+      actionType = 'INSERT';
+      actionQuery = await insertDataGlobal('s_user_kolektor', dataVal);
+    }
+
+    if (actionQuery && actionType == 'INSERT') rowEffectedAdd++;
+    if (actionQuery && actionType == 'UPDATE') rowEffectedEdit++;
     return {'row_edit': rowEffectedEdit ?? 0, 'row_add': rowEffectedAdd ?? 0};
   }
 

@@ -59,6 +59,20 @@ class HomeKolektorState extends State<HomeKolektor> {
     );
   }
 
+  _checkAccountMigration(BuildContext context) async {
+    await DialogUtils.instance.showInfo(
+      context: context,
+      isCancel: true,
+      title: 'Sinkronasi data',
+      text: 'Perbaharui migrasi data untuk menyimpan perubahan sebelumnya. Proses ini memerlukan waktu sesaat.',
+      clickOKText: "Perbaharui",
+      clickCancelText: "Nanti",
+      onClickOK: () => print('migrasi data')
+    );
+
+    return;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -72,6 +86,10 @@ class HomeKolektorState extends State<HomeKolektor> {
     );
     globalProv.loadLocation(context);
     _initPathImgInvoice();
+    globalProv.syncAcount();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _checkAccountMigration(context);
+    });
   }
 
   @override
