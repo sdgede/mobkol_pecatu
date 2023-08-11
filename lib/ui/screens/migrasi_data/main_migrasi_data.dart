@@ -67,12 +67,12 @@ class _MainMigrasiData extends State<MainMigrasiData> {
 
   void setMenuCollection(bool isRefresh) async {
     if(isRefresh){
-      await produkProv.dataProduk(context);
+      await produkProv.dataProdukMigrasi(context);
     }
 
-    if(produkProv.produkCollection != null){
+    if(produkProv.produkCollectionMigrasi != null){
       dataListMigrasi = [...masterDataListMigrasi];
-      for(var product in produkProv.produkCollection){
+      for(var product in produkProv.produkCollectionMigrasi){
       dataListMigrasi.add({
         'title': TextUtils().capitalizeEachWord(product.nama),
         'desc': "Migrasi data ${TextUtils().capitalizeEachWord(product.nama)}",
@@ -88,7 +88,7 @@ class _MainMigrasiData extends State<MainMigrasiData> {
   }
 
   void refreshMenuCollection() async {
-    await produkProv.refreshProdukCollection();
+    await produkProv.refreshProdukCollectionMigrasi();
     setMenuCollection(true);
   }
 

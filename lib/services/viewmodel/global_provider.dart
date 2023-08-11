@@ -196,6 +196,9 @@ Future getLogin(
         }
         // dinamis: produk
         for (ProdukCollection product in products) {
+          print("Sync data available: ${product.nama}");
+        }
+        for (ProdukCollection product in products) {
           var effectedRow = await syncMigrateData(
             context: context,
             groupProduk: product.slug, 

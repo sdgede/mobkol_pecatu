@@ -49,6 +49,7 @@ class _SplashPageState extends State<SplashPage>
     if (nama != "" && nama != null) config.PersonName = nama;
 
     produkProv.dataProduk(context);
+    produkProv.dataProdukMigrasi(context);
   }
 
   @override

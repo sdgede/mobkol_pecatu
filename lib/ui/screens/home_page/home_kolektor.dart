@@ -71,7 +71,7 @@ class HomeKolektorState extends State<HomeKolektor> {
         clickOKText: "Perbaharui",
         onClickOK: () async {
           await Navigator.of(context).pop();
-          await globalProv.syncData(context, produkProv.produkCollection);
+          await globalProv.syncData(context, produkProv.produkCollectionMigrasi);
         }
       );
     }

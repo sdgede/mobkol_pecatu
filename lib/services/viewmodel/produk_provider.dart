@@ -26,6 +26,13 @@ class ProdukCollectionProvider extends ChangeNotifier {
     _produkCollection = null;
     notifyListeners();
   }
+  
+  List<ProdukCollection> _produkCollectionMigrasi;
+  List<ProdukCollection> get produkCollectionMigrasi => _produkCollectionMigrasi;
+  void refreshProdukCollectionMigrasi() {
+    _produkCollectionMigrasi = null;
+    notifyListeners();
+  }
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -95,10 +102,10 @@ class ProdukCollectionProvider extends ChangeNotifier {
     if (isListen) notifyListeners();
   }
 
-  void dataProduk(BuildContext context, {isMessage = true}) async {
+  void dataProduk(BuildContext context, {isMessage = true, migrasi = false}) async {
     try {
       var produkCollection =
-          await produkCollectionServices.dataProduk(context: context);
+          await produkCollectionServices.dataProduk(context: context, migrasi: migrasi);
       if (produkCollection == null) {
         if (isMessage) DialogUtils.instance.showError(context: context);
         return null;
@@ -111,6 +118,30 @@ class ProdukCollectionProvider extends ChangeNotifier {
       return null;
     } catch (e) {
       if (isMessage) DialogUtils.instance.showError(context: context);
+      return null;
+    }
+  }
+
+  void dataProdukMigrasi(BuildContext context, {isMessage = true}) async {
+    try {
+      EasyLoading.show(status: 'Loading');
+      var produkCollectionMigrasi =
+          await produkCollectionServices.dataProduk(context: context, migrasi: true);
+      if (produkCollectionMigrasi == null) {
+        if (isMessage) DialogUtils.instance.showError(context: context);
+        return null;
+      } else {
+        _produkCollectionMigrasi = produkCollectionMigrasi;
+        setLoading(false);
+      }
+      EasyLoading.dismiss();
+    } on Exception {
+      if (isMessage) DialogUtils.instance.showError(context: context);
+      EasyLoading.dismiss();
+      return null;
+    } catch (e) {
+      if (isMessage) DialogUtils.instance.showError(context: context);
+      EasyLoading.dismiss();
       return null;
     }
   }

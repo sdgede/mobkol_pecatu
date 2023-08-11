@@ -13,10 +13,11 @@ class ProdukCollectionServices extends BaseServices {
   GlobalProvider _globalProv;
   final dbHelper = DatabaseHelper.instance;
 
-  Future<List<ProdukCollection>> dataProduk({BuildContext context}) async {
+  Future<List<ProdukCollection>> dataProduk({BuildContext context, bool migrasi = false}) async {
     _globalProv = Provider.of<GlobalProvider>(context, listen: false);
     var dataProduk = Map<String, dynamic>();
     dataProduk["req"] = "getIconProdukApp";
+    dataProduk["context"] = migrasi ?  McryptUtils.instance.encrypt("migrasi") : "";
     dataProduk["id_user"] =
         McryptUtils.instance.encrypt(config.dataLogin['ID_USER']);
 
