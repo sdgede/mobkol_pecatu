@@ -804,6 +804,43 @@ class DatabaseHelper {
     return {'row_edit': rowEffectedEdit ?? 0, 'row_add': rowEffectedAdd ?? 0};
   }
 
+  Future lastSync() async {
+    Database db = await instance.database;
+    var data = await db.query('m_versi_db WHERE id_versi = 1 LIMIT 1');
+    if(data.length == 0){
+      return null;
+    }
+    print('Last db version ${data[0]}');
+    return data[0]['tgl_update'];
+  }
+  
+  Future updateSync(String current) async {
+    Database db = await instance.database;
+    var lastSync = await db.query('m_versi_db WHERE id_versi = 1 LIMIT 1');
+
+    var dataVal = Map<String, dynamic>();
+    dataVal['id_versi'] = 1;
+    dataVal['tgl_update'] = current;
+    dataVal['versi'] = 1;
+    
+    if(lastSync.length == 0){
+      // jika versi db tidak ada: insert
+      await insertDataGlobal('m_versi_db', dataVal);
+    }else{
+      // jika versi db ada: update
+      int lastVersi = lastSync[0]['versi'];
+      dataVal['versi'] = lastVersi + 1;
+      await updateDataGlobal(
+        'm_versi_db',
+        dataVal,
+        'id_versi',
+        1,
+      );
+    }
+
+    print("Sync successfully updated at $current");
+  }
+
   String formatNorekProduk(String norekParse) {
     //SET FORMAT NOREK LOGIC OR JUST RETURN norekParse
 

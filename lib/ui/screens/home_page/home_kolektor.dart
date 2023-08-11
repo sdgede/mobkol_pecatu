@@ -60,16 +60,21 @@ class HomeKolektorState extends State<HomeKolektor> {
   }
 
   _checkAccountMigration(BuildContext context) async {
-    await DialogUtils.instance.showInfo(
-      context: context,
-      isCancel: true,
-      title: 'Sinkronasi data',
-      text: 'Perbaharui migrasi data untuk menyimpan perubahan sebelumnya. Proses ini memerlukan waktu sesaat.',
-      clickOKText: "Perbaharui",
-      clickCancelText: "Nanti",
-      onClickOK: () => print('migrasi data')
-    );
-
+    bool checkSync = await globalProv.isNeedSync();
+    if(checkSync){
+      await DialogUtils.instance.showInfo(
+        context: context,
+        isCancel: true,
+        title: 'Sinkronasi data',
+        text: 'Perbaharui migrasi data untuk menyimpan perubahan sebelumnya. Proses ini memerlukan beberapa waktu.',
+        clickCancelText: "Nanti",
+        clickOKText: "Perbaharui",
+        onClickOK: () async {
+          await Navigator.of(context).pop();
+          await globalProv.syncData(context, produkProv.produkCollection);
+        }
+      );
+    }
     return;
   }
 

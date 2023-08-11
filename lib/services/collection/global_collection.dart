@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../database/databaseHelper.dart';
 import '../../services/viewmodel/global_provider.dart';
@@ -81,6 +82,65 @@ class GlobalCollectionServices extends BaseServices {
   dynamic syncAccount(dynamic val) async {
     var res = await dbHelper.manageSyncAccount(val);
     return res;
+  }
+
+  dynamic syncData({
+    var dataMigrasi,
+    var groupProduk,
+    var rekCd
+  }) async {
+    var actionMigrate;
+
+    if (groupProduk == 'DATA_AKUN') {
+      actionMigrate = await dbHelper.manageDataMigrationAccount(
+          dataMigrasi, groupProduk, rekCd);
+    } else if (groupProduk == 'MASTER_NASABAH') {
+      actionMigrate = await dbHelper.manageDataMigrationNasabah(
+          dataMigrasi, groupProduk, rekCd);
+    } else if (groupProduk == 'CONFIG') {
+      actionMigrate =
+          await dbHelper.manageDataMigrationConfig(dataMigrasi);
+    } else {
+      actionMigrate = await dbHelper.manageDataMigrationProduct(
+          dataMigrasi, groupProduk, rekCd);
+    }
+
+    return actionMigrate;
+  }
+
+  dynamic lastSync() async {
+    var lastSync = await dbHelper.lastSync();
+
+    lastSync = lastSync == null ? DateTime.now().subtract(Duration(days:1)) :
+                                  new DateFormat("yyyy-MM-dd").parse(lastSync);
+    return lastSync;
+  }
+  
+  dynamic updateSync(String current) async {
+    var updateSync = await dbHelper.updateSync(current);
+
+    var lastSync = await dbHelper.lastSync();
+    lastSync = new DateFormat("yyyy-MM-dd").parse(lastSync);
+    return updateSync;
+  }
+  
+  dynamic isNeedSync() async {
+    var lastSync = await dbHelper.lastSync();
+
+    // jika belum pernah melakukan sinkronisasi
+    if(lastSync == null) return true;
+    
+    // jika masih hari ini
+    DateTime lastSyncDate = new DateFormat("yyyy-MM-dd").parse(lastSync);
+    DateTime current = new DateTime.now();
+    if(lastSyncDate.year == current.year &&
+       lastSyncDate.month == current.month && 
+       lastSyncDate.day == current.day)
+       {
+        return false;
+       }
+       
+    return true;
   }
 
   dynamic getLoginPin({

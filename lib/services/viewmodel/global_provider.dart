@@ -4,6 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
+import 'package:mitraku_kolektor/model/produk_model.dart';
+import 'package:mitraku_kolektor/services/collection/produk_collection.dart';
+import 'package:mitraku_kolektor/services/utils/text_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 
@@ -19,6 +23,8 @@ class GlobalProvider extends ChangeNotifier {
       FlutterLocalNotificationsPlugin();
   GlobalCollectionServices globalCollectionServices =
       setup<GlobalCollectionServices>();
+  ProdukCollectionServices produkCollectionServices =
+      setup<ProdukCollectionServices>();
 
   bool _isLoading = true;
   bool get isLoading => _isLoading;
@@ -124,13 +130,119 @@ Future getLogin(
 
   Future syncAcount() async {
       try {
-        print("dataLogin ${dataLogin['dataUser']}");
         if(dataLogin != null){
           var syncData = await globalCollectionServices.syncAccount(dataLogin['dataUser']);
           print("Account sync was successful with response $syncData");
         }
       } catch (e) {
         print("Error sync data user: $e");
+      }
+  }
+
+  Future syncMigrateData({
+    BuildContext context, 
+    var groupProduk, 
+    var rekCd,
+    DateTime tglAwal,
+    DateTime tglAkhir
+  }) async {
+    var dataMigrasi = await produkCollectionServices.getDataMigrasi(
+      context: context,
+      groupProduk: groupProduk,
+      rekCd: rekCd,
+      tglAwal: DateFormat("yyyy-MM-dd").format(tglAwal),
+      tglAkhir: DateFormat("yyyy-MM-dd").format(tglAkhir),
+      lat: latitude.toString(),
+      long: longitude.toString(),
+    );
+    var result = dataMigrasi == null ? null : json.decode(dataMigrasi);
+    print("dataMigrasi $groupProduk $dataMigrasi");
+    if (result == null) {
+      return null;
+    }else{
+      if (result[0]['res_status'] == 'Gagal') {
+        return null;
+      }
+      var effectedRow = await globalCollectionServices.syncData(
+        dataMigrasi: dataMigrasi,
+        groupProduk: groupProduk,
+        rekCd: rekCd,
+      );
+      return effectedRow;
+    }
+  }
+
+  Future syncData(BuildContext context, var products) async {
+      try {
+        EasyLoading.show(status: config.Loading);
+        DateTime last = await globalCollectionServices.lastSync();
+        DateTime current = DateTime.now();
+        int ditambahkan  = 0;
+        int diperbaharui = 0;
+        String updatedText = '';
+       
+        // statis: master nasabah
+        var effectedRowMN = await syncMigrateData(
+          context: context,
+          groupProduk: 'MASTER_NASABAH', 
+          rekCd: 'MASTER_NASABAH',
+          tglAwal: last,
+          tglAkhir: current  
+        );
+        if(effectedRowMN != null){
+          updatedText += ' Master Nasabah,';
+          ditambahkan += effectedRowMN['row_add'];
+          diperbaharui += effectedRowMN['row_edit'];
+        }
+        // dinamis: produk
+        for (ProdukCollection product in products) {
+          var effectedRow = await syncMigrateData(
+            context: context,
+            groupProduk: product.slug, 
+            rekCd: product.rekCd,
+            tglAwal: last,
+            tglAkhir: current  
+          );
+          if(effectedRow != null){
+            updatedText += ' '+TextUtils().capitalizeEachWord(product.nama)+',';
+            ditambahkan += effectedRow['row_add'];
+            diperbaharui += effectedRow['row_edit'];
+          }
+        }
+        // update db version
+        await globalCollectionServices.updateSync(DateFormat('yyyy-MM-dd').format(current));
+
+        // jika sudah selesai
+        print("Data {$updatedText} was successfully synchronized");
+        EasyLoading.dismiss();
+        await DialogUtils.instance.showInfo(
+          context: context,
+          isCancel: false,
+          title: "Pemberitahuan!",
+          text: "Data berhasil diperbaharui \n\n" +
+              "Data ditambahkan : " +
+              ditambahkan.toString() +
+              "\n" +
+              "Data diperbarui : " +
+              diperbaharui.toString() +
+              "\n\nData yang diperbaharui: $updatedText",
+          clickOKText: "TUTUP",
+        );
+        return true;
+      } catch (e) {
+        print("Error sync data: $e");
+        EasyLoading.dismiss();
+      }
+  }
+  
+
+  Future isNeedSync() async {
+      try {
+        bool syncData = await globalCollectionServices.isNeedSync();
+        print("syncData $syncData");
+        return syncData;
+      } catch (e) {
+        print("Error is need sync: $e");
       }
   }
 
