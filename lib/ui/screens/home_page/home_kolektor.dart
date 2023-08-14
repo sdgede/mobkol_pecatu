@@ -61,7 +61,8 @@ class HomeKolektorState extends State<HomeKolektor> {
 
   _checkAccountMigration(BuildContext context) async {
     bool checkSync = await globalProv.isNeedSync();
-    if(checkSync){
+    bool isOnline = globalProv.getConnectionMode == config.onlineMode;
+    if(checkSync && isOnline){
       await DialogUtils.instance.showInfo(
         context: context,
         isCancel: true,
