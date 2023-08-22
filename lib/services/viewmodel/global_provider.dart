@@ -182,6 +182,18 @@ Future getLogin(
         String updatedText = '';
        
         // statis: master nasabah
+        var effectedRowCF = await syncMigrateData(
+          context: context,
+          groupProduk: 'CONFIG', 
+          rekCd: 'CONFIG',
+          tglAwal: last,
+          tglAkhir: current  
+        );
+        if(effectedRowCF != null){
+          updatedText += ' Config,';
+          ditambahkan += effectedRowCF['row_add'];
+          diperbaharui += effectedRowCF['row_edit'];
+        }
         var effectedRowMN = await syncMigrateData(
           context: context,
           groupProduk: 'MASTER_NASABAH', 

@@ -9,6 +9,7 @@ import '../../../ui/widgets/app_bar.dart';
 import '../../../services/viewmodel/produk_provider.dart';
 import '../../../services/utils/text_utils.dart';
 import '../../widgets/loader/lottie_loader.dart';
+import '../../../services/config/config.dart' as config;
 
 class MainMigrasiData extends StatefulWidget {
   MainMigrasiData({Key key}) : super(key: key);
@@ -32,23 +33,36 @@ class _MainMigrasiData extends State<MainMigrasiData> {
         {
         'title': 'Master Nasabah',
         'desc': 'Migrasi data master nasabah',
-        'icon': 'assets/icon/icons8-nas_migrate.png',
+        'icon': 'icons8-nas_migrate.png',
         'rekCd': 'MASTER_NASABAH',
         'groupProduk': 'MASTER_NASABAH',
         'color': '0xff1967d2',
         'color2': '0xff03d0ea',
         'isDev': false,
+        'isMaster': true
       },
       {
         'title': 'Data Akun',
         'desc': 'Migrasi data akun kolektor',
-        'icon': 'assets/icon/icons8-user-100.png',
+        'icon': 'icons8-user-100.png',
         'rekCd': 'DATA_AKUN',
         'groupProduk': 'DATA_AKUN',
         'color': '0xff1967d2',
         'color2': '0xff03d0ea',
         'isDev': false,
-      }
+        'isMaster': true
+      },
+      {
+      'title': 'Data Config',
+      'desc': 'Migrasi data config',
+      'icon': 'icons8_migrate.png',
+      'rekCd': 'CONFIG',
+      'groupProduk': 'CONFIG',
+      'color': '0xff1967d2',
+      'color2': '0xff03d0ea',
+      'isDev':false,
+      'isMaster': true
+      },
     ];
 
   var dataListMigrasi = [];
@@ -76,12 +90,13 @@ class _MainMigrasiData extends State<MainMigrasiData> {
       dataListMigrasi.add({
         'title': TextUtils().capitalizeEachWord(product.nama),
         'desc': "Migrasi data ${TextUtils().capitalizeEachWord(product.nama)}",
-        'icon': "assets/icon/${product.icon}",
+        'icon': product.icon,
         'rekCd': product.rekCd,
         'groupProduk': product.slug,
         'color': '0xff1967d2',
         'color2': '0xff03d0ea',
         'isDev': false,
+        'isMaster': false
       });
     }
     }
@@ -178,7 +193,12 @@ class _MainMigrasiData extends State<MainMigrasiData> {
                   ),
                   child: ListTile(
                     contentPadding: EdgeInsets.all(20),
-                    leading: Image.asset(dataListMigrasi[index]['icon']),
+                    leading: globalProv.getConnectionMode == config.onlineMode && !dataListMigrasi[index]['isMaster']
+                                ? Image.network(
+                                    config.iconLink  + dataListMigrasi[index]['icon'],
+                                  )
+                                : Image.asset(
+                                    'assets/icon/' + dataListMigrasi[index]['icon']),
                     title: Text(
                       dataListMigrasi[index]['title'],
                       style: TextStyle(
