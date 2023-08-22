@@ -255,7 +255,7 @@ class _MyAppState extends State<MyApp> {
           builder: (context) {
             return InfoDialog(
               title: "Opps...",
-              text: "Pastikan Anda mengizinkan ${companyName} untuk mengakses lokasi Anda.",
+              text: "Pastikan Anda mengizinkan $mobileName untuk mengakses lokasi Anda.",
               clickOKText: "OK",
               onClickOK: () async {
                 Navigator.of(navigatorKey.currentState.overlay.context, rootNavigator: true).pop();
