@@ -55,6 +55,11 @@ class ProdukCollectionProvider extends ChangeNotifier {
     if (listen) notifyListeners();
   }
 
+  void resetSelectedgroupProdukProduk() {
+    _selectedgroupProdukProduk = "RESET";
+    notifyListeners();
+  }
+
   String _selectedProdukName;
   String get getSelectedProdukName => _selectedProdukName;
   void setSelectedProdukName(String name, {bool listen = true}) {

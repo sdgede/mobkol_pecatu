@@ -38,6 +38,7 @@ class HomeKolektorState extends State<HomeKolektor> {
         false;
 
     if (res) {
+      produkProv.resetSelectedgroupProdukProduk();
       Navigator.of(context).pushNamedAndRemoveUntil(
           RouterGenerator.pageLogin, (Route<dynamic> route) => false);
     }
