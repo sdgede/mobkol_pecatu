@@ -92,10 +92,13 @@ class HomeKolektorState extends State<HomeKolektor> {
     );
     globalProv.loadLocation(context);
     _initPathImgInvoice();
-    globalProv.syncAcount();
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      _checkAccountMigration(context);
-    });
+
+    if(globalProv.getConnectionMode == config.onlineMode){
+      globalProv.syncAcount();
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        _checkAccountMigration(context);
+      });
+    }
   }
 
   @override

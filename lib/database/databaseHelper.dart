@@ -675,12 +675,14 @@ class DatabaseHelper {
     bool actionQuery = false;
     String actionType = '';
     var dataVal = Map<String, dynamic>();
+    Database db = await instance.database;
 
     isDataExist = await queryRowCountWithClause(
       's_user_kolektor',
-      'kolektor_id',
-      val['ID_USER'],
+      'username',
+       "'"+val["username"]+"'",
     );
+
 
     // Database db = await instance.database;
     // await db.delete("s_user_kolektor");
@@ -697,7 +699,12 @@ class DatabaseHelper {
     dataVal['apk_version'] = val['apk_version'];
     dataVal['status'] = val['status'];
 
-    if (isDataExist != 0) {
+    if(isDataExist > 1){
+      await db.rawDelete('DELETE FROM s_user_kolektor WHERE username = ?', [val['username']]);
+      actionType = 'INSERT';
+      actionQuery = await insertDataGlobal('s_user_kolektor', dataVal);
+    }
+    else if (isDataExist != 0) {
       actionType = 'UPDATE';
       actionQuery = await updateDataGlobal(
         's_user_kolektor',
