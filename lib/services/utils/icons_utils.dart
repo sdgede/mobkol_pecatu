@@ -19,6 +19,12 @@ class IconUtils {
         icon: 'assets/icon/migrasi.png',
       ),
       ListModelKol(
+        type: 'EKSPOR_DATABASE',
+        title: 'Ekspor Database',
+        navigator: RouterGenerator.exportDatabase,
+        icon: 'assets/icon/download.png',
+      ),
+      ListModelKol(
         type: 'ABOUT',
         title: 'Tentang Aplikasi',
         navigator: RouterGenerator.about,

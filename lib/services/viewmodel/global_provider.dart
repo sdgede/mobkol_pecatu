@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:mitraku_kolektor/model/produk_model.dart';
 import 'package:mitraku_kolektor/services/collection/produk_collection.dart';
 import 'package:mitraku_kolektor/services/utils/text_utils.dart';
+import 'package:path/path.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 
@@ -548,5 +550,35 @@ Future getLogin(
         "Upload transaksi offline",
         progress.toString() + " of " + maxProgress.toString() + " Uploaded",
         platformChannelSpecifics);
+  }
+
+  dynamic exportDB(BuildContext context, String path) async {
+    try {
+      File result = await globalCollectionServices.copyDB();
+                    
+      Directory documentsDirectory = 
+                Directory(path);
+
+      String newPath = join(documentsDirectory.absolute.path + '/' + config.mobileName.replaceAll(RegExp(r' '), '_') + '_db.db');
+
+      File b = File("${result.path}"+"/sqlite_koperasi.db");
+                              
+      if ( await Permission.storage.request().isGranted &&
+          await Permission.accessMediaLocation.request().isGranted 
+      ){
+        File a = await b.copy(newPath);
+        DialogUtils.instance.showInfo(
+          context: context,
+          title: 'Database Tersimpan',
+          text: "Database berhasil disimpan pada $a",
+          isCancel: false,
+          clickOKText: "TUTUP"
+        );
+      } else {
+        DialogUtils.instance.showError(context: context, text: "Export Database error: No Permission Granted!");
+      }
+    } catch (e) {
+       DialogUtils.instance.showError(context: context, text: "Export Database error: $e");
+    }
   }
 }

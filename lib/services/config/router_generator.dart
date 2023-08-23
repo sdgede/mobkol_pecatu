@@ -32,6 +32,8 @@ import '../../ui/screens/nasabah/adapter_pencarian_nasabah.dart';
 import '../../ui/screens/nasabah/pencarian_nasabah.dart';
 //migrasi data
 import '../../ui/screens/migrasi_data/main_migrasi_data.dart';
+//migrasi export database
+import '../../ui/screens/export_database/main_export_database.dart';
 
 class RouterGenerator {
   //* Routing list
@@ -70,6 +72,8 @@ class RouterGenerator {
   static const mainMigrasiData = "/migrasi/mainMigrasiDataPage";
   // menu daftar pinjaman jatuh tempo
   static const pinjamanJatuhTempo = "/migrasi/pinjamanJatuhTempoPage";
+  // menu daftar pinjaman jatuh tempo
+  static const exportDatabase = "/export_database/exportDatabasePage";
   // ignore: missing_return
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -176,6 +180,10 @@ class RouterGenerator {
         break;
       case pinjamanJatuhTempo:
         return MaterialPageRoute(builder: (_) => DaftarPenagihanPinjaman());
+        break;
+      //export database
+      case exportDatabase:
+        return MaterialPageRoute(builder: (_) => ExportDatabase());
         break;
     }
   }

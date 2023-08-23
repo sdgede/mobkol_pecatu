@@ -11,6 +11,7 @@ import '../base/base_services.dart';
 import '../config/config.dart';
 import '../utils/mcrypt_utils.dart';
 import '../utils/text_utils.dart';
+import 'dart:io' as io;
 
 class GlobalCollectionServices extends BaseServices {
   GlobalProvider globalProv;
@@ -269,5 +270,10 @@ class GlobalCollectionServices extends BaseServices {
     );
 
     return resp;
+  }
+
+  Future< io.File > copyDB() async {
+    var dbPath = await dbHelper.copyDB();
+    return dbPath;
   }
 }

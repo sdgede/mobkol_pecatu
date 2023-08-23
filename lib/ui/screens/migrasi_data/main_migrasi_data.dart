@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:mitraku_kolektor/services/viewmodel/global_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,7 @@ class MainMigrasiData extends StatefulWidget {
 
 class _MainMigrasiData extends State<MainMigrasiData> {
   ProdukCollectionProvider produkProv;
+  GlobalProvider globalProv;
   final format = DateFormat("dd-MM-yyyy");
   DateTime _tglAwal = DateTime.parse(DateTime.now().year.toString() +
       (DateTime.now().month < 10 ? "-0" : "-") +
@@ -71,8 +73,8 @@ class _MainMigrasiData extends State<MainMigrasiData> {
   @override
   void initState() {
     super.initState();
-    produkProv =
-        Provider.of<ProdukCollectionProvider>(context, listen: false);
+    produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
+    globalProv = Provider.of<GlobalProvider>(context, listen: false);
     produkProv.setTglAwal(_tglAwal);
     produkProv.setTglAkhir(_tglAkhir);
 

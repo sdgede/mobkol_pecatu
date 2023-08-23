@@ -910,6 +910,13 @@ class DatabaseHelper {
     return result;
   }
 
+  Future< io.File > copyDB() async {
+    final db = await instance.database;
+    final dbPath = await getDatabasesPath();
+    var afile = io.File(dbPath);
+    return afile;
+  }
+
   // Future<Todo> getTodo(int id) async {
   //   Database db = await instance.database;
   //   List<Map> maps = db.rawQuery('SELECT COUNT(*) FROM $tb_auth');
