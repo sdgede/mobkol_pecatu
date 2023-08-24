@@ -35,10 +35,23 @@ class _SplashPageState extends State<SplashPage>
     bool firstTime = prefs.getBool('first_time');
     var _redirectPage;
 
-    _redirectPage = RouterGenerator.pageLogin;
+    await globalProv.checkUpdate(context);
+
+    if(
+      globalProv.updateInfo.type == config.MANDATORY_UPDATE || 
+      globalProv.updateInfo.type == config.NORMAL_UPDATE ||
+      globalProv.updateInfo.type == config.MAINTENANCE 
+    ){
+      _redirectPage = RouterGenerator.pageUpdate;
+    }  else {
+      _redirectPage = RouterGenerator.pageLogin;
+    }
 
     Future.delayed(Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, _redirectPage);
+      Navigator.pushReplacementNamed(
+        context, _redirectPage, 
+        arguments: {'route': RouterGenerator.pageLogin}
+      );
     });
   }
 

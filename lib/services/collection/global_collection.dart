@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:mitraku_kolektor/model/global_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -275,5 +276,30 @@ class GlobalCollectionServices extends BaseServices {
   Future< io.File > copyDB() async {
     var dbPath = await dbHelper.copyDB();
     return dbPath;
+  }
+
+  Future<UpdateInfo> checkUpdate({
+    BuildContext context
+  }) async {
+    var dataLogin = Map<String, dynamic>();
+    dataLogin["req"] = "checkUpdate";
+    dataLogin["versi"] = McryptUtils.instance
+        .encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
+    
+    var resp = await request(
+      context: context,
+      url: urlApiLogin,
+      type: RequestType.POST,
+      data: dataLogin,
+    );
+
+    print("check update resp $resp");
+
+    if(resp != null){
+      var jsonData = json.decode(resp);
+      return UpdateInfo.fromJson(jsonData);
+    }
+
+    return null;
   }
 }

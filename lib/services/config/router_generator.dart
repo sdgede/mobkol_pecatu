@@ -8,6 +8,7 @@ import '../../model/global_model.dart';
 import '../../ui/screens/login/splash_page.dart';
 import '../../ui/screens/login/landing_page.dart';
 import '../../ui/screens/login/login_form.dart';
+import '../../ui/screens/login/update_page.dart';
 //setting
 import '../../ui/screens/setting/about.dart';
 import '../../ui/screens/setting/reset_password.dart';
@@ -44,6 +45,7 @@ class RouterGenerator {
   static const homePage = "/homePage";
   static const homeKolektor = "/homeKolektor";
   static const pinLogin = "/pinLogin";
+  static const pageUpdate = "/pageUpdate";
 
   //settings
   static const resetPassword = "/settings/resetPassword";
@@ -82,6 +84,10 @@ class RouterGenerator {
       // routes main, login, homepage
       case pageSplash:
         return MaterialPageRoute(builder: (_) => SplashPage());
+        break;
+      case pageUpdate:
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => UpdatePage());
         break;
       case pageLanding:
         return MaterialPageRoute(builder: (_) => LandingPage());

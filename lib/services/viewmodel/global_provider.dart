@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
+import 'package:mitraku_kolektor/model/global_model.dart';
 import 'package:mitraku_kolektor/model/produk_model.dart';
 import 'package:mitraku_kolektor/services/collection/produk_collection.dart';
 import 'package:mitraku_kolektor/services/utils/text_utils.dart';
@@ -579,6 +580,27 @@ Future getLogin(
       }
     } catch (e) {
        DialogUtils.instance.showError(context: context, text: "Export Database error: $e");
+    }
+  }
+
+  UpdateInfo _updateInfo;
+  UpdateInfo get updateInfo => _updateInfo;
+
+  dynamic checkUpdate(BuildContext context) async {
+    try {
+      UpdateInfo resp = await globalCollectionServices.checkUpdate(context: context);
+
+      if(resp == null) {
+        _updateInfo = new UpdateInfo(
+          title: '', 
+          version: '', 
+          desc: '', 
+          type: 'NO_UPDATE');
+      }else {
+        _updateInfo = resp;
+      }
+    } catch (e) {
+      print('error check update with message $e');
     }
   }
 }

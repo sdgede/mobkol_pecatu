@@ -199,3 +199,25 @@ class ListModelKol {
     this.isDev = false,
   });
 }
+
+class UpdateInfo {
+  String version;
+  String title;
+  String desc;
+  String type;
+  String img;
+  String url;
+
+  UpdateInfo({this.version, this.title, this.desc, this.type, this.img, this.url});
+
+  factory UpdateInfo.fromJson(Map<String, dynamic> json) {
+    return UpdateInfo(
+      version: json['versi_update'] ?? "",
+      title: json['judul'] ?? "",
+      desc: json['desc'] ?? "",
+      type: json['tipe_update'] ?? "",
+      img: json['img'] ?? "",
+      url: json['url_update'] ?? "",
+    );
+  }
+}

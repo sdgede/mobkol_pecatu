@@ -50,6 +50,7 @@ String urlApiNotifikasi = "${baseURL}Notifikasi";
 String urlApiEform = "${baseURL}Eform";
 String urlApiTransferBank = "${baseURL}Transfer_bank";
 bool isAlvaibleTfBank = false;
+String urlImg = "${baseURL}assets/foto/";
 
 // mcrypt
 String secretKey = "kkdUIKWkxHCmApwB";
@@ -90,3 +91,9 @@ String defaultNamaRekSumber = "";
 String defaultPemilikNamaRekSumber =
     defaultRekSumber + " - " + defaultNamaRekSumber;
 String currentRoutes = "/";
+
+// updates
+const MANDATORY_UPDATE = 'MANDATORY';
+const NORMAL_UPDATE = 'NORMAL_UPDATE';
+const NO_UPDATE = 'NO_UPDATE';
+const MAINTENANCE = 'MAINTENANCE';
