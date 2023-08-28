@@ -81,6 +81,7 @@ dependencies:
   path: ^1.8.0
   filesystem_picker: ^2.0.0
   flutter_html: 0.11.1
+  showcaseview: 1.1.6
 
 
 

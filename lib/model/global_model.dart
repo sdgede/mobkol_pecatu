@@ -188,15 +188,19 @@ class OTPModel {
 }
 
 class ListModelKol {
-  String title, navigator;
+  String title, navigator, description;
   String icon, type;
   bool isDev;
+  GlobalKey key;
+
   ListModelKol({
     this.type,
     this.title,
     this.navigator,
     this.icon,
     this.isDev = false,
+    this.key,
+    this.description
   });
 }
 

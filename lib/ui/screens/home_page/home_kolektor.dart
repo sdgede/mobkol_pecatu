@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../../services/utils/icons_utils.dart';
 import '../../../services/viewmodel/produk_provider.dart';
@@ -27,6 +28,9 @@ class HomeKolektorState extends State<HomeKolektor> {
   GlobalProvider globalProv;
   ProdukCollectionProvider produkProv;
   List dataMenuKolektor, dataSetting;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey _setting = GlobalKey();
 
   void logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -80,6 +84,36 @@ class HomeKolektorState extends State<HomeKolektor> {
     return;
   }
 
+  _showShowcase(context) {
+      ShowCaseWidget.of(context).startShowCase([
+          ...dataMenuKolektor.map((item) => item.key).toList(),
+          _setting,
+          ...dataSetting.map((item) => item.key).toList(),
+        ]);
+  }
+
+  _checkFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool firstTime = prefs.getBool('first_time') == null ? true : prefs.getBool('first_time');
+
+    // cek migrasi
+    if(globalProv.getConnectionMode == config.onlineMode && !firstTime){
+      globalProv.syncAcount();
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        _checkAccountMigration(context);
+      });
+    } 
+
+    // check showcase
+    if(firstTime){  
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          _showShowcase(context);
+        },
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -94,12 +128,7 @@ class HomeKolektorState extends State<HomeKolektor> {
     globalProv.loadLocation(context);
     _initPathImgInvoice();
 
-    if(globalProv.getConnectionMode == config.onlineMode){
-      globalProv.syncAcount();
-      WidgetsBinding.instance.addPostFrameCallback((_){
-        _checkAccountMigration(context);
-      });
-    }
+    _checkFirstTime();
   }
 
   @override
@@ -119,7 +148,15 @@ class HomeKolektorState extends State<HomeKolektor> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
+        key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _showShowcase(context);
+          },
+          child: Icon(Icons.help),
+          backgroundColor: accentColor,
+        ),
         body: DefaultTabController(
           length: 2,
           child: NestedScrollView(
@@ -214,7 +251,11 @@ class HomeKolektorState extends State<HomeKolektor> {
                       unselectedLabelColor: Colors.black87,
                       tabs: [
                         Tab(text: 'Home'),
-                        Tab(text: 'Setting'),
+                        Showcase(
+                          key: _setting,
+                          description: "Klik untuk ke menu setting",
+                          child: Tab(text: 'Setting')
+                          ),
                       ],
                     ),
                   ),
@@ -245,96 +286,100 @@ class HomeKolektorState extends State<HomeKolektor> {
             shrinkWrap: true,
             itemCount: list.length,
             itemBuilder: (BuildContext context, int index) {
-              return GestureDetector(
-                onTap: () {
-                  if (list[index].isDev) {
-                    DialogUtils.instance.showError(
-                      context: context,
-                      text: "Layanan sedang dalam fase pengembangan!",
-                    );
-                  } else {
-                    if (list[index].type == 'LOGOUT') {
-                      logOut();
-                    } else {
-                      Navigator.of(context).pushNamed(
-                        list[index].navigator,
-                        arguments: {'title': list[index].title},
+              return Showcase(
+                key: list[index].key,
+                description: list[index].description,
+                child: GestureDetector(
+                  onTap: () {
+                    if (list[index].isDev) {
+                      DialogUtils.instance.showError(
+                        context: context,
+                        text: "Layanan sedang dalam fase pengembangan!",
                       );
+                    } else {
+                      if (list[index].type == 'LOGOUT') {
+                        logOut();
+                      } else {
+                        Navigator.of(context).pushNamed(
+                          list[index].navigator,
+                          arguments: {'title': list[index].title},
+                        );
+                      }
                     }
-                  }
-                },
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 3),
-                      child: Material(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                        ),
-                        color: Colors.white,
-                        child: ListTile(
-                          leading: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Badge(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(6.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.shade400
-                                            .withOpacity(.3),
-                                        offset: Offset(0.0, 3.0),
-                                        blurRadius: 8.0,
-                                      )
-                                    ],
-                                  ),
-                                  width: 45,
-                                  height: 45,
-                                  padding: EdgeInsets.all(10),
-                                  child: Image.asset(
-                                    list[index].icon,
-                                  ),
-                                ),
-                                toAnimate: true,
-                                showBadge: globalProv.getConnectionMode ==
-                                            config.onlineMode &&
-                                        list[index].type == "DATA_PENAGIHAN"
-                                    ? true
-                                    : false,
-                                badgeContent: Text(
-                                  config.dataSetting['total_kredit_jatuhtempo']
-                                          .toString() ??
-                                      "0",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 3),
+                        child: Material(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
                           ),
-                          title: Text(
-                            list[index].title,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
+                          color: Colors.white,
+                          child: ListTile(
+                            leading: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Badge(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(6.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.shade400
+                                              .withOpacity(.3),
+                                          offset: Offset(0.0, 3.0),
+                                          blurRadius: 8.0,
+                                        )
+                                      ],
+                                    ),
+                                    width: 45,
+                                    height: 45,
+                                    padding: EdgeInsets.all(10),
+                                    child: Image.asset(
+                                      list[index].icon,
+                                    ),
+                                  ),
+                                  toAnimate: true,
+                                  showBadge: globalProv.getConnectionMode ==
+                                              config.onlineMode &&
+                                          list[index].type == "DATA_PENAGIHAN"
+                                      ? true
+                                      : false,
+                                  badgeContent: Text(
+                                    config.dataSetting['total_kredit_jatuhtempo']
+                                            .toString() ??
+                                        "0",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          trailing: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                FlutterIcons.ios_arrow_forward_ion,
-                                color: Colors.black38,
+                            title: Text(
+                              list[index].title,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
                               ),
-                            ],
+                            ),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  FlutterIcons.ios_arrow_forward_ion,
+                                  color: Colors.black38,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },

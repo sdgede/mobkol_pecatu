@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 import '../../ui/screens/daftar_penagihan_pinjaman/daftar_penagihan_pinjaman.dart';
 import '../../ui/screens/klad/adapter_pencarian_klad.dart';
 
@@ -96,7 +98,17 @@ class RouterGenerator {
         return MaterialPageRoute(builder: (_) => LoginPage());
         break;
       case homeKolektor:
-        return MaterialPageRoute(builder: (_) => HomeKolektor());
+        return MaterialPageRoute(builder: (_) => 
+          ShowCaseWidget (
+            onFinish: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool('first_time', false);
+            },
+            builder: Builder(
+              builder: (context) => HomeKolektor(),
+            ),
+          )
+        );
         break;
 
       //setting
