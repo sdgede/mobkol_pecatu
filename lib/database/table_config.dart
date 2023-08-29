@@ -1,5 +1,6 @@
-//tb menu mobkol
+//tb config mobkol
 String tb_menu_mobkol = "s_menu_mobkol";
+String tb_config_mobkol = "s_data_config";
 //tb auth
 String tb_auth = "s_user_kolektor";
 String tb_auth_id = "id";

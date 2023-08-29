@@ -15,8 +15,8 @@ double deviceHeightWithoutAppBar(BuildContext context, {double height = 25}) {
 }
 
 //colors
-final Color primaryColor = Color(0xff73cc77);
-final Color accentColor = Color(0xff25b22b);
+Color primaryColor = Color(0xfff78104);
+Color accentColor = Color(0xfffaab36);
 
 //images
 final String companyLogo = "assets/images/logo.png";

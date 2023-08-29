@@ -14,6 +14,9 @@ import '../utils/mcrypt_utils.dart';
 import '../utils/text_utils.dart';
 import 'dart:io' as io;
 
+import '../config/config.dart' as config;
+import '../../ui/constant/constant.dart' as constant;
+
 class GlobalCollectionServices extends BaseServices {
   GlobalProvider globalProv;
   final dbHelper = DatabaseHelper.instance;
@@ -302,4 +305,26 @@ class GlobalCollectionServices extends BaseServices {
 
     return null;
   }
+
+  dynamic getLocalConfig() async {
+    try {
+      var localCfg = await dbHelper.getLocalConfig();
+      config.baseURL = McryptUtils.instance.decrypt(localCfg['base_url']);
+      config.mobileName = localCfg['nama_app'];
+      config.companyFullName = localCfg['nama_instansi_full'];
+      config.companyName =localCfg['nama_instansi_short'];
+      config.nomorCompany = localCfg['no_hp_instansi'];
+      config.nomorWhatsAppCompany = localCfg['no_wa_instansi'];
+      config.emailCompany = localCfg['email_instansi'];
+      config.clientType = localCfg['client_type'];
+      constant.primaryColor = Color(int.parse(localCfg['primaryColor']));
+      constant.accentColor = Color(int.parse(localCfg['accentColor']));
+
+      return localCfg;
+    } catch (e) {
+      print("error get local config $e");
+      return null;
+    }
+  }
+  
 }

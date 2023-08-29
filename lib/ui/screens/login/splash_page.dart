@@ -56,6 +56,9 @@ class _SplashPageState extends State<SplashPage>
   }
 
   loadAllData() async {
+    // load data config
+    await globalProv.getLocalConfig();
+
     await dbHelper.database;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var nama = prefs.getString('nama');

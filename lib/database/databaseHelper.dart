@@ -772,14 +772,15 @@ class DatabaseHelper {
 
   Future manageDataMigrationConfig(dynamic dataParse) async {
     int rowEffectedAdd = 0, rowEffectedEdit = 0;
-    bool actionQuery = false, actionDell;
+    bool actionQuery = false, actionDell, actionDellConf;
     String actionType = '';
     var dataVal = Map<String, dynamic>();
     var jsonData = json.decode(dataParse);
+        jsonData = jsonData[0];
     actionDell = await deleteDataGlobal(tb_menu_mobkol);
     if (actionDell)
       await Future.forEach(
-        jsonData,
+        jsonData['data_menu_mobkol'],
         (val) async {
           dataVal['id_menu'] = val['id_menu'];
           dataVal['group_menu'] = val['group_menu'];
@@ -808,6 +809,36 @@ class DatabaseHelper {
           if (actionQuery && actionType == 'UPDATE') rowEffectedEdit++;
         },
       );
+
+    // update data config
+    var confVal = Map<String, dynamic>();
+    actionDellConf = await deleteDataGlobal(tb_config_mobkol);
+    if (actionDellConf)
+      await Future.forEach(
+        jsonData['data_config_mobkol'],
+        (val) async {
+          confVal['id_config'] = val['id_config'];
+          confVal['base_url'] = val['base_url'];
+          confVal['nama_app'] = val['nama_app'];
+          confVal['nama_instansi_full'] = val['nama_instansi_full'];
+          confVal['nama_instansi_short'] = val['nama_instansi_short'];
+          confVal['no_hp_instansi'] = val['no_hp_instansi'];
+          confVal['no_wa_instansi'] = val['no_wa_instansi'];
+          confVal['email_instansi'] = val['email_instansi'];
+          confVal['client_type'] = val['client_type'];
+          confVal['primaryColor'] = val['primaryColor'];
+          confVal['accentColor'] = val['accentColor'];
+
+          actionType = 'INSERT';
+          actionQuery = await insertDataGlobal(tb_config_mobkol, confVal);
+
+          if (actionQuery && actionType == 'INSERT') rowEffectedAdd++;
+          if (actionQuery && actionType == 'UPDATE') rowEffectedEdit++;
+        },
+      );
+    
+    
+    
     return {'row_edit': rowEffectedEdit ?? 0, 'row_add': rowEffectedAdd ?? 0};
   }
 
@@ -925,4 +956,15 @@ class DatabaseHelper {
   //   }
   //   return null;
   // }
+
+  Future getLocalConfig() async {
+    Database db = await instance.database;
+    var data = await db.query('s_data_config LIMIT 1');
+    if(data.length == 0){
+      return null;
+    }
+    print('Data config ${data[0]}');
+    return data[0];
+  }
+  
 }

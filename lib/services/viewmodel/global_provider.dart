@@ -603,4 +603,13 @@ Future getLogin(
       print('error check update with message $e');
     }
   }
+
+  dynamic getLocalConfig() async {
+    try {
+      var localCfg = await globalCollectionServices.getLocalConfig();
+      return localCfg;
+    } catch (e) {
+      print("error get local config with message $e");
+    }
+  }
 }
