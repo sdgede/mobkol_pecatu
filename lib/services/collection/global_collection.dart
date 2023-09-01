@@ -309,6 +309,7 @@ class GlobalCollectionServices extends BaseServices {
   dynamic getLocalConfig() async {
     try {
       var localCfg = await dbHelper.getLocalConfig();
+      constant.bgCustom = "assets/images/"+localCfg['primaryBg'];
       config.baseURL = McryptUtils.instance.decrypt(localCfg['base_url']);
       config.mobileName = localCfg['nama_app'];
       config.companyFullName = localCfg['nama_instansi_full'];

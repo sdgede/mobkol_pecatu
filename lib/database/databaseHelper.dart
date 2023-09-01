@@ -828,6 +828,7 @@ class DatabaseHelper {
           confVal['client_type'] = val['client_type'];
           confVal['primaryColor'] = val['primaryColor'];
           confVal['accentColor'] = val['accentColor'];
+          confVal['primaryBg'] = val['primaryBg'];
 
           actionType = 'INSERT';
           actionQuery = await insertDataGlobal(tb_config_mobkol, confVal);

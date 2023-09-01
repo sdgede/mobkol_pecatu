@@ -19,9 +19,9 @@ Color primaryColor = Color(0xfff78104);
 Color accentColor = Color(0xfffaab36);
 
 //images
+String bgCustom = "assets/images/bg_custom.jpg";
 final String companyLogo = "assets/images/logo.png";
 final String splashLogo = "assets/images/logo.png";
-final String bgCustom = "assets/images/bg_custom.png";
 final String noDataImage = "assets/images/no_data.png";
 final String icDebet = "assets/icon/d_google.png";
 final String icCredit = "assets/icon/c_google.png";
