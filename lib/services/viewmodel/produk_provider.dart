@@ -129,7 +129,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
 
   void dataProdukMigrasi(BuildContext context, {isMessage = true}) async {
     try {
-      EasyLoading.show(status: 'Loading');
+      // EasyLoading.show(status: 'Loading');
       var produkCollectionMigrasi =
           await produkCollectionServices.dataProduk(context: context, migrasi: true);
       if (produkCollectionMigrasi == null) {
@@ -139,14 +139,14 @@ class ProdukCollectionProvider extends ChangeNotifier {
         _produkCollectionMigrasi = produkCollectionMigrasi;
         setLoading(false);
       }
-      EasyLoading.dismiss();
+      setLoading(false);
     } on Exception {
       if (isMessage) DialogUtils.instance.showError(context: context);
-      EasyLoading.dismiss();
+      setLoading(false);
       return null;
     } catch (e) {
       if (isMessage) DialogUtils.instance.showError(context: context);
-      EasyLoading.dismiss();
+      setLoading(false);
       return null;
     }
   }

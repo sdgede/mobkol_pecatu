@@ -115,7 +115,7 @@ class _MainMigrasiData extends State<MainMigrasiData> {
       appBar: DefaultAppBar(context, 'Migrasi Data', isRefresh: true, onRefresh: () => refreshMenuCollection()),
       body: Consumer<ProdukCollectionProvider>(
         builder: (context, mutasiProdukProvider, _) {
-          if (produkProv.produkCollection == null) {
+          if (produkProv.produkCollectionMigrasi == null) {
             // produkProv.dataProduk(context);
             setMenuCollection(true);
             return LottiePrimaryLoader();
