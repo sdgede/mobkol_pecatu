@@ -363,7 +363,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
                   textFieldNominal(
                     'Bunga',
                     bungaController,
-                    isEnable: false,
+                    isEnable: true,
                   ),
                   SizedBox(height: 20),
                   textFieldNominal(
