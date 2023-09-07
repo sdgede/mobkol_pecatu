@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:iconsax/iconsax.dart';
 
 class SearchController extends StatefulWidget {
-  Function onClick;
-  Function(String) onSubmit;
-  TextEditingController controller;
+  Function? onClick;
+  Function(String)? onSubmit;
+  TextEditingController? controller;
   bool readOnly;
   bool autoFocus;
-  String placeHolder;
+  String? placeHolder;
 
   SearchController({
     this.onClick,
     this.onSubmit,
-    @required this.controller,
+    required this.controller,
     this.readOnly = false,
     this.autoFocus = false,
     this.placeHolder,
@@ -36,13 +36,17 @@ class _SearchCOntrollerState extends State<SearchController> {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Row(
           children: <Widget>[
-            Icon(FlutterIcons.ios_search_ion, size: 20, color: Colors.black54),
+            Icon(
+                // FlutterIcons.ios_search_ion,
+                Iconsax.search_normal_1,
+                size: 20,
+                color: Colors.black54),
             SizedBox(width: 5),
             Expanded(
               child: TextField(
                 controller: widget.controller,
                 textInputAction: TextInputAction.done,
-                onTap: () => widget.onClick != null ? widget.onClick() : {},
+                onTap: () => widget.onClick != null ? widget.onClick!() : {},
                 keyboardType: TextInputType.text,
                 readOnly: widget.readOnly,
                 autofocus: widget.autoFocus,
@@ -52,7 +56,7 @@ class _SearchCOntrollerState extends State<SearchController> {
                   fontWeight: FontWeight.w300,
                 ),
                 onSubmitted: (value) =>
-                    widget.onSubmit != null ? widget.onSubmit(value) : {},
+                    widget.onSubmit != null ? widget.onSubmit!(value) : {},
                 decoration: InputDecoration(
                   hintText: widget.placeHolder ?? "Cari Nasabah",
                   border: InputBorder.none,

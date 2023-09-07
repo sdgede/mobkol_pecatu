@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:two_letter_icon/two_letter_icon.dart';
+// import 'package:two_letter_icon/two_letter_icon.dart';
 
 import '../../../services/viewmodel/produk_provider.dart';
 import '../../../services/config/router_generator.dart';
@@ -9,14 +9,14 @@ import '../../constant/constant.dart';
 
 class VerticalListNasabah extends StatefulWidget {
   final NasabahProdukModel dataNasabah;
-  VerticalListNasabah({@required this.dataNasabah});
+  VerticalListNasabah({required this.dataNasabah});
 
   @override
   _VerticalListNasbahState createState() => _VerticalListNasbahState();
 }
 
 class _VerticalListNasbahState extends State<VerticalListNasabah> {
-  ProdukCollectionProvider _produkProvider;
+  ProdukCollectionProvider? _produkProvider;
   bool isLongPress = false;
   double marginVertical = 5;
   double marginHorizontal = 0;
@@ -46,12 +46,12 @@ class _VerticalListNasbahState extends State<VerticalListNasabah> {
   void goToInfoProduk() async {
     //real metohod disabled by request
     var _norekResult = widget.dataNasabah.norek;
-    var _groupProduk = _produkProvider.getSelectedgroupProdukProduk;
-    var _rekCd = _produkProvider.getSelectedRkCdProduk;
-    var _produkIc = _produkProvider.getSelectedProdukIcon;
+    var _groupProduk = _produkProvider!.getSelectedgroupProdukProduk;
+    var _rekCd = _produkProvider!.getSelectedRkCdProduk;
+    var _produkIc = _produkProvider!.getSelectedProdukIcon;
 
     bool res =
-        await _produkProvider.getDataProdukByRek(context, _norekResult) ??
+        await _produkProvider!.getDataProdukByRek(context, _norekResult!) ??
             false;
     if (res) {
       Navigator.pushNamed(
@@ -106,7 +106,7 @@ class _VerticalListNasbahState extends State<VerticalListNasabah> {
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(5),
       ),
-      child: TwoLetterIcon(widget.dataNasabah.nama.replaceAll(" ", "")),
+      // child: TwoLetterIcon(widget.dataNasabah.nama!.replaceAll(" ", "")),
     );
   }
 
@@ -119,7 +119,7 @@ class _VerticalListNasbahState extends State<VerticalListNasabah> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                widget.dataNasabah.norek,
+                widget.dataNasabah.norek!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -129,7 +129,7 @@ class _VerticalListNasbahState extends State<VerticalListNasabah> {
               ),
               SizedBox(height: 7),
               Text(
-                widget.dataNasabah.nama,
+                widget.dataNasabah.nama!,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 style: TextStyle(
@@ -138,7 +138,7 @@ class _VerticalListNasbahState extends State<VerticalListNasabah> {
               ),
               SizedBox(height: 2),
               Text(
-                widget.dataNasabah.alamat,
+                widget.dataNasabah.alamat!,
                 style: TextStyle(
                   color: Colors.black45,
                 ),

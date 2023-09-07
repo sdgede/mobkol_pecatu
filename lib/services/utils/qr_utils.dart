@@ -1,4 +1,4 @@
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -15,10 +15,10 @@ class QRUtils {
 
     if (permisionCamera) {
       try {
-        String barcode = await BarcodeScanner.scan();
+        var barcode = await BarcodeScanner.scan();
         return barcode;
       } on PlatformException catch (error) {
-        if (error.code == BarcodeScanner.CameraAccessDenied) {
+        if (error.code == BarcodeScanner.cameraAccessDenied) {
           DialogUtils.instance.showError(
             context: context,
             text: "Silakan izikan " +

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +19,7 @@ class DaftarPenagihanPinjaman extends StatefulWidget {
 
 class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
   var searchController = TextEditingController();
-  ProdukCollectionProvider produkProvider;
+  ProdukCollectionProvider? produkProvider;
   DateTime _tglAwal = DateTime.now();
   DateTime _tglAkhir = DateTime.now();
 
@@ -28,15 +28,15 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
     super.initState();
     produkProvider =
         Provider.of<ProdukCollectionProvider>(context, listen: false);
-    produkProvider.clearSearchNasabah(isListen: false);
-    produkProvider.setTglAwal(_tglAwal);
-    produkProvider.setTglAkhir(_tglAkhir);
-    produkProvider.setSelectedProdukName(
+    produkProvider!.clearSearchNasabah(isListen: false);
+    produkProvider!.setTglAwal(_tglAwal);
+    produkProvider!.setTglAkhir(_tglAkhir);
+    produkProvider!.setSelectedProdukName(
         clientType == "KOPERASI" ? "Pinjaman" : "Kredit",
         listen: false);
-    produkProvider.setSelectedgroupProdukProduk("KREDIT", listen: false);
-    produkProvider.setSelectedRekCdProduk("KREDIT", listen: false);
-    produkProvider.setSelectedProdukIcon("kredit.png", listen: false);
+    produkProvider!.setSelectedgroupProdukProduk("KREDIT", listen: false);
+    produkProvider!.setSelectedRekCdProduk("KREDIT", listen: false);
+    produkProvider!.setSelectedProdukIcon("kredit.png", listen: false);
   }
 
   @override
@@ -51,7 +51,7 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
         "Daftar penagihan pinjaman ",
         isCenter: true,
         isRefresh: true,
-        onRefresh: () => produkProvider.clearSearchNasabah(),
+        onRefresh: () => produkProvider!.clearSearchNasabah(),
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -89,7 +89,8 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
                 Row(
                   children: <Widget>[
                     Icon(
-                      FlutterIcons.account_search_outline_mco,
+                      // FlutterIcons.account_search_outline_mco,
+                      Iconsax.user_search,
                       color: primaryColor,
                     ),
                     SizedBox(width: 10),
@@ -160,7 +161,7 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => produkProvider.clearSearchNasabah(),
+          onTap: () => produkProvider!.clearSearchNasabah(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -173,7 +174,10 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
                 ),
               ),
               SizedBox(width: 5),
-              Icon(FlutterIcons.refresh_faw, color: accentColor)
+              Icon(
+                  // FlutterIcons.refresh_faw,
+                  Iconsax.refresh,
+                  color: accentColor)
             ],
           ),
         ),

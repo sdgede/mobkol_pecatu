@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SlideDots extends StatelessWidget {
@@ -30,7 +29,7 @@ class SlideDots extends StatelessWidget {
 }
 
 class SlideDotsHomepage extends StatelessWidget {
-  int dotsActive, dotsLength;
+  int? dotsActive, dotsLength;
   SlideDotsHomepage({this.dotsActive, this.dotsLength});
 
   @override

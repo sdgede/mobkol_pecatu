@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 
 import '../../../database/databaseHelper.dart';
@@ -16,19 +17,19 @@ import '../../../services/utils/text_utils.dart';
 
 class FieldListKlad extends StatefulWidget {
   MutasiProdukCollection dataTrans;
-  bool isKlad = false;
-  FieldListKlad({@required this.dataTrans, this.isKlad});
+  bool? isKlad = false;
+  FieldListKlad({required this.dataTrans, this.isKlad});
 
   @override
   _FieldListKlad createState() => _FieldListKlad();
 }
 
 class _FieldListKlad extends State<FieldListKlad> {
-  ProdukCollectionProvider produkProv;
-  GlobalProvider globalProv;
-  TransaksiProvider transProvider;
+  ProdukCollectionProvider? produkProv;
+  GlobalProvider? globalProv;
+  TransaksiProvider? transProvider;
   final dbHelper = DatabaseHelper.instance;
-  double totalSetoran, totalTarikan, jml;
+  double? totalSetoran, totalTarikan, jml;
 
   @override
   void initState() {
@@ -44,7 +45,7 @@ class _FieldListKlad extends State<FieldListKlad> {
     BuildContext context,
   ) async {
     if (type == 'UPLOAD') {
-      await transProvider.prosesTransaksiKolektor(
+      await transProvider!.prosesTransaksiKolektor(
         context: context,
         tipeTrans: 'SETOR',
         norek: dataTrans.norek,
@@ -58,7 +59,7 @@ class _FieldListKlad extends State<FieldListKlad> {
       bool deleteAction = await dbHelper.deleteDataGlobalWithCLause(
           tbTrxGlobal, tbTrxGlobal_id, dataTrans.trans_id);
 
-      if (deleteAction) produkProv.resetMutasiTransaksi();
+      if (deleteAction) produkProv!.resetMutasiTransaksi();
     }
   }
 
@@ -92,7 +93,7 @@ class _FieldListKlad extends State<FieldListKlad> {
             children: <Widget>[
               CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: CustomDbCrBox(context, widget.dataTrans.dbcr),
+                child: CustomDbCrBox(context, widget.dataTrans.dbcr!),
               ),
               SizedBox(width: 10),
               Expanded(
@@ -108,7 +109,7 @@ class _FieldListKlad extends State<FieldListKlad> {
                           Row(
                             children: [
                               Text(
-                                widget.dataTrans.tgl,
+                                widget.dataTrans.tgl!,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12,
@@ -116,16 +117,28 @@ class _FieldListKlad extends State<FieldListKlad> {
                                 ),
                               ),
                               SizedBox(width: 15),
-                              if (globalProv.getConnectionMode == offlineMode)
-                                Badge(
-                                  toAnimate: true,
-                                  shape: BadgeShape.square,
-                                  badgeColor: widget.dataTrans.isUpload == 'Y'
-                                      ? Colors.green
-                                      : Colors.grey.shade500,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 1),
-                                  borderRadius: BorderRadius.circular(20),
+                              if (globalProv!.getConnectionMode == offlineMode)
+                                badges.Badge(
+                                  // toAnimate: true,
+                                  // shape: BadgeShape.square,
+                                  // badgeColor: widget.dataTrans.isUpload == 'Y'
+                                  //     ? Colors.green
+                                  //     : Colors.grey.shade500,
+                                  // padding: EdgeInsets.symmetric(
+                                  //     horizontal: 5, vertical: 1),
+                                  // borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      color: widget.dataTrans.isUpload == 'Y'
+                                          ? Colors.green
+                                          : Colors.grey.shade500,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 1),
+                                  ),
+
                                   badgeContent: Text(
                                       widget.dataTrans.isUpload == 'Y'
                                           ? 'TERUPLOAD'
@@ -139,9 +152,9 @@ class _FieldListKlad extends State<FieldListKlad> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            widget.dataTrans.nama +
+                            widget.dataTrans.nama! +
                                 ' - ' +
-                                widget.dataTrans.norek,
+                                widget.dataTrans.norek!,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -159,15 +172,15 @@ class _FieldListKlad extends State<FieldListKlad> {
           SizedBox(height: 10),
           hisrizontalTxtList(
             text: "Jumlah",
-            value: widget.dataTrans.jumlah,
+            value: widget.dataTrans.jumlah!,
           ),
           hisrizontalTxtList(
             text: "Saldo",
-            value: widget.dataTrans.saldo,
+            value: widget.dataTrans.saldo!,
           ),
           hisrizontalTxtList(
             text: "Tipe",
-            value: widget.dataTrans.kode,
+            value: widget.dataTrans.kode!,
             isNumber: false,
           ),
 
@@ -181,7 +194,7 @@ class _FieldListKlad extends State<FieldListKlad> {
           //       widget.dataTrans.isUpload == 'N' ? Colors.red : Colors.green,
           // ),
           SizedBox(height: 10),
-          if (globalProv.getConnectionMode == offlineMode)
+          if (globalProv!.getConnectionMode == offlineMode)
             Column(
               children: [
                 Divider(),
@@ -223,9 +236,9 @@ class _FieldListKlad extends State<FieldListKlad> {
 }
 
 Widget hisrizontalTxtList({
-  String text,
+  String? text,
   bool isTextBold = false,
-  String value,
+  String? value,
   bool isValueBold = false,
   bool isNumber = true,
   Color customColor = Colors.black,

@@ -78,13 +78,13 @@ String Greeting = ((DateTime.now().hour >= 0 && DateTime.now().hour < 11)
             ? "Selamat Sore"
             : "Selamat Malam")));
 String firebaseId = "0";
-String platform;
+String? platform;
 String RelateApp = "Aplikasi Terbaru";
 String PIN = "PIN Anda";
 String payName = "AMM-PAY";
 String Jelajahi = "Jelajahi";
 Map<String, dynamic> dataLogin = {}, dataSetting = {}, dataUser = {};
-List<dynamic> dataProvider, plnWarning;
+List<dynamic>? dataProvider, plnWarning;
 String tabName = "TABUNGAN";
 String defaultRekSumber = "";
 String defaultNamaRekSumber = "";

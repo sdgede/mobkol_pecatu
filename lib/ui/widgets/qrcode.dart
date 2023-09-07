@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QrCode extends StatelessWidget {
-  const QrCode({Key key, @required this.produkData}) : super(key: key);
+  const QrCode({Key? key, required this.produkData}) : super(key: key);
 
   final String produkData;
 
@@ -16,15 +16,16 @@ class QrCode extends StatelessWidget {
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: qr.QrImage(
+        child: QrImage(
           data: produkData,
           version: QrVersions.auto,
-          size: 320,
-          gapless: false,
+          // size: 320,
+          imageSize: Size(320, 320),
+          // gapless: false,
           embeddedImage: AssetImage('assets/images/logo_qr.png'),
-          embeddedImageStyle: QrEmbeddedImageStyle(
-            size: Size(50, 50),
-          ),
+          // embeddedImageStyle: QrEmbeddedImageStyle(
+          //   size: Size(50, 50),
+          // ),
         ),
       ),
     );
@@ -32,16 +33,16 @@ class QrCode extends StatelessWidget {
 }
 
 class QrImage extends StatelessWidget {
-  final String data;
+  final String? data;
   final int version;
   final int errorCorrectionLevel;
   final Color color;
   final Color backgroundColor;
-  final ImageProvider<dynamic> embeddedImage;
-  final Size imageSize;
+  final ImageProvider<dynamic>? embeddedImage;
+  final Size? imageSize;
 
   const QrImage({
-    Key key,
+    Key? key,
     this.data,
     this.version = 4,
     this.errorCorrectionLevel = qr.QrErrorCorrectLevel.M,
@@ -54,7 +55,7 @@ class QrImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final qr.QrPainter _painter = qr.QrPainter(
-      data: data,
+      data: data!,
       version: qr.QrVersions.auto,
       errorCorrectionLevel: errorCorrectionLevel,
       color: color,
@@ -63,21 +64,21 @@ class QrImage extends StatelessWidget {
     );
 
     return FutureBuilder<ByteData>(
-      future: _painter.toImageData(300.0),
+      future: _painter.toImageData(300.0) as Future<ByteData>?,
       builder: (BuildContext context, AsyncSnapshot<ByteData> snapshot) {
         return AnimatedCrossFade(
           firstChild: Container(
             alignment: Alignment.center,
           ),
           secondChild: Builder(builder: (BuildContext context) {
-            if (snapshot.data == null || data == null) {
+            if (snapshot.data == null) {
               return Center(
                 child: Text('No data provided.'),
               );
             }
 
             return Image.memory(
-              snapshot.data.buffer.asUint8List(),
+              snapshot.data!.buffer.asUint8List(),
               fit: BoxFit.contain,
             );
           }),
@@ -88,7 +89,7 @@ class QrImage extends StatelessWidget {
           layoutBuilder: (Widget topChild, Key topChildKey, Widget bottomChild,
               Key bottomChildKey) {
             return Stack(
-              overflow: Overflow.visible,
+              clipBehavior: Clip.none,
               children: <Widget>[
                 Positioned.fill(
                   key: bottomChildKey,
@@ -101,14 +102,13 @@ class QrImage extends StatelessWidget {
                   key: topChildKey,
                   child: topChild,
                 ),
-                if (embeddedImage != null)
-                  Center(
-                    child: Container(
-                      height: imageSize != null ? imageSize.height : null,
-                      width: imageSize != null ? imageSize.width : null,
-                      child: Image(image: embeddedImage),
-                    ),
-                  )
+                Center(
+                  child: Container(
+                    height: imageSize != null ? imageSize!.height : null,
+                    width: imageSize != null ? imageSize!.width : null,
+                    child: Image(image: embeddedImage as ImageProvider<Object>),
+                  ),
+                )
               ],
             );
           },

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
-import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
+import 'package:ticket_widget/ticket_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/viewmodel/produk_provider.dart';
@@ -18,12 +18,12 @@ class MainSaldoKolektor extends StatefulWidget {
 }
 
 class _MainSaldoKolektor extends State<MainSaldoKolektor> {
-  ProdukCollectionProvider produkProvider;
-  GlobalProvider globalProvider;
+  ProdukCollectionProvider? produkProvider;
+  GlobalProvider? globalProvider;
   var searchController = TextEditingController();
-  double _width, _primaryPadding = 15;
+  double? _width, _primaryPadding = 15;
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  ScrollController produkScrollCOntroller;
+  ScrollController? produkScrollCOntroller;
 
   @override
   void initState() {
@@ -31,15 +31,15 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
     produkProvider =
         Provider.of<ProdukCollectionProvider>(context, listen: false);
     globalProvider = Provider.of<GlobalProvider>(context, listen: false);
-    //produkProvider.refreshSaldoKolektor();
-    produkProvider.getDataSaldoKolektorMenu(context);
-    print("mock from screen: ${produkProvider.saldoKolektorMenu}");
+    //produkProvider!.refreshSaldoKolektor();
+    produkProvider!.getDataSaldoKolektorMenu(context);
+    print("mock from screen: ${produkProvider!.saldoKolektorMenu}");
   }
 
-  void _refresh(){
+  void _refresh() {
     print('mock refresh');
-    produkProvider.refreshSaldoKolektor();
-    produkProvider.refreshSaldoKolektorMenu();
+    produkProvider!.refreshSaldoKolektor();
+    produkProvider!.refreshSaldoKolektorMenu();
   }
 
   @override
@@ -56,9 +56,11 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
       key: scaffoldKey,
       body: Consumer<ProdukCollectionProvider>(
         builder: (contex, produkProv, _) {
-          if (produkProv.saldoKolektorCollection == null || produkProv.saldoKolektorMenu == null) {
-            if (produkProv.saldoKolektorCollection == null) produkProv.getDataSaldoKolektor(context);
-            if (produkProv.saldoKolektorMenu == null) produkProv.getDataSaldoKolektorMenu(context);
+          if (produkProv.saldoKolektorMenu == null) {
+            if (produkProv.saldoKolektorCollection == null)
+              produkProv.getDataSaldoKolektor(context);
+            if (produkProv.saldoKolektorMenu == null)
+              produkProv.getDataSaldoKolektorMenu(context);
             return LottiePrimaryLoader();
           }
           return Container(
@@ -91,7 +93,9 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          FlutterTicketWidget(
+          TicketWidget(
+            width: 350, //test
+            height: 500, //test
             isCornerRounded: true,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -120,8 +124,9 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
                       children: <Widget>[
                         Column(
                           children: [
-                            if (globalProvider.getConnectionMode == onlineMode)
-                              _dynamicData(data: produkProvider.saldoKolektorMenu),
+                            if (globalProvider!.getConnectionMode == onlineMode)
+                              _dynamicData(
+                                  data: produkProvider!.saldoKolektorMenu),
                             SizedBox(height: 20),
                           ],
                         ),
@@ -137,40 +142,39 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
     );
   }
 
-  Widget _dynamicData({
-    var data
-  }){
+  Widget _dynamicData({var data}) {
     return Column(
       children: data.asMap().entries.map<Widget>((entry) {
-                  int index = entry.key;
-                  var item = entry.value;
-                  return Column(
-                    children: [
-                      _fieldTicketViewProduk(
-                              isHeader: true,
-                              headerTxt: item.title,
-                            ),
-                      Column(
-                        children: 
-                          item.data.map<Widget>((dt) =>  _fieldTicketViewProduk(
-                                        firstField: dt['subtitle'],
-                                        secondField:dt['value'].toString(),
-                                        isCurrency: true,
-                                      )).toList(),
-                      ),
-                      if(index != data.length - 1) Divider(),
-                  ],);
-                }).toList(),
+        int index = entry.key;
+        var item = entry.value;
+        return Column(
+          children: [
+            _fieldTicketViewProduk(
+              isHeader: true,
+              headerTxt: item.title,
+            ),
+            Column(
+              children: item.data
+                  .map<Widget>((dt) => _fieldTicketViewProduk(
+                        firstField: dt['subtitle'],
+                        secondField: dt['value'].toString(),
+                        isCurrency: true,
+                      ))
+                  .toList(),
+            ),
+            if (index != data.length - 1) Divider(),
+          ],
+        );
+      }).toList(),
     );
   }
-  
 
   Widget _fieldTicketViewProduk({
-    bool isHeader: false,
-    String headerTxt: '-',
-    String firstField: '-',
-    String secondField: '0',
-    bool isCurrency: false,
+    bool isHeader = false,
+    String headerTxt = '-',
+    String firstField = '-',
+    String secondField = '0',
+    bool isCurrency = false,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

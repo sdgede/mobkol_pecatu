@@ -2,12 +2,10 @@ import 'dart:io';
 
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../widgets/app_bar.dart';
 import '../../../services/viewmodel/global_provider.dart';
 import '../../../ui/constant/constant.dart';
 import 'package:provider/provider.dart';
-import '../../../services/config/config.dart' as config;
 
 class ExportDatabase extends StatefulWidget {
   @override
@@ -15,18 +13,18 @@ class ExportDatabase extends StatefulWidget {
 }
 
 class _ExportDatabaseState extends State<ExportDatabase> {
-  GlobalProvider globalProv;
+  GlobalProvider? globalProv;
   String _savePath = "storage/emulated/0";
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
   }
 
-  selectFolder () async {
-    String path = await FilesystemPicker.open(
+  selectFolder() async {
+    String? path = await FilesystemPicker.open(
       title: 'Simpan ke folder...',
       context: context,
       rootDirectory: Directory(_savePath),
@@ -34,53 +32,53 @@ class _ExportDatabaseState extends State<ExportDatabase> {
       pickText: 'Pilih Folder',
       folderIconColor: accentColor,
     );
-    if(path != null){
-      setState(() {_savePath = path; });     
-    }
+
+    setState(() {
+      _savePath = path!;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-       appBar: DefaultAppBar(
-          context,
-          "Ekspor Database",
-          isCenter: true,
-          isRefresh: false,
-        ),
+      appBar: DefaultAppBar(
+        context,
+        "Ekspor Database",
+        isCenter: true,
+        isRefresh: false,
+      ),
       body: exportDatabase(),
     );
   }
 
   Widget exportDatabase() => Container(
-    child: ListView(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Consumer<GlobalProvider>(
-                builder: (contex, globalProv, _) {
-                  return Column(
-                    children: <Widget>[
-                      SizedBox(height: 20),
-                      _headerInfo(globalProv),
-                      SizedBox(height: 10),
-                      _selectFolderBtn(),
-                      _exportBtn(context)
-                    ],
-                  );
-                },
+        child: ListView(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Consumer<GlobalProvider>(
+                    builder: (contex, globalProv, _) {
+                      return Column(
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          _headerInfo(globalProv),
+                          SizedBox(height: 10),
+                          _selectFolderBtn(),
+                          _exportBtn(context)
+                        ],
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
-
+      );
 
   Widget _headerInfo(GlobalProvider globalProv) {
     return Container(
@@ -131,7 +129,10 @@ class _ExportDatabaseState extends State<ExportDatabase> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Text(
               _savePath,
-              style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ),
@@ -185,7 +186,7 @@ class _ExportDatabaseState extends State<ExportDatabase> {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              globalProv.exportDB(context, _savePath);
+              globalProv!.exportDB(context, _savePath);
             },
             child: Center(
               child: Text(
@@ -202,5 +203,4 @@ class _ExportDatabaseState extends State<ExportDatabase> {
       ),
     );
   }
-
 }

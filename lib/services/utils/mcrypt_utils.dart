@@ -11,57 +11,61 @@ class McryptUtils {
 
   String encrypt(String value) {
     if (value == "") return "";
-    var aesEncrypter = AesCrypt(this.secretKey, 'cbc', 'pkcs7');
-    String encrypted;
+    var aesEncrypter = AesCrypt(key: this.secretKey, padding: PaddingAES.pkcs7);
+    String? encrypted;
     try {
-      encrypted = aesEncrypter.encrypt(value, this.iv);
+      encrypted = aesEncrypter.gcm.encrypt(inp: value, iv: this.iv);
     } on Exception {
       print("Error encrypt");
     } catch (e) {
       print("Error encrypt");
     }
-    return encrypted;
+    return encrypted!;
   }
 
   String decrypt(String encrypted) {
     if (encrypted == "") return "";
-    var aesEncrypter = AesCrypt(this.secretKey, 'cbc', 'pkcs7');
-    String decrypted;
+    // var aesEncrypter = AesCrypt(this.secretKey, 'cbc', 'pkcs7');
+    var aesEncrypter = AesCrypt(key: this.secretKey, padding: PaddingAES.pkcs7);
+    String? decrypted;
     try {
-      decrypted = aesEncrypter.decrypt(encrypted, this.iv);
+      decrypted = aesEncrypter.gcm.decrypt(enc: encrypted, iv: this.iv);
     } on Exception {
       print("Error decrypt");
     } catch (e) {
       print("Error encrypt");
     }
-    return decrypted;
+    return decrypted!;
   }
 
   String encryptMerchant(String value) {
     if (value == "") return "";
-    var aesEncrypter = AesCrypt(this.secretKeyMerchant, 'cbc', 'pkcs7');
-    String encrypted;
+    // var aesEncrypter = AesCrypt(this.secretKeyMerchant, 'cbc', 'pkcs7');
+    var aesEncrypter =
+        AesCrypt(key: this.secretKeyMerchant, padding: PaddingAES.pkcs7);
+    String? encrypted;
     try {
-      encrypted = aesEncrypter.encrypt(value, this.ivMerchant);
+      encrypted = aesEncrypter.gcm.encrypt(inp: value, iv: this.ivMerchant);
     } on Exception {
       print("Error encrypt");
     } catch (e) {
       print("Error encrypt");
     }
-    return encrypted;
+    return encrypted!;
   }
 
   String decryptMerchant(String encrypted) {
     if (encrypted == "") return "";
-    var aesEncrypter = AesCrypt(this.secretKeyMerchant, 'cbc', 'pkcs7');
-    String decrypted;
+    var aesEncrypter =
+        AesCrypt(key: this.secretKeyMerchant, padding: PaddingAES.pkcs7);
+    String? decrypted;
     try {
-      decrypted = aesEncrypter.decrypt(encrypted, this.ivMerchant);
+      decrypted = aesEncrypter.gcm.decrypt(enc: encrypted, iv: this.ivMerchant);
     } on Exception {
       print("Error decrypt");
     } catch (e) {
       print("Error encrypt");
     }
-    return decrypted;
+    return decrypted!;
   }
 }

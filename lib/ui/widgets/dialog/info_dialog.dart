@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class InfoDialog extends StatelessWidget {
-  String title;
+  String? title;
   String text;
-  String clickOKText;
-  String clickCancelText;
+  String? clickOKText;
+  String? clickCancelText;
   Function onClickOK;
-  Function onClickCancel;
-  bool isCancel;
+  Function? onClickCancel;
+  bool? isCancel;
 
   InfoDialog({
-    @required this.text,
-    @required this.onClickOK,
+    required this.text,
+    required this.onClickOK,
     this.title,
     this.clickOKText,
     this.clickCancelText,
@@ -26,9 +26,12 @@ class InfoDialog extends StatelessWidget {
       title: Text(title ?? "Peringatan!"),
       content: Text(text),
       actions: <Widget>[
-        isCancel
-            ? FlatButton(
-                color: Colors.red,
+        isCancel == null || isCancel == true
+            ? TextButton(
+                // color: Colors.red,
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.red,
+                ),
                 child: Text(
                   clickCancelText ?? "TIDAK",
                   style: TextStyle(color: Colors.white),
@@ -36,12 +39,15 @@ class InfoDialog extends StatelessWidget {
                 onPressed: () {
                   onClickCancel == null
                       ? Navigator.of(context).pop(false)
-                      : onClickCancel();
+                      : onClickCancel!();
                 },
               )
             : Container(),
-        FlatButton(
-          color: Colors.green,
+        TextButton(
+          // color: Colors.green,
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.green,
+          ),
           child: Text(
             clickOKText ?? "YAKIN",
             style: TextStyle(color: Colors.white),
@@ -56,7 +62,7 @@ class InfoDialog extends StatelessWidget {
 }
 
 class ErrorDialog extends StatelessWidget {
-  String text;
+  String? text;
   ErrorDialog({this.text});
   @override
   Widget build(BuildContext context) {
@@ -66,8 +72,10 @@ class ErrorDialog extends StatelessWidget {
       content:
           Text(text ?? "Terjadi kesalahan saat terhubung ke server. CODE:500"),
       actions: <Widget>[
-        FlatButton(
-          color: Colors.green,
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.green,
+          ),
           child: Text(
             "TUTUP",
             style: TextStyle(color: Colors.white),

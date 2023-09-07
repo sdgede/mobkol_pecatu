@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../../services/utils/image_utils.dart';
 import '../../../services/utils/text_utils.dart';
 import '../../widgets/app_bar.dart';
 
 class MapLokasiScreen extends StatefulWidget {
-  final LatLng lokasiKantor;
-  final String namaKantor;
+  final LatLng? lokasiKantor;
+  final String? namaKantor;
   const MapLokasiScreen({
-    Key key,
+    Key? key,
     this.lokasiKantor,
     this.namaKantor,
   }) : super(key: key);
@@ -22,7 +22,7 @@ class MapLokasiScreen extends StatefulWidget {
 
 class _MapLokasiScreenState extends State<MapLokasiScreen> {
   Completer<GoogleMapController> _controller = Completer();
-  BitmapDescriptor iconLokasiKantor;
+  BitmapDescriptor? iconLokasiKantor;
 
   void currentLocation() async {
     final GoogleMapController controller = await _controller.future;
@@ -30,7 +30,7 @@ class _MapLokasiScreenState extends State<MapLokasiScreen> {
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
         bearing: 0,
-        target: widget.lokasiKantor,
+        target: widget.lokasiKantor!,
         zoom: 16.0,
       ),
     ));
@@ -41,8 +41,8 @@ class _MapLokasiScreenState extends State<MapLokasiScreen> {
       Marker(
         markerId: MarkerId(widget.lokasiKantor.toString() +
             DateTime.now().millisecondsSinceEpoch.toString()),
-        position: widget.lokasiKantor,
-        icon: iconLokasiKantor,
+        position: widget.lokasiKantor!,
+        icon: iconLokasiKantor!,
       ),
     ].toSet();
   }
@@ -62,7 +62,7 @@ class _MapLokasiScreenState extends State<MapLokasiScreen> {
       appBar: AppBarGoogleMaps(
         context: context,
         title: "Lokasi " +
-            TextUtils.instance.capitalizeEachWord(widget.namaKantor),
+            TextUtils.instance.capitalizeEachWord(widget.namaKantor!),
       ),
       body: Stack(
         children: [
@@ -72,7 +72,7 @@ class _MapLokasiScreenState extends State<MapLokasiScreen> {
             myLocationButtonEnabled: false,
             initialCameraPosition: CameraPosition(
               bearing: 0,
-              target: widget.lokasiKantor,
+              target: widget.lokasiKantor!,
               zoom: 16,
             ),
             onMapCreated: (GoogleMapController controller) {
@@ -97,7 +97,8 @@ class _MapLokasiScreenState extends State<MapLokasiScreen> {
           child: IconButton(
             padding: EdgeInsets.zero,
             icon: Icon(
-              FlutterIcons.my_location_mdi,
+              // FlutterIcons.my_location_mdi,
+              Iconsax.location,
               color: Colors.grey,
             ),
             onPressed: currentLocation,

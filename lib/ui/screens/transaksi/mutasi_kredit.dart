@@ -10,8 +10,8 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/not_found.dart';
 
 class MutasiKredit extends StatefulWidget {
-  final Map arguments;
-  const MutasiKredit({Key key, this.arguments}) : super(key: key);
+  final Map? arguments;
+  const MutasiKredit({Key? key, this.arguments}) : super(key: key);
 
   @override
   _MutasiKredit createState() => _MutasiKredit();
@@ -22,20 +22,20 @@ class _MutasiKredit extends State<MutasiKredit>
   final scaffoldKey = GlobalKey<ScaffoldState>(),
       _formKeyStep1 = GlobalKey<FormState>();
   bool _autoValidateStep1 = false;
-  String _idProduk, _rekCd, _groupProduk, _norek;
-  ProdukCollectionProvider produkProvider;
+  String? _idProduk, _rekCd, _groupProduk, _norek;
+  ProdukCollectionProvider? produkProvider;
 
   @override
   void initState() {
     super.initState();
     produkProvider =
         Provider.of<ProdukCollectionProvider>(context, listen: false);
-    _idProduk = widget.arguments['idProduk'];
-    _rekCd = widget.arguments['rekCd'];
-    _groupProduk = widget.arguments['groupProduk'];
-    _norek = widget.arguments['norek'];
+    _idProduk = widget.arguments!['idProduk'];
+    _rekCd = widget.arguments!['rekCd'];
+    _groupProduk = widget.arguments!['groupProduk'];
+    _norek = widget.arguments!['norek'];
 
-    produkProvider.resetMutasiTransaksi(isListen: false);
+    produkProvider!.resetMutasiTransaksi(isListen: false);
   }
 
   @override
@@ -56,7 +56,7 @@ class _MutasiKredit extends State<MutasiKredit>
       backgroundColor: Colors.white,
       appBar: DefaultAppBar(context, 'Mutasi Kredit',
           isRefresh: true,
-          onRefresh: () => produkProvider.resetMutasiTransaksi()),
+          onRefresh: () => produkProvider!.resetMutasiTransaksi()),
       key: scaffoldKey,
       body: Consumer<ProdukCollectionProvider>(
         builder: (context, produkProv, _) {
@@ -64,7 +64,7 @@ class _MutasiKredit extends State<MutasiKredit>
             produkProv.getDataMutasi(
               context: context,
               idProduk: _idProduk,
-              norek: _norek,
+              norek: _norek!,
             );
             return Center(
               child: CircularProgressIndicator(),
@@ -101,7 +101,7 @@ class _MutasiKredit extends State<MutasiKredit>
                         .map(
                           ((element) => DataRow(
                                 cells: <DataCell>[
-                                  DataCell(Text(element.tgl)),
+                                  DataCell(Text(element.tgl!)),
                                   DataCell(Text(
                                     TextUtils.instance.numberFormat(
                                       element.pokok.toString() ?? '0',

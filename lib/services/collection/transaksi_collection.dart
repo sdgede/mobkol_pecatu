@@ -12,22 +12,22 @@ class TransaksiCollectionServices extends BaseServices {
   final dbHelper = DatabaseHelper.instance;
 
   Future<SuksesTransaksiModel> prosesTransaksiKolektor({
-    BuildContext context,
-    String rekCd,
-    String groupProduk,
-    String tipeTrans,
-    String norek,
-    String jumlah,
-    String pokok,
-    String bunga,
-    String denda,
-    String lateCharge,
-    String remark,
-    String produkId,
-    String lat,
-    String long,
-    String connMode,
-    String action,
+    BuildContext? context,
+    String? rekCd,
+    String? groupProduk,
+    String? tipeTrans,
+    String? norek,
+    String? jumlah,
+    String? pokok,
+    String? bunga,
+    String? denda,
+    String? lateCharge,
+    String? remark,
+    String? produkId,
+    String? lat,
+    String? long,
+    String? connMode,
+    String? action,
   }) async {
     var dataTransaksi = Map<String, dynamic>();
     String urlWs = urlApiTransaksiTabungan;
@@ -46,14 +46,14 @@ class TransaksiCollectionServices extends BaseServices {
       urlWs = urlApiTransaksiKredit;
     }
 
-    dataTransaksi["groupProduk"] = McryptUtils.instance.encrypt(groupProduk);
-    dataTransaksi["produkId"] = McryptUtils.instance.encrypt(produkId);
-    dataTransaksi["rekCd"] = McryptUtils.instance.encrypt(rekCd);
+    dataTransaksi["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
+    dataTransaksi["produkId"] = McryptUtils.instance.encrypt(produkId!);
+    dataTransaksi["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
     dataTransaksi["wilayahCd"] =
         McryptUtils.instance.encrypt(dataLogin['wilayah_cd'] ?? '01');
-    dataTransaksi["tipeTrans"] = McryptUtils.instance.encrypt(tipeTrans);
-    dataTransaksi["norek"] = McryptUtils.instance.encrypt(norek);
-    dataTransaksi["jumlah"] = McryptUtils.instance.encrypt(jumlah);
+    dataTransaksi["tipeTrans"] = McryptUtils.instance.encrypt(tipeTrans!);
+    dataTransaksi["norek"] = McryptUtils.instance.encrypt(norek!);
+    dataTransaksi["jumlah"] = McryptUtils.instance.encrypt(jumlah!);
     dataTransaksi["pokok"] = McryptUtils.instance.encrypt(pokok ?? "0");
     dataTransaksi["bunga"] = McryptUtils.instance.encrypt(bunga ?? "0");
     dataTransaksi["denda"] = McryptUtils.instance.encrypt(denda ?? "0");
@@ -65,8 +65,8 @@ class TransaksiCollectionServices extends BaseServices {
     dataTransaksi["pwd"] = McryptUtils.instance.encrypt(dataLogin['password']);
 
     //data log
-    dataTransaksi["lat"] = McryptUtils.instance.encrypt(lat);
-    dataTransaksi["longi"] = McryptUtils.instance.encrypt(long);
+    dataTransaksi["lat"] = McryptUtils.instance.encrypt(lat!);
+    dataTransaksi["longi"] = McryptUtils.instance.encrypt(long!);
     dataTransaksi["imei"] = McryptUtils.instance.encrypt(dataLogin['imei']);
 
     var resp;
@@ -94,14 +94,14 @@ class TransaksiCollectionServices extends BaseServices {
   }
 
   Future sendNotifikasiTransaksiWhatsApp({
-    BuildContext context,
-    String rekCd,
-    String transId,
+    BuildContext? context,
+    String? rekCd,
+    String? transId,
   }) async {
     var dataNotifikasi = Map<String, dynamic>();
     dataNotifikasi["req"] = "sendNotifikasiTransaksiWhatsApp";
-    dataNotifikasi["rek_cd"] = McryptUtils.instance.encrypt(rekCd);
-    dataNotifikasi["trans_id"] = McryptUtils.instance.encrypt(transId);
+    dataNotifikasi["rek_cd"] = McryptUtils.instance.encrypt(rekCd!);
+    dataNotifikasi["trans_id"] = McryptUtils.instance.encrypt(transId!);
 
     await request(
       context: context,

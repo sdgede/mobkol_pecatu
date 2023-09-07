@@ -18,12 +18,12 @@ import '../config/config.dart' as config;
 import '../../ui/constant/constant.dart' as constant;
 
 class GlobalCollectionServices extends BaseServices {
-  GlobalProvider globalProv;
+  GlobalProvider? globalProv;
   final dbHelper = DatabaseHelper.instance;
 
   Future<List<ListChoiceModel>> getDataCustom({
-    BuildContext context,
-    String jenis,
+    BuildContext? context,
+    String? jenis,
   }) async {
     var dataCustom = Map<String, dynamic>();
     dataCustom["req"] = "getDataCustom";
@@ -36,11 +36,10 @@ class GlobalCollectionServices extends BaseServices {
       data: dataCustom,
     );
 
-    var customCollection;
+    List<ListChoiceModel>? customCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      customCollection = new List<ListChoiceModel>();
       jsonData.forEach((val) {
         customCollection.add(ListChoiceModel.fromJson(val));
       });
@@ -50,19 +49,19 @@ class GlobalCollectionServices extends BaseServices {
   }
 
   dynamic getLogin({
-    BuildContext context,
-    String username,
-    String password,
+    BuildContext? context,
+    String? username,
+    String? password,
   }) async {
-    globalProv = Provider.of<GlobalProvider>(context, listen: false);
+    globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     var dataLogin = Map<String, dynamic>();
     dataLogin["req"] = "getLogin";
-    dataLogin["username"] = McryptUtils.instance.encrypt(username);
-    dataLogin["pwd"] = McryptUtils.instance.encrypt(password);
+    dataLogin["username"] = McryptUtils.instance.encrypt(username!);
+    dataLogin["pwd"] = McryptUtils.instance.encrypt(password!);
     dataLogin["platform"] =
         McryptUtils.instance.encrypt(Platform.isAndroid ? "ANDROID" : "IOS");
-    dataLogin["imei"] = McryptUtils.instance.encrypt(platform);
-    dataLogin["sn"] = McryptUtils.instance.encrypt(platform);
+    dataLogin["imei"] = McryptUtils.instance.encrypt(platform!);
+    dataLogin["sn"] = McryptUtils.instance.encrypt(platform!);
     dataLogin["versi"] = McryptUtils.instance
         .encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
     dataLogin["reg_firebase_id"] = McryptUtils.instance.encrypt(firebaseId);
@@ -71,7 +70,7 @@ class GlobalCollectionServices extends BaseServices {
 
     var resp;
 
-    if (globalProv.getConnectionMode == offlineMode)
+    if (globalProv!.getConnectionMode == offlineMode)
       resp = dbHelper.getLoginOffline(dataLogin);
     else
       resp = await request(
@@ -89,11 +88,7 @@ class GlobalCollectionServices extends BaseServices {
     return res;
   }
 
-  dynamic syncData({
-    var dataMigrasi,
-    var groupProduk,
-    var rekCd
-  }) async {
+  dynamic syncData({var dataMigrasi, var groupProduk, var rekCd}) async {
     var actionMigrate;
 
     if (groupProduk == 'DATA_AKUN') {
@@ -103,8 +98,7 @@ class GlobalCollectionServices extends BaseServices {
       actionMigrate = await dbHelper.manageDataMigrationNasabah(
           dataMigrasi, groupProduk, rekCd);
     } else if (groupProduk == 'CONFIG') {
-      actionMigrate =
-          await dbHelper.manageDataMigrationConfig(dataMigrasi);
+      actionMigrate = await dbHelper.manageDataMigrationConfig(dataMigrasi);
     } else {
       actionMigrate = await dbHelper.manageDataMigrationProduct(
           dataMigrasi, groupProduk, rekCd);
@@ -116,11 +110,12 @@ class GlobalCollectionServices extends BaseServices {
   dynamic lastSync() async {
     var lastSync = await dbHelper.lastSync();
 
-    lastSync = lastSync == null ? DateTime.now().subtract(Duration(days:1)) :
-                                  new DateFormat("yyyy-MM-dd").parse(lastSync);
+    lastSync = lastSync == null
+        ? DateTime.now().subtract(Duration(days: 1))
+        : new DateFormat("yyyy-MM-dd").parse(lastSync);
     return lastSync;
   }
-  
+
   dynamic updateSync(String current) async {
     var updateSync = await dbHelper.updateSync(current);
 
@@ -128,39 +123,38 @@ class GlobalCollectionServices extends BaseServices {
     lastSync = new DateFormat("yyyy-MM-dd").parse(lastSync);
     return updateSync;
   }
-  
+
   dynamic isNeedSync() async {
     var lastSync = await dbHelper.lastSync();
 
     // jika belum pernah melakukan sinkronisasi
-    if(lastSync == null) return true;
-    
+    if (lastSync == null) return true;
+
     // jika masih hari ini
     DateTime lastSyncDate = new DateFormat("yyyy-MM-dd").parse(lastSync);
     DateTime current = new DateTime.now();
-    if(lastSyncDate.year == current.year &&
-       lastSyncDate.month == current.month && 
-       lastSyncDate.day == current.day)
-       {
-        return false;
-       }
-       
+    if (lastSyncDate.year == current.year &&
+        lastSyncDate.month == current.month &&
+        lastSyncDate.day == current.day) {
+      return false;
+    }
+
     return true;
   }
 
   dynamic getLoginPin({
-    BuildContext context,
-    String username,
-    String pin,
+    BuildContext? context,
+    String? username,
+    String? pin,
   }) async {
     var dataLogin = Map<String, dynamic>();
     dataLogin["req"] = "getLoginPin";
-    dataLogin["username"] = McryptUtils.instance.encrypt(username);
-    dataLogin["pin"] = McryptUtils.instance.encrypt(pin);
+    dataLogin["username"] = McryptUtils.instance.encrypt(username!);
+    dataLogin["pin"] = McryptUtils.instance.encrypt(pin!);
     dataLogin["platform"] =
         McryptUtils.instance.encrypt(Platform.isAndroid ? "ANDROID" : "IOS");
-    dataLogin["imei"] = McryptUtils.instance.encrypt(platform);
-    dataLogin["sn"] = McryptUtils.instance.encrypt(platform);
+    dataLogin["imei"] = McryptUtils.instance.encrypt(platform!);
+    dataLogin["sn"] = McryptUtils.instance.encrypt(platform!);
     dataLogin["versi"] = McryptUtils.instance
         .encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
     dataLogin["reg_firebase_id"] = McryptUtils.instance.encrypt(firebaseId);
@@ -176,12 +170,12 @@ class GlobalCollectionServices extends BaseServices {
   }
 
   dynamic resetPassword({
-    BuildContext context,
-    String password,
+    BuildContext? context,
+    String? password,
   }) async {
     var dataReset = Map<String, dynamic>();
     dataReset["req"] = "gantiPassword";
-    dataReset["password"] = McryptUtils.instance.encrypt(password);
+    dataReset["password"] = McryptUtils.instance.encrypt(password!);
     dataReset["id_user"] = McryptUtils.instance.encrypt(dataLogin['ID_USER']);
     dataReset["username"] = McryptUtils.instance.encrypt(dataLogin['username']);
 
@@ -196,12 +190,12 @@ class GlobalCollectionServices extends BaseServices {
   }
 
   dynamic resetPin({
-    BuildContext context,
-    String pin,
+    BuildContext? context,
+    String? pin,
   }) async {
     var dataReset = Map<String, dynamic>();
     dataReset["req"] = "gantiPIN";
-    dataReset["pin"] = McryptUtils.instance.encrypt(pin);
+    dataReset["pin"] = McryptUtils.instance.encrypt(pin!);
     dataReset["id_user"] = McryptUtils.instance.encrypt(dataLogin['ID_USER']);
     dataReset["username"] = McryptUtils.instance.encrypt(dataLogin['username']);
 
@@ -216,10 +210,10 @@ class GlobalCollectionServices extends BaseServices {
   }
 
   dynamic checkReEncryptData({
-    BuildContext context,
-    String data,
+    BuildContext? context,
+    String? data,
   }) async {
-    var decrypt = McryptUtils.instance.decryptMerchant(data);
+    var decrypt = McryptUtils.instance.decryptMerchant(data!);
     if (decrypt == null) {
       var dataReset = Map<String, dynamic>();
       dataReset["req"] = "getReEncryptData";
@@ -239,12 +233,12 @@ class GlobalCollectionServices extends BaseServices {
   }
 
   Future checkNomorRekening({
-    BuildContext context,
-    String noRekening,
+    BuildContext? context,
+    String? noRekening,
   }) async {
     var dataLogin = Map<String, dynamic>();
     dataLogin["req"] = "checkNomorRekening";
-    dataLogin["norek"] = McryptUtils.instance.encrypt(noRekening);
+    dataLogin["norek"] = McryptUtils.instance.encrypt(noRekening!);
     print(dataLogin);
     var resp = await request(
       context: context,
@@ -257,14 +251,14 @@ class GlobalCollectionServices extends BaseServices {
   }
 
   Future checkHPNIK({
-    BuildContext context,
-    String type,
-    String nomor,
+    BuildContext? context,
+    String? type,
+    String? nomor,
   }) async {
     var dataLogin = Map<String, dynamic>();
     dataLogin["req"] = "checkHPNIK";
-    dataLogin["type"] = McryptUtils.instance.encrypt(type);
-    dataLogin["nomor"] = McryptUtils.instance.encrypt(nomor);
+    dataLogin["type"] = McryptUtils.instance.encrypt(type!);
+    dataLogin["nomor"] = McryptUtils.instance.encrypt(nomor!);
 
     var resp = await request(
       context: context,
@@ -276,19 +270,17 @@ class GlobalCollectionServices extends BaseServices {
     return resp;
   }
 
-  Future< io.File > copyDB() async {
+  Future<io.File> copyDB() async {
     var dbPath = await dbHelper.copyDB();
     return dbPath;
   }
 
-  Future<UpdateInfo> checkUpdate({
-    BuildContext context
-  }) async {
+  Future<UpdateInfo?> checkUpdate({BuildContext? context}) async {
     var dataLogin = Map<String, dynamic>();
     dataLogin["req"] = "checkUpdate";
     dataLogin["versi"] = McryptUtils.instance
         .encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
-    
+
     var resp = await request(
       context: context,
       url: urlApiLogin,
@@ -298,7 +290,7 @@ class GlobalCollectionServices extends BaseServices {
 
     print("check update resp $resp");
 
-    if(resp != null){
+    if (resp != null) {
       var jsonData = json.decode(resp);
       return UpdateInfo.fromJson(jsonData);
     }
@@ -309,11 +301,11 @@ class GlobalCollectionServices extends BaseServices {
   dynamic getLocalConfig() async {
     try {
       var localCfg = await dbHelper.getLocalConfig();
-      constant.bgCustom = "assets/images/"+localCfg['primaryBg'];
+      constant.bgCustom = "assets/images/" + localCfg['primaryBg'];
       config.baseURL = McryptUtils.instance.decrypt(localCfg['base_url']);
       config.mobileName = localCfg['nama_app'];
       config.companyFullName = localCfg['nama_instansi_full'];
-      config.companyName =localCfg['nama_instansi_short'];
+      config.companyName = localCfg['nama_instansi_short'];
       config.nomorCompany = localCfg['no_hp_instansi'];
       config.nomorWhatsAppCompany = localCfg['no_wa_instansi'];
       config.emailCompany = localCfg['email_instansi'];
@@ -327,5 +319,4 @@ class GlobalCollectionServices extends BaseServices {
       return null;
     }
   }
-  
 }

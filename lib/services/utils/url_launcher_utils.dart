@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 class UrlLauncherUtils {
   static UrlLauncherUtils instance = UrlLauncherUtils();
 
-  void launchWhatsApp({@required String phone}) async {
+  void launchWhatsApp({required String phone}) async {
     String url() {
       if (Platform.isIOS) {
         return "whatsapp://wa.me/$phone";
@@ -22,31 +22,31 @@ class UrlLauncherUtils {
     }
   }
 
-  void launchCall({@required String phone}) async {
-    String url = "tel:${phone}";
+  void launchCall({required String phone}) async {
+    String url = "tel:$phone";
 
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      throw 'Could not launch ${url}';
+      throw 'Could not launch $url';
     }
   }
 
-  void launchEmail({@required String email}) async {
-    String url = "mailto:${email}";
+  void launchEmail({required String email}) async {
+    String url = "mailto:$email";
 
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      throw 'Could not launch ${email}';
+      throw 'Could not launch $email';
     }
   }
 
-  void launchMaps({String myAddress, String destAddress}) async {
+  void launchMaps({String? myAddress, String? destAddress}) async {
     String googleMapslocationUrl = "https://www.google.co.id/maps/dir/" +
-        myAddress.replaceAll(' ', '+') +
+        myAddress!.replaceAll(' ', '+') +
         "/" +
-        destAddress.replaceAll(' ', '+');
+        destAddress!.replaceAll(' ', '+');
 
     final String encodedURl = Uri.encodeFull(googleMapslocationUrl);
 
@@ -58,9 +58,9 @@ class UrlLauncherUtils {
     }
   }
 
-  void launchBrowser({@required String browser}) async {
+  void launchBrowser({@required String? browser}) async {
     var url = browser;
-    if (await canLaunch(url)) {
+    if (await canLaunch(url!)) {
       await launch(url);
     } else {
       throw 'Could not launch $url';

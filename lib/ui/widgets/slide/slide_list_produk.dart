@@ -11,23 +11,23 @@ import '../../constant/constant.dart';
 class SlideListProduk extends StatefulWidget {
   ProdukCollection dataProduk;
   bool isKlad = false;
-  SlideListProduk({@required this.dataProduk, this.isKlad});
+  SlideListProduk({required this.dataProduk, required this.isKlad});
 
   @override
   _SlideListProduk createState() => _SlideListProduk();
 }
 
 class _SlideListProduk extends State<SlideListProduk> {
-  ProdukCollectionProvider produkProv, dta;
-  GlobalProvider globalProv;
-  ProdukCollection dataFirst;
+  ProdukCollectionProvider? produkProv, dta;
+  GlobalProvider? globalProv;
+  ProdukCollection? dataFirst;
 
   @override
   void initState() {
     super.initState();
     produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
-    produkProv.setAllDatafirstSelectedProduct(isListen: false);
+    produkProv!.setAllDatafirstSelectedProduct(isListen: false);
   }
 
   @override
@@ -40,22 +40,24 @@ class _SlideListProduk extends State<SlideListProduk> {
           GestureDetector(
             onTap: () {
               if (config.forbidenOffline.contains(widget.dataProduk.slug) &&
-                  globalProv.getConnectionMode == config.offlineMode) {
+                  globalProv!.getConnectionMode == config.offlineMode) {
                 DialogUtils.instance.showError(
                     context: context,
                     text:
                         "Tidak dapat menggunakan mode offline pada jenis transaksi ini, silakan beralih ke mode online terlebih dahulu");
               } else {
-                produkProv.setSelectedRekCdProduk(widget.dataProduk.rekCd);
-                produkProv.setSelectedgroupProdukProduk(widget.dataProduk.slug);
-                produkProv.setSelectedProdukName(widget.dataProduk.nama);
-                produkProv.setSelectedProdukIcon(widget.dataProduk.icon);
-                produkProv.setSelectedMinSetoran(widget.dataProduk.min_setoran);
+                produkProv!.setSelectedRekCdProduk(widget.dataProduk.rekCd!);
+                produkProv!
+                    .setSelectedgroupProdukProduk(widget.dataProduk.slug!);
+                produkProv!.setSelectedProdukName(widget.dataProduk.nama!);
+                produkProv!.setSelectedProdukIcon(widget.dataProduk.icon!);
+                produkProv!
+                    .setSelectedMinSetoran(widget.dataProduk.min_setoran!);
                 print(widget.dataProduk.rekCd);
                 print(widget.dataProduk.slug);
-                produkProv
-                    .setSelectedRekShortcut(widget.dataProduk.rek_shortcut);
-                if (widget.isKlad) produkProv.resetMutasiTransaksi();
+                produkProv!
+                    .setSelectedRekShortcut(widget.dataProduk.rek_shortcut!);
+                if (widget.isKlad) produkProv!.resetMutasiTransaksi();
               }
             },
             child: Column(
@@ -65,7 +67,7 @@ class _SlideListProduk extends State<SlideListProduk> {
                     borderRadius: BorderRadius.circular(7.0),
                   ),
                   elevation: 3.0,
-                  color: (produkProv.getSelectedRkCdProduk ==
+                  color: (produkProv!.getSelectedRkCdProduk ==
                           widget.dataProduk.rekCd)
                       ? accentColor
                       : Colors.white,
@@ -75,28 +77,28 @@ class _SlideListProduk extends State<SlideListProduk> {
                     child: Column(
                       children: [
                         CircleAvatar(
-                          backgroundColor: (produkProv.getSelectedRkCdProduk ==
+                          backgroundColor: (produkProv!.getSelectedRkCdProduk ==
                                   widget.dataProduk.rekCd)
                               ? Colors.white
                               : Colors.grey.shade200,
                           child: Container(
                             padding: EdgeInsets.all(7),
-                            child: globalProv.getConnectionMode ==
+                            child: globalProv!.getConnectionMode ==
                                     config.onlineMode
                                 ? Image.network(
-                                    config.iconLink + widget.dataProduk.icon,
+                                    config.iconLink + widget.dataProduk.icon!,
                                     height: 30,
                                     width: 30,
                                   )
                                 : Image.asset(
-                                    'assets/icon/' + widget.dataProduk.icon),
+                                    'assets/icon/' + widget.dataProduk.icon!),
                           ),
                         ),
                         SizedBox(height: 5),
                         Text(
-                          widget.dataProduk.nama.toUpperCase(),
+                          widget.dataProduk.nama!.toUpperCase(),
                           style: TextStyle(
-                            color: (produkProv.getSelectedRkCdProduk ==
+                            color: (produkProv!.getSelectedRkCdProduk ==
                                     widget.dataProduk.rekCd)
                                 ? Colors.white
                                 : Colors.black,

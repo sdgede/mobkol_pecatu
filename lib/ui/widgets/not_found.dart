@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../constant/constant.dart';
 
 class DataNotFound extends StatelessWidget {
-  String pesan, icon, title;
-  double heightParse, widthParse;
+  String? pesan, icon, title;
+  double? heightParse, widthParse;
 
   DataNotFound(
       {this.title, this.pesan, this.icon, this.heightParse, this.widthParse});
@@ -21,22 +21,21 @@ class DataNotFound extends StatelessWidget {
             height: (heightParse == null) ? 300 : heightParse,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage((icon == null) ? noDataImage : icon)),
+                  image: AssetImage(
+                      (icon == null) ? noDataImage : icon as String)),
             ),
           ),
           SizedBox(height: 10),
-          if (title != null)
-            Text(
-              title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-              textAlign: TextAlign.center,
-            ),
-          if (title != null)
-            SizedBox(
-              height: 10,
-            ),
           Text(
-            pesan,
+            title!,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            pesan!,
             style: TextStyle(fontSize: 18),
             textAlign: TextAlign.center,
           )

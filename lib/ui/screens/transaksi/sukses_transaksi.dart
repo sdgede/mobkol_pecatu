@@ -1,7 +1,6 @@
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-
 import '../../../model/global_model.dart';
 import '../../../services/utils/text_utils.dart';
 import '../../../services/viewmodel/global_provider.dart';
@@ -14,16 +13,16 @@ import '../../constant/constant.dart';
 
 class SeuksesTransaksiScreen extends StatefulWidget {
   final SuksesTransaksiModel dataSuksesTransaksi;
-  SeuksesTransaksiScreen({@required this.dataSuksesTransaksi});
+  SeuksesTransaksiScreen({required this.dataSuksesTransaksi});
 
   @override
   _SeuksesTransaksiScreenState createState() => _SeuksesTransaksiScreenState();
 }
 
 class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
-  GlobalProvider globalProvider;
-  TransaksiProvider transaksiProvider;
-  ProdukCollectionProvider produkProv;
+  GlobalProvider? globalProvider;
+  TransaksiProvider? transaksiProvider;
+  ProdukCollectionProvider? produkProv;
   @override
   void initState() {
     super.initState();
@@ -31,14 +30,14 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
     transaksiProvider = Provider.of<TransaksiProvider>(context, listen: false);
     produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      produkProv
+      produkProv!
           .setSaldoResult(widget.dataSuksesTransaksi.saldo_akhir.toString());
     });
     sendNotifikasiTransaksiWhatsApp();
   }
 
   void sendNotifikasiTransaksiWhatsApp() async {
-    transaksiProvider.sendNotifikasiTransaksiWhatsApp(
+    transaksiProvider!.sendNotifikasiTransaksiWhatsApp(
       context: context,
       rekCd: widget.dataSuksesTransaksi.rekCd,
       transId: widget.dataSuksesTransaksi.idTrx.toString(),
@@ -125,7 +124,7 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
                                       fontWeight: FontWeight.bold)),
                               Padding(
                                 padding: const EdgeInsets.only(top: 4.0),
-                                child: Text(widget.dataSuksesTransaksi.pesan,
+                                child: Text(widget.dataSuksesTransaksi.pesan!,
                                     style: TextStyle(fontSize: 15.0)),
                               ),
                               Container(
@@ -150,7 +149,8 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
                                           children: [
                                             ListTile(
                                               leading: Icon(
-                                                FlutterIcons.coins_faw5s,
+                                                // FlutterIcons.coins_faw5s,
+                                                Iconsax.money,
                                                 color: Colors.green,
                                                 size: 28.0,
                                               ),
@@ -179,7 +179,7 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
                                             ),
                                             ListTile(
                                               leading: Icon(
-                                                FlutterIcons.coins_faw5s,
+                                                Iconsax.money,
                                                 color: Colors.green,
                                                 size: 28.0,
                                               ),
@@ -208,7 +208,7 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
                                             ),
                                             ListTile(
                                               leading: Icon(
-                                                FlutterIcons.coins_faw5s,
+                                                Iconsax.money,
                                                 color: Colors.green,
                                                 size: 28.0,
                                               ),
@@ -237,7 +237,7 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
                                             ),
                                             ListTile(
                                               leading: Icon(
-                                                FlutterIcons.coins_faw5s,
+                                                Iconsax.money,
                                                 color: Colors.green,
                                                 size: 28.0,
                                               ),
@@ -268,7 +268,7 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
                                         ),
                                       ListTile(
                                         leading: Icon(
-                                          FlutterIcons.coins_faw5s,
+                                          Iconsax.money,
                                           color: Colors.green,
                                           size: 28.0,
                                         ),
@@ -297,7 +297,8 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
                                       ),
                                       ListTile(
                                         leading: Icon(
-                                          FlutterIcons.pencil_box_outline_mco,
+                                          // FlutterIcons.pencil_box_outline_mco,
+                                          Iconsax.edit,
                                           color: Colors.green,
                                           size: 28.0,
                                         ),
@@ -479,7 +480,7 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.0),
                         border:
-                            Border.all(color: Colors.indigo[700], width: 1.5),
+                            Border.all(color: Colors.indigo[700]!, width: 1.5),
                         color: Colors.white),
                     child: Center(
                       child: Text(
@@ -491,10 +492,10 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
                   ),
                 ),
                 SizedBox(
-                    width: globalProvider.getConnectionMode == offlineMode
+                    width: globalProvider!.getConnectionMode == offlineMode
                         ? 0
                         : 10),
-                globalProvider.getConnectionMode == offlineMode
+                globalProvider!.getConnectionMode == offlineMode
                     ? SizedBox(height: 0)
                     : Column(
                         children: <Widget>[

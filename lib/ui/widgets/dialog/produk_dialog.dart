@@ -14,7 +14,8 @@ class ProdukDialog extends StatelessWidget {
         Provider.of<ProdukTabunganProvider>(context, listen: false);
     return StreamBuilder(
       initialData: nasabahTabunganProvider.produkTabunganUser,
-      builder: (contex, snapshot) {
+      stream: null,
+      builder: (contex, dynamic snapshot) {
         return Container(
           padding: EdgeInsets.only(bottom: 15),
           child: Stack(
@@ -24,9 +25,9 @@ class ProdukDialog extends StatelessWidget {
                 margin: EdgeInsets.only(top: 60),
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: snapshot.hasData ? snapshot.data.length : 0,
+                  itemCount: snapshot.hasData ? snapshot.data!.length : 0,
                   itemBuilder: (BuildContext ctx, int index) {
-                    return _cardListProduk(context, snapshot.data[index]);
+                    return _cardListProduk(context, snapshot.data![index]);
                   },
                 ),
               )
@@ -153,7 +154,7 @@ class ProdukDialog extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.all(5),
         child: Text(
-          text == null || text == '' ? '-' : text,
+          text == '' ? '-' : text,
           textAlign: TextAlign.left,
           style: textStyle,
         ),
@@ -169,7 +170,7 @@ class ProdukDialog extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(10),
           child: Text(
-            text == null || text == '' ? '-' : text,
+            text == '' ? '-' : text,
             style: textStyle,
           ),
         ),
@@ -184,8 +185,9 @@ class ProdukMutasiDialog extends StatelessWidget {
     var produkCollectionProvider =
         Provider.of<ProdukCollectionProvider>(context, listen: false);
     return StreamBuilder(
+      stream: null,
       initialData: produkCollectionProvider.listProdukCollection,
-      builder: (contex, snapshot) {
+      builder: (contex, dynamic snapshot) {
         return Container(
           padding: EdgeInsets.only(bottom: 15),
           child: Stack(
@@ -195,9 +197,9 @@ class ProdukMutasiDialog extends StatelessWidget {
                 margin: EdgeInsets.only(top: 60),
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: snapshot.hasData ? snapshot.data.length : 0,
+                  itemCount: snapshot.hasData ? snapshot.data!.length : 0,
                   itemBuilder: (BuildContext ctx, int index) {
-                    return _cardListProduk(context, snapshot.data[index]);
+                    return _cardListProduk(context, snapshot.data![index]);
                   },
                 ),
               )
@@ -322,7 +324,7 @@ class ProdukMutasiDialog extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.all(5),
         child: Text(
-          text == null || text == '' ? '-' : text,
+          text == '' ? '-' : text,
           textAlign: TextAlign.left,
           style: textStyle,
         ),
@@ -338,7 +340,7 @@ class ProdukMutasiDialog extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(10),
           child: Text(
-            text == null || text == '' ? '-' : text,
+            text == '' ? '-' : text,
             style: textStyle,
           ),
         ),

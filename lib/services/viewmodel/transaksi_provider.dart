@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
@@ -16,13 +15,13 @@ import '../../setup.dart';
 
 class TransaksiProvider extends ChangeNotifier {
   final dbHelper = DatabaseHelper.instance;
-  GlobalProvider gobalProv;
-  ProdukCollectionProvider produkProv;
+  GlobalProvider? gobalProv;
+  ProdukCollectionProvider? produkProv;
   TransaksiCollectionServices transaksiCollectionServices =
       setup<TransaksiCollectionServices>();
 
-  SuksesTransaksiModel _dataSuksesTransaksi;
-  SuksesTransaksiModel get dataSuksesTransaksi => _dataSuksesTransaksi;
+  SuksesTransaksiModel? _dataSuksesTransaksi;
+  SuksesTransaksiModel get dataSuksesTransaksi => _dataSuksesTransaksi!;
   void setSuksesTransaksi(value) {
     _dataSuksesTransaksi = value;
     notifyListeners();
@@ -69,20 +68,25 @@ class TransaksiProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  DateTime _timeOTP;
-  DateTime get timeOTP => _timeOTP;
+  DateTime? _timeOTP;
+  DateTime get timeOTP => _timeOTP!;
 
   void resetRequestOTP() {
     _requestOTP = 0;
     _timeOTP = null;
   }
 
-  Future<dynamic> checkRequestOTP({BuildContext context}) async {
+  Future<dynamic> checkRequestOTP({BuildContext? context}) async {
     if (_requestOTP < 3) {
       return true;
     } else {
-      DateTime newRequestDate = new DateTime(_timeOTP.year, _timeOTP.month,
-          _timeOTP.day, _timeOTP.hour, _timeOTP.minute + 5, _timeOTP.second);
+      DateTime newRequestDate = new DateTime(
+          _timeOTP!.year,
+          _timeOTP!.month,
+          _timeOTP!.day,
+          _timeOTP!.hour,
+          _timeOTP!.minute + 5,
+          _timeOTP!.second);
       if (newRequestDate.millisecondsSinceEpoch >
           DateTime.now().millisecondsSinceEpoch) {
         await DialogUtils.instance.showError(
@@ -98,11 +102,11 @@ class TransaksiProvider extends ChangeNotifier {
     }
   }
 
-  OTPModel _dataOTP;
-  OTPModel get dataOTP => _dataOTP;
+  OTPModel? _dataOTP;
+  OTPModel get dataOTP => _dataOTP!;
 
-  String _tipeOTP;
-  get tipeOTP => _tipeOTP;
+  String? _tipeOTP;
+  get tipeOTP => _tipeOTP!;
   void setTipeOTP(value) {
     _tipeOTP = value;
   }
@@ -122,9 +126,9 @@ class TransaksiProvider extends ChangeNotifier {
   }
 
   Future sendNotifikasiTransaksiWhatsApp({
-    BuildContext context,
-    String rekCd,
-    String transId,
+    BuildContext? context,
+    String? rekCd,
+    String? transId,
   }) async {
     try {
       await transaksiCollectionServices.sendNotifikasiTransaksiWhatsApp(
@@ -146,7 +150,7 @@ class TransaksiProvider extends ChangeNotifier {
     resetCountUpTrx();
     resetCountProgress();
     produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
-    int _countOffTrx = produkProv.muatasiProdukCollection
+    int _countOffTrx = produkProv!.muatasiProdukCollection
         .where((element) => element.isUpload == 'N')
         .length;
     if (_countOffTrx == 0) {
@@ -155,10 +159,10 @@ class TransaksiProvider extends ChangeNotifier {
         text: "Tidak ditemukan data transaksi offline yang belum terupload",
       );
     } else {
-      await setLoadingUpload(true);
+      setLoadingUpload(true);
       int _lengthStart = 1;
-      await Future.forEach(
-        produkProv.muatasiProdukCollection
+      await Future.forEach<dynamic>(
+        produkProv!.muatasiProdukCollection
             .where((element) => element.isUpload == 'N'),
         (val) async {
           _maxProgressUpload = _countOffTrx;
@@ -167,9 +171,9 @@ class TransaksiProvider extends ChangeNotifier {
           bool res = await prosesTransaksiKolektor(
             context: context,
             tipeTrans: 'SETOR',
-            norek: val.norek,
-            jumlah: val.jumlah,
-            remark: val.remark,
+            norek: val!.norek!,
+            jumlah: val.jumlah!,
+            remark: val.remark!,
             produkId: '0',
             action: 'MULTIPLE_UPLOAD',
             trxOfflineId: val.trans_id,
@@ -191,7 +195,7 @@ class TransaksiProvider extends ChangeNotifier {
                   _countGagalUpTrx.toString(),
             );
 
-            await produkProv.resetMutasiTransaksi();
+            produkProv!.resetMutasiTransaksi();
             setLoadingUpload(false);
           }
         },
@@ -200,32 +204,32 @@ class TransaksiProvider extends ChangeNotifier {
   }
 
   Future prosesTransaksiKolektor({
-    BuildContext context,
-    String rekCd,
-    String groupProduk,
-    String tipeTrans,
-    String norek,
-    String jumlah,
-    String pokok,
-    String bunga,
-    String denda,
-    String lateCharge,
-    String remark,
-    String produkId,
-    String action = 'TRANSAKSI',
-    int trxOfflineId,
-    int loadCount = 0,
+    BuildContext? context,
+    String? rekCd,
+    String? groupProduk,
+    String? tipeTrans,
+    String? norek,
+    String? jumlah,
+    String? pokok,
+    String? bunga,
+    String? denda,
+    String? lateCharge,
+    String? remark,
+    String? produkId,
+    String? action = 'TRANSAKSI',
+    int? trxOfflineId,
+    int? loadCount = 0,
     int maxProgress = 0,
   }) async {
-    gobalProv = Provider.of<GlobalProvider>(context, listen: false);
+    gobalProv = Provider.of<GlobalProvider>(context!, listen: false);
     produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
     if (action != 'MULTIPLE_UPLOAD') EasyLoading.show(status: Loading);
     //try {
     _dataSuksesTransaksi = null;
     var res = await transaksiCollectionServices.prosesTransaksiKolektor(
       context: context,
-      rekCd: produkProv.getSelectedRkCdProduk,
-      groupProduk: produkProv.getSelectedgroupProdukProduk,
+      rekCd: produkProv!.getSelectedRkCdProduk,
+      groupProduk: produkProv!.getSelectedgroupProdukProduk,
       tipeTrans: tipeTrans,
       norek: norek,
       jumlah: jumlah == null ? "" : jumlah.replaceAll(".", ""),
@@ -235,9 +239,9 @@ class TransaksiProvider extends ChangeNotifier {
       lateCharge: lateCharge == null ? "" : lateCharge.replaceAll(".", ""),
       remark: remark,
       produkId: produkId,
-      lat: gobalProv.myLatitude.toString(),
-      long: gobalProv.myLongitude.toString(),
-      connMode: gobalProv.getConnectionMode,
+      lat: gobalProv!.myLatitude.toString(),
+      long: gobalProv!.myLongitude.toString(),
+      connMode: gobalProv!.getConnectionMode,
       action: action,
     );
 
@@ -245,9 +249,9 @@ class TransaksiProvider extends ChangeNotifier {
       DialogUtils.instance.showError(context: context);
       return false;
     } else {
-      await setSuksesTransaksi(res);
+      setSuksesTransaksi(res);
       bool _isValid = false;
-      if (_dataSuksesTransaksi.status == 'Sukses') {
+      if (_dataSuksesTransaksi!.status == 'Sukses') {
         _isValid = true;
       } else {
         if (action == 'MULTIPLE_UPLOAD') _isValid = true;
@@ -257,19 +261,19 @@ class TransaksiProvider extends ChangeNotifier {
         if (action == 'SINGLE_UPLOAD') {
           EasyLoading.dismiss();
           DialogUtils.instance
-              .showError(context: context, text: _dataSuksesTransaksi.pesan);
+              .showError(context: context, text: _dataSuksesTransaksi?.pesan);
 
           Map<String, dynamic> rowUpdate = {tbTrxGlobal_uploaded: 'Y'};
           await dbHelper.updateDataGlobal(
             tbTrxGlobal,
             rowUpdate,
             tbTrxGlobal_id,
-            trxOfflineId,
+            trxOfflineId!,
           );
-          produkProv.resetMutasiTransaksi();
+          produkProv!.resetMutasiTransaksi();
           return true;
         } else if (action == 'MULTIPLE_UPLOAD') {
-          if (_dataSuksesTransaksi.status == 'Sukses') {
+          if (_dataSuksesTransaksi!.status == 'Sukses') {
             _countSuksesUpTrx++;
 
             Map<String, dynamic> rowUpdate = {tbTrxGlobal_uploaded: 'Y'};
@@ -277,7 +281,7 @@ class TransaksiProvider extends ChangeNotifier {
               tbTrxGlobal,
               rowUpdate,
               tbTrxGlobal_id,
-              trxOfflineId,
+              trxOfflineId!,
             );
           } else {
             _countGagalUpTrx++;
@@ -298,7 +302,7 @@ class TransaksiProvider extends ChangeNotifier {
       } else {
         EasyLoading.dismiss();
         DialogUtils.instance
-            .showError(context: context, text: _dataSuksesTransaksi.pesan);
+            .showError(context: context, text: _dataSuksesTransaksi!.pesan);
         return false;
       }
     }

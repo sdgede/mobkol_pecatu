@@ -1,15 +1,16 @@
 import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_ticket_widget/flutter_ticket_widget.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:ticket_widget/ticket_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:countup/countup.dart';
 
 import '../../../services/config/config.dart' as config;
 import '../../../services/viewmodel/produk_provider.dart';
 import '../../../services/viewmodel/global_provider.dart';
-import '../../../ui/screens/nasabah/SearchController.dart';
+import '../../../ui/screens/nasabah/SearchController.dart' as sc;
 import '../../../ui/widgets/datetime_periode.dart';
 import '../../../ui/widgets/floating_action_button.dart';
 import '../../../ui/widgets/loader/lottie_loader.dart';
@@ -30,13 +31,13 @@ class MainKlad extends StatefulWidget {
 class _MainKlad extends State<MainKlad> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  ProdukCollectionProvider produkProvider;
-  GlobalProvider globalProv;
-  TransaksiProvider transProvider;
+  ProdukCollectionProvider? produkProvider;
+  GlobalProvider? globalProv;
+  TransaksiProvider? transProvider;
   var searchController = TextEditingController();
-  double _width, _primaryPadding = 15;
+  double? _width, _primaryPadding = 15;
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  ScrollController produkScrollCOntroller;
+  ScrollController? produkScrollCOntroller;
   final dbHelper = DatabaseHelper.instance;
 
   DateTime _tglAwal = DateTime.now();
@@ -49,10 +50,10 @@ class _MainKlad extends State<MainKlad> {
         Provider.of<ProdukCollectionProvider>(context, listen: false);
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
     transProvider = Provider.of<TransaksiProvider>(context, listen: false);
-    globalProv.loadLocation(context);
-    produkProvider.resetMutasiTransaksi(isListen: false);
-    produkProvider.setTglAwal(_tglAwal);
-    produkProvider.setTglAkhir(_tglAkhir);
+    globalProv!.loadLocation(context);
+    produkProvider!.resetMutasiTransaksi(isListen: false);
+    produkProvider!.setTglAwal(_tglAwal);
+    produkProvider!.setTglAkhir(_tglAkhir);
   }
 
   @override
@@ -88,7 +89,7 @@ class _MainKlad extends State<MainKlad> {
             "Klad " + (produkProv.getSelectedProdukName ?? ' - ').toLowerCase(),
             isCenter: true,
             isRefresh: true,
-            onRefresh: () => produkProvider.refreshAllMenuKlad(),
+            onRefresh: () => produkProvider!.refreshAllMenuKlad(),
           ),
           key: scaffoldKey,
           body: Container(
@@ -98,7 +99,7 @@ class _MainKlad extends State<MainKlad> {
               child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: _primaryPadding),
+                    padding: EdgeInsets.symmetric(horizontal: _primaryPadding!),
                     child: getDatePeriode(contex, isKlad: true),
                   ),
                   SizedBox(height: 5),
@@ -137,7 +138,8 @@ class _MainKlad extends State<MainKlad> {
             if (_confirm) startService();
           },
           child: Icon(
-            FlutterIcons.upload_multiple_mco,
+            // FlutterIcons.upload_multiple_mco,
+            Iconsax.document_upload,
             color: Colors.white,
           ),
           heroTag: null,
@@ -148,30 +150,30 @@ class _MainKlad extends State<MainKlad> {
   }
 
   Future startService() async {
-    transProvider.multileUploadTrxOffline(context);
+    transProvider!.multileUploadTrxOffline(context);
   }
 
   Widget _cardInfoTotalTrans(ProdukCollectionProvider produkProv) {
-    String tipe = produkProvider.getSelectedgroupProdukProduk;
-    var mutasiData = produkProvider.muatasiProdukCollection;
+    String tipe = produkProvider!.getSelectedgroupProdukProduk;
+    var mutasiData = produkProvider!.muatasiProdukCollection;
     double _totSaldo = 0, _totalTrx = 0;
     int _countSetoran = 0, _countTarikan = 0;
 
-    if (mutasiData != null) {
-      _totSaldo = double.parse(mutasiData[0].totSetoran) -
-          double.parse(mutasiData[0].totTarikan);
-      _totalTrx = double.parse(mutasiData[0].totSetoran) +
-          double.parse(mutasiData[0].totTarikan);
-      _countSetoran =
-          mutasiData.where((element) => element.dbcr == 'CR').length ?? 0;
-      _countTarikan =
-          mutasiData.where((element) => element.dbcr == 'DB').length ?? 0;
-    }
+    _totSaldo = double.parse(mutasiData[0].totSetoran!) -
+        double.parse(mutasiData[0].totTarikan!);
+    _totalTrx = double.parse(mutasiData[0].totSetoran!) +
+        double.parse(mutasiData[0].totTarikan!);
+    _countSetoran =
+        mutasiData.where((element) => element.dbcr == 'CR').length ?? 0;
+    _countTarikan =
+        mutasiData.where((element) => element.dbcr == 'DB').length ?? 0;
 
     int _countTotal = mutasiData != null
         ? mutasiData.where((element) => element.status != 'Gagal').length
         : 0;
-    return FlutterTicketWidget(
+    return TicketWidget(
+      width: 350, //test
+      height: 500, //test
       isCornerRounded: false,
       child: Container(
         padding: EdgeInsets.all(10),
@@ -217,7 +219,8 @@ class _MainKlad extends State<MainKlad> {
                     Row(
                       children: [
                         Icon(
-                          FlutterIcons.calendar_alt_faw5,
+                          // FlutterIcons.calendar_alt_faw5,
+                          Iconsax.calendar,
                           color: Colors.white,
                           size: 18,
                         ),
@@ -232,7 +235,7 @@ class _MainKlad extends State<MainKlad> {
                 ),
               ),
               SizedBox(height: 20),
-              (globalProv.getConnectionMode == config.onlineMode)
+              (globalProv!.getConnectionMode == config.onlineMode)
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -240,11 +243,12 @@ class _MainKlad extends State<MainKlad> {
                         _cardValSummary(
                             valSummary: mutasiData != null
                                 ? tipe == 'KREDIT'
-                                    ? mutasiData[0].totPokok
-                                    : mutasiData[0].totSetoran
+                                    ? mutasiData[0].totPokok!
+                                    : mutasiData[0].totSetoran!
                                 : '0',
                             tittle: tipe == 'KREDIT' ? 'Pokok' : 'Setoran',
-                            icon: FlutterIcons.arrow_circle_o_down_faw,
+                            // icon: FlutterIcons.arrow_circle_o_down_faw,
+                            icon: Iconsax.arrow_circle_down,
                             iCcolor: primaryColor,
                             isCount: tipe == 'KREDIT' ? false : true,
                             countVal: _countSetoran.toString()),
@@ -252,11 +256,12 @@ class _MainKlad extends State<MainKlad> {
                         _cardValSummary(
                             valSummary: mutasiData != null
                                 ? tipe == 'KREDIT'
-                                    ? mutasiData[0].totBunga
-                                    : mutasiData[0].totTarikan
+                                    ? mutasiData[0].totBunga!
+                                    : mutasiData[0].totTarikan!
                                 : '0',
                             tittle: tipe == 'KREDIT' ? 'Bunga' : 'Tarikan',
-                            icon: FlutterIcons.arrow_circle_o_up_faw,
+                            // icon: FlutterIcons.arrow_circle_o_up_faw,
+                            icon: Iconsax.arrow_circle_up,
                             iCcolor: primaryColor,
                             isCount: tipe == 'KREDIT' ? false : true,
                             countVal: _countTarikan.toString()),
@@ -274,7 +279,8 @@ class _MainKlad extends State<MainKlad> {
                                   .toString()
                               : '0',
                           tittle: 'Ter-Upload',
-                          icon: FlutterIcons.upload_cloud_fea,
+                          // icon: FlutterIcons.upload_cloud_fea,
+                          icon: Iconsax.document_cloud,
                           iCcolor: Colors.green,
                           isCount: false,
                         ),
@@ -287,14 +293,15 @@ class _MainKlad extends State<MainKlad> {
                                   .toString()
                               : '0',
                           tittle: 'Belum Ter-Upload',
-                          icon: FlutterIcons.upload_cloud_fea,
+                          // icon: FlutterIcons.upload_cloud_fea,
+                          icon: Iconsax.document_cloud,
                           iCcolor: Colors.red,
                           isCount: false,
                         ),
                       ],
                     ),
               SizedBox(height: 10),
-              (globalProv.getConnectionMode == config.onlineMode)
+              (globalProv!.getConnectionMode == config.onlineMode)
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -302,16 +309,18 @@ class _MainKlad extends State<MainKlad> {
                         tipe == 'KREDIT'
                             ? _cardValSummary(
                                 valSummary: mutasiData != null
-                                    ? mutasiData[0].totDenda
+                                    ? mutasiData[0].totDenda!
                                     : '0',
                                 tittle: 'Denda',
-                                icon: FlutterIcons.arrow_circle_o_down_faw,
+                                // icon: FlutterIcons.arrow_circle_o_down_faw,
+                                icon: Iconsax.arrow_circle_down,
                                 iCcolor: primaryColor,
                                 isCount: false)
                             : _cardValSummary(
                                 valSummary: _totalTrx.toString(),
                                 tittle: 'Total',
-                                icon: FlutterIcons.chart_bar_faw5s,
+                                // icon: FlutterIcons.chart_bar_faw5s,
+                                icon: Iconsax.chart_1,
                                 iCcolor: primaryColor,
                                 countVal: _countTotal.toString(),
                               ),
@@ -319,7 +328,7 @@ class _MainKlad extends State<MainKlad> {
                         _cardValSummary(
                           valSummary: _totSaldo.toString(),
                           tittle: 'Saldo',
-                          icon: FlutterIcons.coins_mco,
+                          // icon: FlutterIcons.coins_mco,
                           iCcolor: primaryColor,
                           isCount: tipe == 'KREDIT' ? true : false,
                           countVal: _countTotal.toString(),
@@ -333,7 +342,8 @@ class _MainKlad extends State<MainKlad> {
                         _cardValSummary(
                           valSummary: _countTotal.toString(),
                           tittle: 'Total',
-                          icon: FlutterIcons.chart_bar_faw5s,
+                          // icon: FlutterIcons.chart_bar_faw5s,
+                          icon: Iconsax.chart_1,
                           iCcolor: Colors.blue,
                           isCurrency: false,
                           isSilngleCard: true,
@@ -350,10 +360,10 @@ class _MainKlad extends State<MainKlad> {
   }
 
   Widget _cardValSummary({
-    String valSummary,
-    String tittle,
-    IconData icon,
-    Color iCcolor,
+    String? valSummary,
+    String? tittle,
+    IconData? icon,
+    Color? iCcolor,
     bool isCurrency = true,
     bool isSilngleCard = false,
     bool isCount = true,
@@ -373,7 +383,7 @@ class _MainKlad extends State<MainKlad> {
         children: [
           Countup(
             begin: 0,
-            end: double.parse(valSummary),
+            end: double.parse(valSummary!),
             duration: Duration(seconds: 1),
             separator: isCurrency ? '.' : '',
             style: TextStyle(
@@ -387,7 +397,7 @@ class _MainKlad extends State<MainKlad> {
               //Icon(icon, size: 20, color: iCcolor),
               //SizedBox(width: 5),
               Text(
-                tittle,
+                tittle!,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 12,
@@ -397,11 +407,17 @@ class _MainKlad extends State<MainKlad> {
           ),
           SizedBox(height: 5),
           (isCount)
-              ? Badge(
-                  toAnimate: true,
-                  shape: BadgeShape.square,
-                  badgeColor: primaryColor,
-                  borderRadius: BorderRadius.circular(8),
+              ? badges.Badge(
+                  child: Container(
+                      decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(8),
+                    color: primaryColor,
+                  )),
+                  // toAnimate: true,
+                  // shape: BadgeShape.square,
+                  // color: primaryColor,
+                  // borderRadius: BorderRadius.circular(8),
                   badgeContent:
                       Text(countVal, style: TextStyle(color: Colors.white)),
                 )
@@ -492,7 +508,7 @@ class _MainKlad extends State<MainKlad> {
           builder: (context, produkProv, _) {
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: SearchController(
+              child: sc.SearchController(
                 controller: searchController,
                 onClick: () => produkProv.goToSearchNasbah(context),
                 readOnly: true,
@@ -509,11 +525,11 @@ class _MainKlad extends State<MainKlad> {
     return Container(
       width: 200,
       height: 40,
-      margin: EdgeInsets.only(left: _primaryPadding, right: _primaryPadding),
+      margin: EdgeInsets.only(left: _primaryPadding!, right: _primaryPadding!),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => produkProvider.resetMutasiTransaksi(),
+          onTap: () => produkProvider!.resetMutasiTransaksi(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -526,7 +542,10 @@ class _MainKlad extends State<MainKlad> {
                 ),
               ),
               SizedBox(width: 5),
-              Icon(FlutterIcons.refresh_faw, color: accentColor)
+              Icon(
+                  // FlutterIcons.refresh_faw,
+                  Iconsax.refresh,
+                  color: accentColor)
             ],
           ),
         ),

@@ -34,9 +34,9 @@ final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
 final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
 
-final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-NotificationAppLaunchDetails notificationAppLaunchDetails;
+NotificationAppLaunchDetails? notificationAppLaunchDetails;
 
 class ReceivedNotification {
   final int id;
@@ -45,10 +45,10 @@ class ReceivedNotification {
   final String payload;
 
   ReceivedNotification({
-    @required this.id,
-    @required this.title,
-    @required this.body,
-    @required this.payload,
+    required this.id,
+    required this.title,
+    required this.body,
+    required this.payload,
   });
 }
 
@@ -58,24 +58,25 @@ void main() async {
       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
   var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+  // IOSInitializationSettings
   var initializationSettingsIOS = IOSInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
       onDidReceiveLocalNotification:
-          (int id, String title, String body, String payload) async {
+          (int id, String? title, String? body, String? payload) async {
         didReceiveLocalNotificationSubject.add(ReceivedNotification(
-            id: id, title: title, body: body, payload: payload));
+            id: id, title: title!, body: body!, payload: payload!));
       });
   var initializationSettings = InitializationSettings(
-      initializationSettingsAndroid, initializationSettingsIOS);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: (String payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: ' + payload);
-    }
-    selectNotificationSubject.add(payload);
-  });
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    //     onSelectNotification: (String? payload) async {
+    //   debugPrint('notification payload: ' + payload!);
+    //   selectNotificationSubject.add(payload);
+    // }
+  );
 
   setupApp();
   configLoading();
@@ -120,19 +121,19 @@ class _MyAppState extends State<MyApp> {
     _configureSelectNotificationSubject();
     Future.delayed(Duration.zero, () {
       ConnectivityUtils.distance
-          .onCheckConnectivity(navigatorKey.currentState.overlay.context);
+          .onCheckConnectivity(navigatorKey.currentState!.overlay!.context);
     });
   }
 
   void _setFirebaseIdPlatform() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String firebaseId = prefs.getString("firebase_id");
+    String? firebaseId = prefs.getString("firebase_id");
 
-    if (firebaseId == '' || firebaseId == null) {
+    if (firebaseId == '') {
       firebaseId = await _firebaseMessaging.getToken();
-      prefs.setString('firebase_id', firebaseId);
+      prefs.setString('firebase_id', firebaseId!);
     }
-    print('MY FCM : ' + firebaseId);
+    print('MY FCM : ' + firebaseId!);
     config.firebaseId = firebaseId;
     config.platform = await PlatformUtils.distance.initPlatformState();
   }
@@ -143,15 +144,20 @@ class _MyAppState extends State<MyApp> {
       var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         Platform.isAndroid ? "ANDROID" : "IOS",
         config.companyName,
-        config.companyFullName,
-        importance: Importance.Max,
-        priority: Priority.High,
+        channelDescription: config.companyFullName,
+        importance: Importance.max,
+        priority: Priority.high,
         ticker: 'ticker',
         styleInformation: BigTextStyleInformation(''),
       );
       var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+      // var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+      // var platformChannelSpecifics = NotificationDetails({
+      //     android: androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics
+      // });
       var platformChannelSpecifics = NotificationDetails(
-          androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+          android: androidPlatformChannelSpecifics,
+          iOS: iOSPlatformChannelSpecifics);
       await flutterLocalNotificationsPlugin.show(
         0,
         Platform.isIOS
@@ -164,26 +170,25 @@ class _MyAppState extends State<MyApp> {
         payload: 'Default_Sound',
       );
 
-      FirebaseUtils.instance
-          .setDataFirebase(navigatorKey.currentState.overlay.context, message);
+      FirebaseUtils.instance.setDataFirebase(
+          navigatorKey.currentState!.overlay!.context, message);
     }
     return null;
   }
 
   Future<dynamic> _initFirebase() async {
     if (!_initialized) {
-      _firebaseMessaging
-          .requestNotificationPermissions(const IosNotificationSettings(
+      _firebaseMessaging.requestPermission(
         sound: true,
         badge: true,
         alert: true,
         provisional: false,
-      ));
-      _firebaseMessaging.configure(
-        onMessage: onBackgroundMessage,
-        onLaunch: onBackgroundMessage,
-        onResume: onBackgroundMessage,
       );
+      // _firebaseMessaging.configure(
+      //   onMessage: onBackgroundMessage,
+      //   onLaunch: onBackgroundMessage,
+      //   onResume: onBackgroundMessage,
+      // );
       _initialized = true;
     }
   }
@@ -246,26 +251,31 @@ class _MyAppState extends State<MyApp> {
 
   void _checkLocation() async {
     bool location = await LocationUtils.instance.getLocationOnly();
-    if(!_modalOpened && !location){
+    if (!_modalOpened && !location) {
       _modalOpened = true;
       return showModal(
-          context: navigatorKey.currentState.overlay.context,
-          configuration:
-              FadeScaleTransitionConfiguration(barrierDismissible: false),
-          builder: (context) {
-            return InfoDialog(
-              title: "Opps...",
-              text: "Pastikan Anda mengizinkan $mobileName untuk mengakses lokasi Anda.",
-              clickOKText: "OK",
-              onClickOK: () async {
-                Navigator.of(navigatorKey.currentState.overlay.context, rootNavigator: true).pop();
-                location = await LocationUtils.instance.getLocationOnly();
-                if(!location) AppSettings.openLocationSettings();
-              },
-              isCancel: false,
-            );
-          },
-        ).then((value) => _modalOpened = false);
+        context: navigatorKey.currentState!.overlay!.context,
+        configuration:
+            FadeScaleTransitionConfiguration(barrierDismissible: false),
+        builder: (context) {
+          return InfoDialog(
+            title: "Opps...",
+            text:
+                "Pastikan Anda mengizinkan $mobileName untuk mengakses lokasi Anda.",
+            clickOKText: "OK",
+            onClickOK: () async {
+              Navigator.of(navigatorKey.currentState!.overlay!.context,
+                      rootNavigator: true)
+                  .pop();
+              location = await LocationUtils.instance.getLocationOnly();
+              if (!location) AppSettings.openLocationSettings();
+              // if (!location)
+              //   AppSettings.openAppSettings(type: AppSettingsType.location);
+            },
+            isCancel: false,
+          );
+        },
+      ).then((value) => _modalOpened = false);
     }
   }
 
@@ -313,7 +323,6 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: config.companyName,
         theme: ThemeData(
-          accentColor: accentColor,
           primaryColor: primaryColor,
           textTheme: GoogleFonts.ubuntuTextTheme(Theme.of(context).textTheme),
           highlightColor: Colors.transparent,
@@ -330,8 +339,10 @@ class _MyAppState extends State<MyApp> {
               ),
             },
           ),
+          colorScheme:
+              ColorScheme.fromSwatch().copyWith(secondary: accentColor),
         ),
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return FlutterEasyLoading(
             child: GestureDetector(
               onTap: () {
@@ -341,9 +352,8 @@ class _MyAppState extends State<MyApp> {
                 }
               },
               child: Listener(
-                onPointerUp: (PointerEvent details) => _checkLocation(),
-                child: child
-              ),
+                  onPointerUp: (PointerEvent details) => _checkLocation(),
+                  child: child),
             ),
           );
         },

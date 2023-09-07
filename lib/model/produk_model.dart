@@ -1,6 +1,6 @@
 class ProdukCollection {
-  String nama, icon, slug, rekCd, min_setoran, min_tarikan, rek_shortcut;
-  bool isSelected;
+  String? nama, icon, slug, rekCd, min_setoran, min_tarikan, rek_shortcut;
+  bool? isSelected;
   dynamic urut_menu;
 
   ProdukCollection({
@@ -31,9 +31,9 @@ class ProdukCollection {
 }
 
 class ListProdukCollection {
-  String no_rek, nama, va, remark, saldo, nama_produk, jenis_produk, produk_id;
-  String status, pesan;
-  bool is_eform;
+  String? no_rek, nama, va, remark, saldo, nama_produk, jenis_produk, produk_id;
+  String? status, pesan;
+  bool? is_eform;
 
   ListProdukCollection({
     this.no_rek,
@@ -78,7 +78,7 @@ class DetailProdukCollection {
   dynamic status, pesan, status_produk, nama_produk, jenis_produk, bnga_bln_ini;
   dynamic angsuranBulanan, angsuranBulan, kolektibilitas, tgl_bayar;
   dynamic jenis_siber, min_setoran;
-  String remarkBlokir;
+  String? remarkBlokir;
 
   DetailProdukCollection({
     this.nasabah_id,
@@ -206,10 +206,10 @@ class DetailProdukCollection {
 }
 
 class MutasiProdukCollection {
-  String referensi_id, trans_cd, jumlah, remark, saldo, tgl, create_who, dbcr;
-  String nama, bukti, kode, op, saldo_awal, status, pesan, norek;
-  String pokok, bunga, denda, hp, terbilang, isUpload, groupProduk, rekCd, adm;
-  String totSetoran, totTarikan, totPokok, totBunga, totDenda, debet, kredit;
+  String? referensi_id, trans_cd, jumlah, remark, saldo, tgl, create_who, dbcr;
+  String? nama, bukti, kode, op, saldo_awal, status, pesan, norek;
+  String? pokok, bunga, denda, hp, terbilang, isUpload, groupProduk, rekCd, adm;
+  String? totSetoran, totTarikan, totPokok, totBunga, totDenda, debet, kredit;
   dynamic trans_id;
 
   MutasiProdukCollection({
@@ -289,10 +289,10 @@ class MutasiProdukCollection {
 }
 
 class MutasiProdukCollectionSearch {
-  String referensi_id, trans_cd, jumlah, remark, saldo, tgl, create_who, dbcr;
-  String nama, bukti, kode, op, saldo_awal, status, pesan, norek;
-  String pokok, bunga, denda, hp, terbilang, isUpload, groupProduk, rekCd, adm;
-  String totSetoran, totTarikan;
+  String? referensi_id, trans_cd, jumlah, remark, saldo, tgl, create_who, dbcr;
+  String? nama, bukti, kode, op, saldo_awal, status, pesan, norek;
+  String? pokok, bunga, denda, hp, terbilang, isUpload, groupProduk, rekCd, adm;
+  String? totSetoran, totTarikan;
   dynamic trans_id;
 
   MutasiProdukCollectionSearch({
@@ -368,11 +368,11 @@ class SaldoKolektorModel {
   dynamic kas_keluar2, kas_keluar1, status, tot_debet, tot_kredit;
   dynamic tot_saldo, kas_sisa;
   //custom produk variabel
-  String debet_duo, kredit_duo, saldo_duo;
-  String debet_lestari, kredit_lestari, saldo_lestari;
-  String debet_simas, kredit_simas, saldo_simas;
-  String debet_sirena, kredit_sirena, saldo_sirena;
-  String debet_taberna, kredit_taberna, saldo_taberna;
+  String? debet_duo, kredit_duo, saldo_duo;
+  String? debet_lestari, kredit_lestari, saldo_lestari;
+  String? debet_simas, kredit_simas, saldo_simas;
+  String? debet_sirena, kredit_sirena, saldo_sirena;
+  String? debet_taberna, kredit_taberna, saldo_taberna;
 
   SaldoKolektorModel({
     //main produk variabel
@@ -454,8 +454,8 @@ class SaldoKolektorModel {
 }
 
 class NasabahProdukModel {
-  String nama, foto, norek, alamat, status, pesan;
-  String jenisProduk, icon, groupProduk, rekCd, minSetoran;
+  String? nama, foto, norek, alamat, status, pesan;
+  String? jenisProduk, icon, groupProduk, rekCd, minSetoran;
 
   NasabahProdukModel({
     this.nama,
@@ -489,7 +489,7 @@ class NasabahProdukModel {
 }
 
 class ProdukTabunganUserModel {
-  String no_rek, nama, saldo, produk_id;
+  String? no_rek, nama, saldo, produk_id;
 
   ProdukTabunganUserModel({this.no_rek, this.nama, this.saldo, this.produk_id});
 
@@ -504,15 +504,15 @@ class ProdukTabunganUserModel {
 }
 
 class DataMigrasiCollection {
-  String produkId,
+  String? produkId,
       nasabahId,
       noMaster,
       wilayahCd,
       groupProduk,
       norek,
       setoranAwal;
-  String status, tglDaftar, tglTutup, alasanTutup, potongan, remark, createWho;
-  String createDate, changeWho, changeDate;
+  String? status, tglDaftar, tglTutup, alasanTutup, potongan, remark, createWho;
+  String? createDate, changeWho, changeDate;
 
   DataMigrasiCollection({
     this.produkId,
@@ -558,13 +558,10 @@ class DataMigrasiCollection {
 }
 
 class SaldoKolektor {
-  String title;
+  String? title;
   dynamic data;
 
-  SaldoKolektor({
-    this.title,
-    this.data
-  });
+  SaldoKolektor({this.title, this.data});
 
   factory SaldoKolektor.fromJson(Map<String, dynamic> json) {
     return SaldoKolektor(

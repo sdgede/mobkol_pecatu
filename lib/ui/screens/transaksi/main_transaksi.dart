@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/config/router_generator.dart';
@@ -17,15 +17,15 @@ class MainTransaksi extends StatefulWidget {
 }
 
 class _MainTransaksi extends State<MainTransaksi> {
-  ProdukCollectionProvider produkProvider;
-  double _width, _primaryPadding = 15;
+  ProdukCollectionProvider? produkProvider;
+  double? _width, _primaryPadding = 15;
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _isScan;
-  ScrollController produkScrollCOntroller;
+  bool? _isScan;
+  ScrollController? produkScrollCOntroller;
   TextEditingController nomorRekController = new TextEditingController(),
       _controllerReq = new TextEditingController();
-  List<DropdownMenuItem<NorekShortcut>> _countryItems;
-  NorekShortcut _selectedShortcut;
+  List<DropdownMenuItem<NorekShortcut>>? _countryItems;
+  NorekShortcut? _selectedShortcut;
 
   void _initNorekShortCut() {
     List<NorekShortcut> countries = NorekShortcut.allCountries;
@@ -46,8 +46,8 @@ class _MainTransaksi extends State<MainTransaksi> {
     _isScan = false;
     produkProvider =
         Provider.of<ProdukCollectionProvider>(context, listen: false);
-    produkProvider.setAllDatafirstSelectedProduct(
-        context: context, isListen: false);
+    produkProvider!
+        .setAllDatafirstSelectedProduct(context: context, isListen: false);
     _initNorekShortCut();
   }
 
@@ -68,7 +68,7 @@ class _MainTransaksi extends State<MainTransaksi> {
                 (produkProv.getSelectedProdukName ?? ' - ').toLowerCase(),
             isCenter: true,
             isRefresh: true,
-            onRefresh: () => produkProvider.refreshProdukCollection(),
+            onRefresh: () => produkProvider!.refreshProdukCollection(),
           ),
           key: scaffoldKey,
           body: Container(
@@ -102,12 +102,12 @@ class _MainTransaksi extends State<MainTransaksi> {
       child: DropdownButton<NorekShortcut>(
         isExpanded: true,
         //underline: 10,
-        icon: Icon(FlutterIcons.chevron_down_ent),
+        icon: Icon(Iconsax.arrow_down_2),
         value: _selectedShortcut,
         items: _countryItems,
         onChanged: (newValue) {
           setState(() {
-            _controllerReq.text = newValue.key;
+            _controllerReq.text = newValue!.key;
             _selectedShortcut = newValue;
           });
         },
@@ -116,13 +116,13 @@ class _MainTransaksi extends State<MainTransaksi> {
   }
 
   Widget _checkBox({
-    String type,
-    String text,
+    String? type,
+    String? text,
     bool isKetentuan = false,
-    Widget ketentuan,
+    Widget? ketentuan,
   }) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: _primaryPadding),
+      padding: EdgeInsets.symmetric(horizontal: _primaryPadding!),
       child: Row(
         children: <Widget>[
           Container(
@@ -130,7 +130,7 @@ class _MainTransaksi extends State<MainTransaksi> {
             height: 20,
             child: Checkbox(
               value: _isScan,
-              onChanged: (bool value) {
+              onChanged: (bool? value) {
                 setState(() {
                   _isScan = value;
                 });
@@ -140,9 +140,9 @@ class _MainTransaksi extends State<MainTransaksi> {
           SizedBox(width: 10),
           Expanded(
             child: isKetentuan
-                ? ketentuan
+                ? ketentuan!
                 : Text(
-                    text,
+                    text!,
                     style: TextStyle(color: Colors.black, fontSize: 12),
                   ),
           ),
@@ -154,20 +154,20 @@ class _MainTransaksi extends State<MainTransaksi> {
   Widget scrollTag(BuildContext context) {
     return Consumer<ProdukCollectionProvider>(
       builder: (context, produkProvider, _) {
-        if (produkProvider.produkCollection == null) {
-          produkProvider.dataProduk(context);
+        if (produkProvider!.produkCollection == null) {
+          produkProvider!.dataProduk(context);
           return LinearProgressIndicator();
         }
         return Container(
           height: 90,
           margin: EdgeInsets.only(left: 10),
           child: ListView.builder(
-            itemCount: produkProvider.produkCollection.length,
+            itemCount: produkProvider!.produkCollection.length,
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             controller: produkScrollCOntroller,
             itemBuilder: (BuildContext context, int i) {
-              var dataProduk = produkProvider.produkCollection[i];
+              var dataProduk = produkProvider!.produkCollection[i];
               return SlideListProduk(dataProduk: dataProduk, isKlad: false);
             },
           ),
@@ -184,7 +184,8 @@ class _MainTransaksi extends State<MainTransaksi> {
       _controllerReq.selection = TextSelection.fromPosition(
           TextPosition(offset: _controllerReq.text.length));
     return Container(
-        padding: EdgeInsets.only(left: _primaryPadding, right: _primaryPadding),
+        padding:
+            EdgeInsets.only(left: _primaryPadding!, right: _primaryPadding!),
         child: Column(
           children: [
             Stack(
@@ -206,7 +207,7 @@ class _MainTransaksi extends State<MainTransaksi> {
                   ),
                   style: TextStyle(fontSize: 14),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Norek tidak boleh kosong!';
                     }
                     return null;
@@ -223,25 +224,25 @@ class _MainTransaksi extends State<MainTransaksi> {
     return Container(
       height: 40,
       decoration: BoxDecoration(
-        color: (_isScan) ? Colors.amber : accentColor,
+        color: (_isScan!) ? Colors.amber : accentColor,
         borderRadius: BorderRadius.circular(5),
       ),
-      margin: EdgeInsets.only(left: _primaryPadding, right: _primaryPadding),
+      margin: EdgeInsets.only(left: _primaryPadding!, right: _primaryPadding!),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: () async {
             var _norekResult = _controllerReq.text;
-            var _groupProduk = produkProvider.getSelectedgroupProdukProduk;
-            var _rekCd = produkProvider.getSelectedRkCdProduk;
-            var _produkIc = produkProvider.getSelectedProdukIcon;
-            if (_isScan) {
+            var _groupProduk = produkProvider!.getSelectedgroupProdukProduk;
+            var _rekCd = produkProvider!.getSelectedRkCdProduk;
+            var _produkIc = produkProvider!.getSelectedProdukIcon;
+            if (_isScan!) {
               _norekResult = await QRUtils.instance.qrScanner(context);
               setState(() {
                 _controllerReq.text = _norekResult;
               });
             }
-            bool res = await produkProvider.getDataProdukByRek(
+            bool res = await produkProvider!.getDataProdukByRek(
                   context,
                   _norekResult,
                 ) ??
@@ -264,7 +265,7 @@ class _MainTransaksi extends State<MainTransaksi> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                (_isScan) ? "SCAN" : "CARI",
+                (_isScan!) ? "SCAN" : "CARI",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -273,9 +274,7 @@ class _MainTransaksi extends State<MainTransaksi> {
               ),
               SizedBox(width: 5),
               Icon(
-                (_isScan)
-                    ? FlutterIcons.md_qr_scanner_ion
-                    : FlutterIcons.search_oct,
+                (_isScan!) ? Iconsax.scan_barcode : Iconsax.search_normal_1,
                 color: Colors.white,
               )
             ],

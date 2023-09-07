@@ -5,10 +5,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../services/utils/image_utils.dart';
 
 class MapsItem extends StatefulWidget {
-  final Completer<GoogleMapController> controller;
-  final LatLng myLocation, merchantLocation;
+  final Completer<GoogleMapController>? controller;
+  final LatLng? myLocation, merchantLocation;
   const MapsItem({
-    Key key,
+    Key? key,
     this.controller,
     this.myLocation,
     this.merchantLocation,
@@ -19,21 +19,21 @@ class MapsItem extends StatefulWidget {
 }
 
 class _MapsItemState extends State<MapsItem> {
-  BitmapDescriptor iconMyLocation, iconMerchantLocation;
+  BitmapDescriptor? iconMyLocation, iconMerchantLocation;
 
   Set<Marker> createMarker() {
     return <Marker>[
       Marker(
         markerId: MarkerId(widget.myLocation.toString() +
             DateTime.now().millisecondsSinceEpoch.toString()),
-        position: widget.myLocation,
-        icon: iconMyLocation,
+        position: widget.myLocation!,
+        icon: iconMyLocation!,
       ),
       Marker(
         markerId: MarkerId(widget.merchantLocation.toString() +
             DateTime.now().millisecondsSinceEpoch.toString()),
-        position: widget.merchantLocation,
-        icon: iconMerchantLocation,
+        position: widget.merchantLocation!,
+        icon: iconMerchantLocation!,
       ),
     ].toSet();
   }
@@ -60,11 +60,11 @@ class _MapsItemState extends State<MapsItem> {
           myLocationButtonEnabled: false,
           initialCameraPosition: CameraPosition(
             bearing: 0,
-            target: widget.merchantLocation,
+            target: widget.merchantLocation!,
             zoom: 11,
           ),
           onMapCreated: (GoogleMapController controller) {
-            widget.controller.complete(controller);
+            widget.controller!.complete(controller);
           },
         ),
       ],

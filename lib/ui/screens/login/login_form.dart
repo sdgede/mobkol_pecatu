@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
 import '../../../database/databaseHelper.dart';
@@ -20,9 +20,9 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final dbHelper = DatabaseHelper.instance;
   bool _autoValidate = false, _isVisible = false;
-  FocusNode _usernameNode, _passwordNode;
-  String _username, _password, platform;
-  GlobalProvider globalProv;
+  FocusNode? _usernameNode, _passwordNode;
+  String? _username, _password, platform;
+  GlobalProvider? globalProv;
 
   @override
   void initState() {
@@ -34,8 +34,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    _usernameNode.dispose();
-    _passwordNode.dispose();
+    _usernameNode!.dispose();
+    _passwordNode!.dispose();
     super.dispose();
   }
 
@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     EasyLoading.show(status: Loading);
     var isLocation = await LocationUtils.instance.getLocation(context);
     if (isLocation != null) {
-      await globalProv.getLogin(context, _username, _password);
+      await globalProv!.getLogin(context, _username!, _password!);
       //Navigator.pushReplacementNamed(context, RouterGenerator.homeKolektor);
     }
     EasyLoading.dismiss();
@@ -59,9 +59,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance =
-        ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
+    ScreenUtil.init(context, designSize: const Size(750, 1334));
+    // ScreenUtil.instance =
+    //     ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Container(
@@ -77,7 +77,8 @@ class _LoginPageState extends State<LoginPage> {
               SingleChildScrollView(
                 child: Form(
                   key: _formKey,
-                  autovalidate: _autoValidate,
+                  autovalidateMode: AutovalidateMode.disabled,
+                  // autovalidate: _autoValidate,
                   child: Container(
                     // padding: EdgeInsets.only(
                     //   left: 10.0,
@@ -118,17 +119,17 @@ class _LoginPageState extends State<LoginPage> {
                           child: Column(
                             children: <Widget>[
                               SizedBox(
-                                height: ScreenUtil.getInstance().setHeight(30),
+                                height: ScreenUtil().setHeight(30),
                               ),
                               _formCard,
                               SizedBox(
-                                height: ScreenUtil.getInstance().setHeight(40),
+                                height: ScreenUtil().setHeight(40),
                               ),
                             ],
                           ),
                         ),
                         SizedBox(
-                          height: ScreenUtil.getInstance().setHeight(30),
+                          height: ScreenUtil().setHeight(30),
                         ),
                       ],
                     ),
@@ -144,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
 
   get _loginButton {
     return Container(
-      height: ScreenUtil.getInstance().setHeight(100),
+      height: ScreenUtil().setHeight(100),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [accentColor, primaryColor],
@@ -156,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
         child: InkWell(
           onTap: () {
             final form = _formKey.currentState;
-            if (form.validate()) {
+            if (form!.validate()) {
               form.save();
               _login(context);
             }
@@ -196,15 +197,15 @@ class _LoginPageState extends State<LoginPage> {
             Text(
               "Login",
               style: TextStyle(
-                fontSize: ScreenUtil.getInstance().setSp(45),
+                fontSize: ScreenUtil().setSp(45),
                 letterSpacing: .6,
               ),
             ),
-            SizedBox(height: ScreenUtil.getInstance().setHeight(30)),
+            SizedBox(height: ScreenUtil().setHeight(30)),
             Text(
               "Username",
               style: TextStyle(
-                fontSize: ScreenUtil.getInstance().setSp(26),
+                fontSize: ScreenUtil().setSp(26),
               ),
             ),
             TextFormField(
@@ -214,23 +215,23 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: "Username",
                 hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0),
               ),
-              onSaved: (String value) => _username = value,
+              onSaved: (String? value) => _username = value,
               onFieldSubmitted: (term) {
-                _usernameNode.unfocus();
+                _usernameNode!.unfocus();
                 FocusScope.of(context).requestFocus(_passwordNode);
               },
               validator: (value) {
-                if (value.isEmpty) {
+                if (value!.isEmpty) {
                   return "Username Masih Kosong!";
                 }
                 return null;
               },
             ),
-            SizedBox(height: ScreenUtil.getInstance().setHeight(30)),
+            SizedBox(height: ScreenUtil().setHeight(30)),
             Text(
               "Password",
               style: TextStyle(
-                fontSize: ScreenUtil.getInstance().setSp(26),
+                fontSize: ScreenUtil().setSp(26),
               ),
             ),
             Stack(
@@ -243,18 +244,20 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: "Password",
                     hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0),
                   ),
-                  onSaved: (String value) => _password = value,
+                  onSaved: (String? value) => _password = value,
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return "Password Masih Kosong!";
                     }
                     return null;
                   },
                 ),
                 IconButton(
-                  icon: _isVisible
-                      ? Icon(FlutterIcons.ios_eye_ion)
-                      : Icon(FlutterIcons.ios_eye_off_ion),
+                  icon: _isVisible ? Icon(
+                      // FlutterIcons.ios_eye_ion
+                      Iconsax.eye) : Icon(
+                      // FlutterIcons.ios_eye_off_ion
+                      Iconsax.eye_slash),
                   onPressed: () {
                     setState(() {
                       _isVisible ? _isVisible = false : _isVisible = true;
@@ -263,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
-            SizedBox(height: ScreenUtil.getInstance().setHeight(50)),
+            SizedBox(height: ScreenUtil().setHeight(50)),
             _loginButton
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.end,
@@ -272,7 +275,7 @@ class _LoginPageState extends State<LoginPage> {
             //       config.ForgetPassword,
             //       style: TextStyle(
             //         color: Colors.blue,
-            //         fontSize: ScreenUtil.getInstance().setSp(28),
+            //         fontSize: ScreenUtil().setSp(28),
             //         decoration: TextDecoration.underline,
             //       ),
             //     )

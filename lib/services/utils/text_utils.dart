@@ -14,7 +14,7 @@ class TextUtils {
     return splitStr.join(' ');
   }
 
-  String getBulanString({dynamic date, String bulan}) {
+  String? getBulanString({dynamic date, String? bulan}) {
     var bln;
     if (date != null)
       bln = date.split('-')[1];
@@ -58,6 +58,7 @@ class TextUtils {
         return "Desember";
         break;
     }
+    return null;
   }
 
   String getHariString(dynamic day) {
@@ -101,7 +102,7 @@ class TextUtils {
 
   dynamic getProvider(hp) {
     hp = hp.replaceAll(' ', '').substring(0, 4);
-    for (var provider in config.dataProvider) {
+    for (var provider in config.dataProvider!) {
       if (provider['value'] == hp) {
         return provider['jenis_provider'];
       }
@@ -129,11 +130,11 @@ class TextUtils {
     return reDecrypt;
   }
 
-  String getDateIndo(String date) {
+  String? getDateIndo(String date) {
     if (date == null) return null;
     var newDate = date.split('-');
     String hari = newDate[0];
-    String bulan = getBulanString(bulan: newDate[1]);
+    String bulan = getBulanString(bulan: newDate[1]) as String;
     String tahunjam = newDate[2];
     return hari + " " + bulan + " " + tahunjam;
   }
@@ -142,7 +143,7 @@ class TextUtils {
     if (date == null) return "";
     var newDate = date.split('-');
     String hari = newDate[0];
-    String bulan = getBulanString(bulan: newDate[1]).substring(0, 3);
+    String bulan = getBulanString(bulan: newDate[1])!.substring(0, 3);
     var tahunjam = newDate[2].toString().split(' ');
     String tahun = tahunjam[0];
     return hari + " " + bulan + " " + tahun;

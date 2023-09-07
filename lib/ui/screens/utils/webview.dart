@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../constant/constant.dart';
@@ -17,13 +17,47 @@ class _WebViewScreenState extends State<WebViewScreen> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
   bool _isLoadingPage = true;
+
+  late WebViewController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Color.fromARGB(0, 255, 255, 255))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: ((String url) {
+            setState(() {
+              _isLoadingPage = false;
+            });
+          }),
+          onPageFinished: ((String url) {
+            setState(() {
+              _isLoadingPage = false;
+            });
+          }),
+          onWebResourceError: (WebResourceError error) {},
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.url));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: accentColor,
         leading: IconButton(
-          icon: new Icon(FlutterIcons.md_close_ion, color: Colors.white),
+          icon: new Icon(
+              // FlutterIcons.md_close_ion,
+              Iconsax.close_circle,
+              color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -34,17 +68,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
       body: Stack(
         children: [
           Builder(builder: (BuildContext context) {
-            return WebView(
-              initialUrl: widget.url,
-              javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (WebViewController webViewController) {
-                _controller.complete(webViewController);
-              },
-              onPageStarted: (url) {
-                setState(() {
-                  _isLoadingPage = false;
-                });
-              },
+            return WebViewWidget(
+              controller: controller,
             );
           }),
           _isLoadingPage ? LinearProgressIndicator() : Container(),
@@ -60,11 +85,13 @@ class _WebViewScreenState extends State<WebViewScreen> {
           (BuildContext context, AsyncSnapshot<WebViewController> snapshot) {
         final bool webViewReady =
             snapshot.connectionState == ConnectionState.done;
-        final WebViewController controller = snapshot.data;
+        final WebViewController controller = snapshot.data!;
         return Row(
           children: <Widget>[
             IconButton(
-              icon: const Icon(FlutterIcons.ios_arrow_back_ion),
+              icon: const Icon(
+                  // FlutterIcons.ios_arrow_back_ion
+                  Iconsax.arrow_left),
               onPressed: !webViewReady
                   ? null
                   : () async {
@@ -74,7 +101,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     },
             ),
             IconButton(
-              icon: const Icon(FlutterIcons.ios_arrow_forward_ion),
+              icon: const Icon(
+                  // FlutterIcons.ios_arrow_forward_ion
+                  Iconsax.arrow_right),
               onPressed: !webViewReady
                   ? null
                   : () async {
@@ -84,7 +113,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     },
             ),
             IconButton(
-              icon: const Icon(FlutterIcons.ios_refresh_ion),
+              icon: const Icon(
+                  // FlutterIcons.ios_refresh_ion
+                  Iconsax.refresh),
               onPressed: !webViewReady
                   ? null
                   : () {

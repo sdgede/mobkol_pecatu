@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/viewmodel/produk_provider.dart';
 import '../../../ui/screens/nasabah/SearchController.dart';
+import '../../../ui/screens/nasabah/SearchController.dart' as sc;
 import '../../../ui/widgets/text_list/field_list_histori_transaksi.dart';
 import '../../constant/constant.dart';
 import '../../widgets/not_found.dart';
@@ -26,14 +27,17 @@ class _AdapterPencarianKlad extends State<AdapterPencarianKlad> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        brightness: Brightness.light,
         elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(FlutterIcons.ios_arrow_back_ion, color: Colors.black54),
+          icon: Icon(
+              // FlutterIcons.ios_arrow_back_ion,
+              Iconsax.arrow_left,
+              color: Colors.black54),
           onPressed: () => Navigator.pop(context),
         ),
         title: _appBar(),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: MerchantSearchBody(),
     );
@@ -44,7 +48,7 @@ class _AdapterPencarianKlad extends State<AdapterPencarianKlad> {
       builder: (context) {
         return Consumer<ProdukCollectionProvider>(
           builder: (context, produkProv, _) {
-            return SearchController(
+            return sc.SearchController(
               controller: searchController,
               placeHolder: 'Cari Norek..',
               autoFocus: true,
@@ -94,7 +98,8 @@ class MerchantSearchBody extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Icon(
-                      FlutterIcons.account_search_outline_mco,
+                      // FlutterIcons.account_search_outline_mco,
+                      Iconsax.user_search,
                       color: primaryColor,
                     ),
                     SizedBox(width: 10),

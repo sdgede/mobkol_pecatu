@@ -12,8 +12,8 @@ import '../../widgets/app_bar.dart';
 import '../../constant/constant.dart';
 
 class OTPScreen extends StatefulWidget {
-  final Map arguments;
-  const OTPScreen({Key key, this.arguments}) : super(key: key);
+  final Map? arguments;
+  const OTPScreen({Key? key, this.arguments}) : super(key: key);
 
   @override
   _OTPScreenState createState() => _OTPScreenState();
@@ -33,8 +33,8 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
   var requestOTPId;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  AnimationController controller;
-  TransaksiProvider transaksiProvider;
+  AnimationController? controller;
+  TransaksiProvider? transaksiProvider;
 
   @override
   void initState() {
@@ -45,13 +45,13 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    controller.dispose();
+    controller!.dispose();
     super.dispose();
   }
 
   void generateOTP() async {
     bool cekRequestOTP =
-        await transaksiProvider.checkRequestOTP(context: context) ?? false;
+        await transaksiProvider!.checkRequestOTP(context: context) ?? false;
     if (cekRequestOTP) {
       bool res = await DialogUtils.instance.showInfo(
             context: context,
@@ -90,14 +90,14 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
 
         setHpWA(tipe == "SMS" ? dataLogin['hp'] : dataLogin['no_wa']);
         final time = TextUtils.instance.getMinutesFromIntervalTwoDate(
-          transaksiProvider.dataOTP.tglExpired,
-          transaksiProvider.dataOTP.tglRequest,
+          transaksiProvider!.dataOTP.tglExpired,
+          transaksiProvider!.dataOTP.tglRequest,
         );
 
         startCountdown(time ?? 0);
 
         setState(() {
-          serverID = transaksiProvider.dataOTP.serverId ?? "";
+          serverID = transaksiProvider!.dataOTP.serverId ?? "";
           isFirst = false;
           boxOTPController.text = "";
         });
@@ -116,8 +116,8 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
         context: context,
         text: "Maaf, Kode OTP Anda sudah EXPIRED.",
       );
-    } else if (transaksiProvider.dataOTP.serverId != serverID ||
-        transaksiProvider.dataOTP.kodeOtp != boxOTP) {
+    } else if (transaksiProvider!.dataOTP.serverId != serverID ||
+        transaksiProvider!.dataOTP.kodeOtp != boxOTP) {
       DialogUtils.instance.showError(
         context: context,
         text: "Maaf, Kode OTP yang Anda masukkan tidak valid.",
@@ -150,9 +150,9 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
       vsync: this,
       duration: Duration(seconds: time),
     )..addListener(() {
-        Duration duration = controller.duration * controller.value;
+        Duration duration = controller!.duration! * controller!.value;
         setState(() {
-          if (controller.value == 0.0) {
+          if (controller!.value == 0.0) {
             timerString = "EXPIRED";
             serverID = "-";
           } else {
@@ -162,7 +162,8 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
         });
       });
 
-    controller.reverse(from: controller.value == 0.0 ? 1.0 : controller.value);
+    controller!
+        .reverse(from: controller!.value == 0.0 ? 1.0 : controller!.value);
   }
 
   @override
@@ -243,22 +244,25 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30),
       child: PinCodeTextField(
+        appContext: context,
         controller: boxOTPController,
         length: 6,
-        obsecureText: false,
+        obscureText: false,
         animationType: AnimationType.fade,
-        shape: PinCodeFieldShape.box,
         animationDuration: Duration(milliseconds: 300),
-        borderRadius: BorderRadius.circular(5),
-        fieldHeight: 50,
-        fieldWidth: 40,
-        activeFillColor: Colors.white,
-        inactiveFillColor: Colors.white,
-        selectedFillColor: Colors.white,
+        keyboardType: TextInputType.number,
         enableActiveFill: true,
-        textInputType: TextInputType.number,
         onCompleted: (v) {},
         enabled: isFirst ? false : true,
+        pinTheme: PinTheme(
+          shape: PinCodeFieldShape.box,
+          borderRadius: BorderRadius.circular(5),
+          fieldHeight: 50,
+          fieldWidth: 40,
+          activeFillColor: Colors.white,
+          inactiveFillColor: Colors.white,
+          selectedFillColor: Colors.white,
+        ),
         onChanged: (value) {
           setState(() {
             boxOTP = value;
@@ -325,7 +329,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
 
   get _countdown {
     return AnimatedBuilder(
-      animation: controller,
+      animation: controller!,
       builder: (context, child) {
         return Center(
           child: Container(

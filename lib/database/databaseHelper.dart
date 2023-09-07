@@ -15,11 +15,14 @@ class DatabaseHelper {
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
-  static Database _database;
+  static Database? _database;
   Future<Database> get database async {
-    if (_database != null) return _database;
-    _database = await _initDatabase(); // only initialize if not created already
-    return _database;
+    if (_database == null) {
+      _database = await _initDatabase();
+    }
+    return _database!;
+    // _database = await _initDatabase(); // only initialize if not created already
+    // return _database;
   }
 
   _initDatabase() async {
@@ -64,7 +67,7 @@ class DatabaseHelper {
     Database db = await instance.database;
     return Sqflite.firstIntValue(
       await db.rawQuery('SELECT COUNT(*) FROM $tbName'),
-    );
+    )!;
   }
 
   Future<int> queryRowCountWithClause(
@@ -76,7 +79,7 @@ class DatabaseHelper {
     return Sqflite.firstIntValue(
       await db.rawQuery(
           'SELECT COUNT(*) FROM $tbName WHERE $whereClause = $whereParam'),
-    );
+    )!;
   }
 
   Future<bool> deleteDataGlobal(String table) async {
@@ -159,13 +162,15 @@ class DatabaseHelper {
     if (row.length == 0) {
       result = {"status": "Gagal", "pesan": "Username tidak ditemukan"};
     } else {
-      if (_decrypt(row.first['password']) != _decrypt(dataParse['pwd'])) {
+      if (_decrypt(row.first['password'] as String) !=
+          _decrypt(dataParse['pwd'])) {
         result = {
           "status": "Gagal",
           "pesan": "Username atau password tidak valid"
         };
       } else {
-        if (_decrypt(row.first['imei']) != _decrypt(dataParse['imei'])) {
+        if (_decrypt(row.first['imei'] as String) !=
+            _decrypt(dataParse['imei'])) {
           result = {
             "status": "Gagal",
             "pesan":
@@ -203,7 +208,7 @@ class DatabaseHelper {
 
   Future testGetData() async {
     Database db = await instance.database;
-    List<Map<String, Object>> result;
+    List<Map<String, Object?>> result;
 
     var row = await db
         .rawQuery("SELECT * FROM t_trans_simpanan order by trans_id desc");
@@ -219,10 +224,10 @@ class DatabaseHelper {
   }
 
   Future<dynamic> getIconProdukOffline({
-    Map<String, dynamic> dataParse,
+    Map<String, dynamic>? dataParse,
   }) async {
     Database db = await instance.database;
-    List<Map<String, Object>> result;
+    List<Map<String, Object?>> result;
 
     var row = await db.rawQuery(
         "SELECT nama_menu as nama,remark as slug,rek_cd,icon,min_setoran,min_tarikan,rek_shortcut,urut_menu FROM s_menu_mobkol WHERE active_flag='Y' ORDER BY urut_menu ASC");
@@ -255,10 +260,10 @@ class DatabaseHelper {
   }
 
   Future<dynamic> getDataProduk({
-    Map<String, dynamic> dataParse,
+    Map<String, dynamic>? dataParse,
   }) async {
     Database db = await instance.database;
-    String groupProduk = _decrypt(dataParse['groupProduk']);
+    String groupProduk = _decrypt(dataParse!['groupProduk']);
     String rekCd = _decrypt(dataParse['rekCd']);
     String norek = formatNorekProduk(_decrypt(dataParse['norek']));
     String rekDesc = groupProduk == 'ANGGOTA' ? 'anggota' : 'rekening';
@@ -307,10 +312,10 @@ class DatabaseHelper {
   }
 
   Future<dynamic> getKladOffline({
-    Map<String, dynamic> dataParse,
+    Map<String, dynamic>? dataParse,
   }) async {
     Database db = await instance.database;
-    String groupProduk = _decrypt(dataParse['groupProduk']);
+    String groupProduk = _decrypt(dataParse!['groupProduk']);
     String rekCd = _decrypt(dataParse['rekCd']);
     String trxDate = DateSystem;
     String kolektor = _decrypt(dataParse['user']);
@@ -386,10 +391,10 @@ class DatabaseHelper {
   }
 
   Future<dynamic> getSaldoKolOffline({
-    Map<String, dynamic> dataParse,
+    Map<String, dynamic>? dataParse,
   }) async {
     Database db = await instance.database;
-    String groupProduk = _decrypt(dataParse['groupProduk']);
+    String groupProduk = _decrypt(dataParse!['groupProduk']);
     String rekCd = _decrypt(dataParse['rekCd']);
     String trxDate = DateSystem;
     String kolektor = _decrypt(dataParse['user']);
@@ -442,10 +447,10 @@ class DatabaseHelper {
   }
 
   Future<dynamic> pencarianNasabahTabOffline({
-    Map<String, dynamic> dataParse,
+    Map<String, dynamic>? dataParse,
   }) async {
     Database db = await instance.database;
-    String groupProduk = _decrypt(dataParse['groupProduk']);
+    String groupProduk = _decrypt(dataParse!['groupProduk']);
     String rekCd = _decrypt(dataParse['rekCd']);
     String keyword = _decrypt(dataParse['keyword']);
     String norek = groupProduk == 'ANGGOTA' ? 'no_anggota' : 'no_rek';
@@ -568,7 +573,7 @@ class DatabaseHelper {
     var jsonData = json.decode(dataParse);
     await Future.forEach(
       jsonData,
-      (val) async {
+      (Map<String, dynamic> val) async {
         isDataExist = await queryRowCountWithClause(
           groupPrdk['tb_nas'],
           groupPrdk['id_tb_nas'],
@@ -602,7 +607,6 @@ class DatabaseHelper {
           dataVal['suku_bunga'] = val['suku_bunga'];
         }
 
-
         dataVal['create_who'] = val['create_who'];
         dataVal['create_date'] = val['create_date'];
 
@@ -635,7 +639,7 @@ class DatabaseHelper {
     var jsonData = json.decode(dataParse);
     await Future.forEach(
       jsonData,
-      (val) async {
+      (Map<String, dynamic> val) async {
         isDataExist = await queryRowCountWithClause(
           's_user_kolektor',
           'kolektor_id',
@@ -680,9 +684,8 @@ class DatabaseHelper {
     isDataExist = await queryRowCountWithClause(
       's_user_kolektor',
       'username',
-       "'"+val["username"]+"'",
+      "'" + val["username"] + "'",
     );
-
 
     // Database db = await instance.database;
     // await db.delete("s_user_kolektor");
@@ -699,12 +702,12 @@ class DatabaseHelper {
     dataVal['apk_version'] = val['apk_version'];
     dataVal['status'] = val['status'];
 
-    if(isDataExist > 1){
-      await db.rawDelete('DELETE FROM s_user_kolektor WHERE username = ?', [val['username']]);
+    if (isDataExist > 1) {
+      await db.rawDelete(
+          'DELETE FROM s_user_kolektor WHERE username = ?', [val['username']]);
       actionType = 'INSERT';
       actionQuery = await insertDataGlobal('s_user_kolektor', dataVal);
-    }
-    else if (isDataExist != 0) {
+    } else if (isDataExist != 0) {
       actionType = 'UPDATE';
       actionQuery = await updateDataGlobal(
         's_user_kolektor',
@@ -731,7 +734,7 @@ class DatabaseHelper {
     var jsonData = json.decode(dataParse);
     await Future.forEach(
       jsonData,
-      (val) async {
+      (Map<String, dynamic> val) async {
         isDataExist = await queryRowCountWithClause(
           tb_master_nasabah,
           'nasabah_id',
@@ -776,12 +779,12 @@ class DatabaseHelper {
     String actionType = '';
     var dataVal = Map<String, dynamic>();
     var jsonData = json.decode(dataParse);
-        jsonData = jsonData[0];
+    jsonData = jsonData[0];
     actionDell = await deleteDataGlobal(tb_menu_mobkol);
     if (actionDell)
       await Future.forEach(
         jsonData['data_menu_mobkol'],
-        (val) async {
+        (Map<String, dynamic> val) async {
           dataVal['id_menu'] = val['id_menu'];
           dataVal['group_menu'] = val['group_menu'];
           dataVal['rek_cd'] = val['rek_cd'];
@@ -816,7 +819,7 @@ class DatabaseHelper {
     if (actionDellConf)
       await Future.forEach(
         jsonData['data_config_mobkol'],
-        (val) async {
+        (Map<String, dynamic> val) async {
           confVal['id_config'] = val['id_config'];
           confVal['base_url'] = val['base_url'];
           confVal['nama_app'] = val['nama_app'];
@@ -837,22 +840,20 @@ class DatabaseHelper {
           if (actionQuery && actionType == 'UPDATE') rowEffectedEdit++;
         },
       );
-    
-    
-    
+
     return {'row_edit': rowEffectedEdit ?? 0, 'row_add': rowEffectedAdd ?? 0};
   }
 
   Future lastSync() async {
     Database db = await instance.database;
     var data = await db.query('m_versi_db WHERE id_versi = 1 LIMIT 1');
-    if(data.length == 0){
+    if (data.length == 0) {
       return null;
     }
     print('Last db version ${data[0]}');
     return data[0]['tgl_update'];
   }
-  
+
   Future updateSync(String current) async {
     Database db = await instance.database;
     var lastSync = await db.query('m_versi_db WHERE id_versi = 1 LIMIT 1');
@@ -861,13 +862,13 @@ class DatabaseHelper {
     dataVal['id_versi'] = 1;
     dataVal['tgl_update'] = current;
     dataVal['versi'] = 1;
-    
-    if(lastSync.length == 0){
+
+    if (lastSync.length == 0) {
       // jika versi db tidak ada: insert
       await insertDataGlobal('m_versi_db', dataVal);
-    }else{
+    } else {
       // jika versi db ada: update
-      int lastVersi = lastSync[0]['versi'];
+      int lastVersi = lastSync[0]['versi'] as int;
       dataVal['versi'] = lastVersi + 1;
       await updateDataGlobal(
         'm_versi_db',
@@ -928,11 +929,11 @@ class DatabaseHelper {
   //       where: '$columnId = ?', whereArgs: [todo.id]);
   // }
 
-  Future getDataGlobal({String table, String whereClause, int id}) async {
+  Future getDataGlobal({String? table, String? whereClause, int? id}) async {
     Database db = await instance.database;
     Map<String, dynamic> result;
     //var maps = await db.query(table, where: 'kolektor_id = ?', whereArgs: [id]);
-    var maps = await db.query(table);
+    var maps = await db.query(table!);
     if (maps.length > 0) {
       result = maps.first;
     } else {
@@ -942,7 +943,7 @@ class DatabaseHelper {
     return result;
   }
 
-  Future< io.File > copyDB() async {
+  Future<io.File> copyDB() async {
     final db = await instance.database;
     final dbPath = await getDatabasesPath();
     var afile = io.File(dbPath);
@@ -961,11 +962,10 @@ class DatabaseHelper {
   Future getLocalConfig() async {
     Database db = await instance.database;
     var data = await db.query('s_data_config LIMIT 1');
-    if(data.length == 0){
+    if (data.length == 0) {
       return null;
     }
     print('Data config ${data[0]}');
     return data[0];
   }
-  
 }

@@ -1,14 +1,12 @@
 import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui';
+import 'package:badges/badges.dart' as badges;
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_blue/flutter_blue.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import '../../../services/utils/icons_utils.dart';
@@ -25,9 +23,9 @@ class HomeKolektor extends StatefulWidget {
 }
 
 class HomeKolektorState extends State<HomeKolektor> {
-  GlobalProvider globalProv;
-  ProdukCollectionProvider produkProv;
-  List dataMenuKolektor, dataSetting;
+  GlobalProvider? globalProv;
+  ProdukCollectionProvider? produkProv;
+  List? dataMenuKolektor, dataSetting;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey _setting = GlobalKey();
@@ -42,7 +40,7 @@ class HomeKolektorState extends State<HomeKolektor> {
         false;
 
     if (res) {
-      produkProv.resetSelectedgroupProdukProduk();
+      produkProv!.resetSelectedgroupProdukProduk();
       Navigator.of(context).pushNamedAndRemoveUntil(
           RouterGenerator.pageLogin, (Route<dynamic> route) => false);
     }
@@ -54,7 +52,7 @@ class HomeKolektorState extends State<HomeKolektor> {
     String dir = (await getApplicationDocumentsDirectory()).path;
     _writeToFile(bytes, '$dir/$filename');
 
-    globalProv.setInvoiceImage('$dir/$filename');
+    globalProv!.setInvoiceImage('$dir/$filename');
   }
 
   Future<void> _writeToFile(ByteData data, String path) {
@@ -65,47 +63,50 @@ class HomeKolektorState extends State<HomeKolektor> {
   }
 
   _checkAccountMigration(BuildContext context) async {
-    bool checkSync = await globalProv.isNeedSync();
-    bool isOnline = globalProv.getConnectionMode == config.onlineMode;
-    if(checkSync && isOnline){
+    bool checkSync = await globalProv!.isNeedSync();
+    bool isOnline = globalProv!.getConnectionMode == config.onlineMode;
+    if (checkSync && isOnline) {
       await DialogUtils.instance.showInfo(
-        context: context,
-        isCancel: true,
-        title: 'Sinkronasi data',
-        text: 'Perbaharui migrasi data untuk menyimpan perubahan sebelumnya. Proses ini memerlukan beberapa waktu.',
-        clickCancelText: "Nanti",
-        clickOKText: "Perbaharui",
-        onClickOK: () async {
-          await Navigator.of(context).pop();
-          await globalProv.syncData(context, produkProv.produkCollectionMigrasi);
-        }
-      );
+          context: context,
+          isCancel: true,
+          title: 'Sinkronasi data',
+          text:
+              'Perbaharui migrasi data untuk menyimpan perubahan sebelumnya. Proses ini memerlukan beberapa waktu.',
+          clickCancelText: "Nanti",
+          clickOKText: "Perbaharui",
+          onClickOK: () async {
+            Navigator.of(context).pop();
+            await globalProv!
+                .syncData(context, produkProv!.produkCollectionMigrasi);
+          });
     }
     return;
   }
 
   _showShowcase(context) {
-      ShowCaseWidget.of(context).startShowCase([
-          ...dataMenuKolektor.map((item) => item.key).toList(),
-          _setting,
-          ...dataSetting.map((item) => item.key).toList(),
-        ]);
+    ShowCaseWidget.of(context).startShowCase([
+      ...dataMenuKolektor!.map((item) => item.key).toList(),
+      _setting,
+      ...dataSetting!.map((item) => item.key).toList(),
+    ]);
   }
 
   _checkFirstTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool firstTime = prefs.getBool('first_time') == null ? true : prefs.getBool('first_time');
+    bool firstTime = prefs.getBool('first_time') == null
+        ? true
+        : prefs.getBool('first_time')!;
 
     // cek migrasi
-    if(globalProv.getConnectionMode == config.onlineMode && !firstTime){
-      globalProv.syncAcount();
-      WidgetsBinding.instance.addPostFrameCallback((_){
+    if (globalProv!.getConnectionMode == config.onlineMode && !firstTime) {
+      globalProv!.syncAcount();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _checkAccountMigration(context);
       });
-    } 
+    }
 
     // check showcase
-    if(firstTime){  
+    if (firstTime) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           _showShowcase(context);
@@ -121,11 +122,11 @@ class HomeKolektorState extends State<HomeKolektor> {
     produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
     dataSetting = IconUtils.instance.dataSetting();
     dataMenuKolektor = IconUtils.instance.dataMenuKolektor();
-    produkProv.setAllDatafirstSelectedProduct(
+    produkProv!.setAllDatafirstSelectedProduct(
       context: context,
       isListen: false,
     );
-    globalProv.loadLocation(context);
+    globalProv!.loadLocation(context);
     _initPathImgInvoice();
 
     _checkFirstTime();
@@ -134,7 +135,7 @@ class HomeKolektorState extends State<HomeKolektor> {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      produkProv.setAllDatafirstSelectedProduct(isListen: false);
+      produkProv!.setAllDatafirstSelectedProduct(isListen: false);
     }
   }
 
@@ -252,10 +253,9 @@ class HomeKolektorState extends State<HomeKolektor> {
                       tabs: [
                         Tab(text: 'Home'),
                         Showcase(
-                          key: _setting,
-                          description: "Klik untuk ke menu setting",
-                          child: Tab(text: 'Setting')
-                          ),
+                            key: _setting,
+                            description: "Klik untuk ke menu setting",
+                            child: Tab(text: 'Setting')),
                       ],
                     ),
                   ),
@@ -265,8 +265,8 @@ class HomeKolektorState extends State<HomeKolektor> {
             },
             body: TabBarView(
               children: [
-                listMenuHome(list: dataMenuKolektor, typeMenu: 'menu_home'),
-                listMenuHome(list: dataSetting, typeMenu: 'menu_setting'),
+                listMenuHome(list: dataMenuKolektor!, typeMenu: 'menu_home'),
+                listMenuHome(list: dataSetting!, typeMenu: 'menu_setting'),
               ],
             ),
           ),
@@ -275,7 +275,7 @@ class HomeKolektorState extends State<HomeKolektor> {
     );
   }
 
-  Widget listMenuHome({List list, String typeMenu}) {
+  Widget listMenuHome({List? list, String? typeMenu}) {
     return Column(
       children: [
         Container(
@@ -284,7 +284,7 @@ class HomeKolektorState extends State<HomeKolektor> {
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: list.length,
+            itemCount: list!.length,
             itemBuilder: (BuildContext context, int index) {
               return Showcase(
                 key: list[index].key,
@@ -320,7 +320,7 @@ class HomeKolektorState extends State<HomeKolektor> {
                             leading: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Badge(
+                                badges.Badge(
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.white,
@@ -341,14 +341,15 @@ class HomeKolektorState extends State<HomeKolektor> {
                                       list[index].icon,
                                     ),
                                   ),
-                                  toAnimate: true,
-                                  showBadge: globalProv.getConnectionMode ==
+                                  // toAnimate: true,
+                                  showBadge: globalProv!.getConnectionMode ==
                                               config.onlineMode &&
                                           list[index].type == "DATA_PENAGIHAN"
                                       ? true
                                       : false,
                                   badgeContent: Text(
-                                    config.dataSetting['total_kredit_jatuhtempo']
+                                    config.dataSetting[
+                                                'total_kredit_jatuhtempo']
                                             .toString() ??
                                         "0",
                                     style: TextStyle(
@@ -370,7 +371,8 @@ class HomeKolektorState extends State<HomeKolektor> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Icon(
-                                  FlutterIcons.ios_arrow_forward_ion,
+                                  // FlutterIcons.ios_arrow_forward_ion,
+                                  Iconsax.arrow_right,
                                   color: Colors.black38,
                                 ),
                               ],

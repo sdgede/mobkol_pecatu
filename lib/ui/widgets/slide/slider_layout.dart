@@ -1,14 +1,10 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_pro/carousel_pro.dart';
-import 'package:provider/provider.dart';
+// import 'package:another_carousel_pro/another_carousel_pro.dart';
 
 import '../../../services/config/config.dart' as config;
 import '../../../services/config/router_generator.dart';
 import '../../../services/utils/slider_utils.dart';
-import '../../widgets/not_found.dart';
-import '../../../services/config/config.dart';
 import 'slide_dots.dart';
 import 'slide_item.dart';
 
@@ -71,7 +67,7 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
                 children: <Widget>[
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: FlatButton(
+                    child: TextButton(
                       onPressed: () async {
                         if (textNextFinish == config.SKIP) {
                           SharedPreferences prefs =
@@ -100,13 +96,17 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
                           ),
                         ),
                       ),
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
+                      // splashColor: Colors.transparent,
+                      // highlightColor: Colors.transparent,
+                      style: ButtonStyle(
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
                     ),
                   ),
                   Align(
                       alignment: Alignment.bottomLeft,
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: () {
                           if (_currentPage != 0) {
                             _pageController.previousPage(
@@ -125,8 +125,12 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
                             ),
                           ),
                         ),
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
+                        // splashColor: Colors.transparent,
+                        // highlightColor: Colors.transparent,
+                        style: ButtonStyle(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                        ),
                       )),
                   Container(
                     alignment: AlignmentDirectional.bottomCenter,
@@ -158,38 +162,38 @@ class SliderHomeLogin extends StatelessWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height / 3.1,
       width: MediaQuery.of(context).size.width,
-      child: Carousel(
-        images: [
-          Image.asset(
-            'assets/images/saldomutasi.png',
-            fit: BoxFit.cover,
-          ),
-          Image.asset(
-            'assets/images/ppob.png',
-            fit: BoxFit.cover,
-          ),
-          Image.asset(
-            'assets/images/tfsonline.png',
-            fit: BoxFit.cover,
-          ),
-          Image.asset(
-            'assets/images/rekening.png',
-            fit: BoxFit.cover,
-          ),
-        ],
-        boxFit: BoxFit.fitWidth,
-        dotSize: 0,
-        dotSpacing: 15.0,
-        dotColor: Colors.lightGreenAccent,
-        indicatorBgPadding: 5.0,
-        dotBgColor: Colors.transparent,
-        borderRadius: false,
-        moveIndicatorFromBottom: 180.0,
-        noRadiusForIndicator: true,
-        overlayShadow: false,
-        overlayShadowColors: Colors.transparent,
-        overlayShadowSize: 0,
-      ),
+      // child: AnotherCarousel(
+      //   images: [
+      //     Image.asset(
+      //       'assets/images/saldomutasi.png',
+      //       fit: BoxFit.cover,
+      //     ),
+      //     Image.asset(
+      //       'assets/images/ppob.png',
+      //       fit: BoxFit.cover,
+      //     ),
+      //     Image.asset(
+      //       'assets/images/tfsonline.png',
+      //       fit: BoxFit.cover,
+      //     ),
+      //     Image.asset(
+      //       'assets/images/rekening.png',
+      //       fit: BoxFit.cover,
+      //     ),
+      //   ],
+      //   boxFit: BoxFit.fitWidth,
+      //   dotSize: 0,
+      //   dotSpacing: 15.0,
+      //   dotColor: Colors.lightGreenAccent,
+      //   indicatorBgPadding: 5.0,
+      //   dotBgColor: Colors.transparent,
+      //   borderRadius: false,
+      //   moveIndicatorFromBottom: 180.0,
+      //   noRadiusForIndicator: true,
+      //   overlayShadow: false,
+      //   overlayShadowColors: Colors.transparent,
+      //   overlayShadowSize: 0,
+      // ),
     );
   }
 }
@@ -200,53 +204,53 @@ class SliderHomePage extends StatelessWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height / 3.0,
       width: MediaQuery.of(context).size.width,
-      child: Carousel(
-        images: [
-          Image.asset(
-            'assets/images/tab-slide.png',
-            fit: BoxFit.cover,
-          ),
-          Image.asset(
-            'assets/images/dep-slide.png',
-            fit: BoxFit.cover,
-          ),
-          Image.asset(
-            'assets/images/kredit-slide.png',
-            fit: BoxFit.cover,
-          ),
-          // Image.asset(
-          //   'assets/images/tabusaha-slider.png',
-          //   fit: BoxFit.cover,
-          // ),
-          // Image.asset(
-          //   'assets/images/tabkeluarga-slider.png',
-          //   fit: BoxFit.cover,
-          // ),
-          // Image.asset(
-          //   'assets/images/deposito-slider.png',
-          //   fit: BoxFit.cover,
-          // ),
-          // Image.asset(
-          //   'assets/images/tabjangka-slider.png',
-          //   fit: BoxFit.cover,
-          // ),
-          // Image.asset(
-          //   'assets/images/kredit-slider.png',
-          //   fit: BoxFit.cover,
-          // ),
-        ],
-        dotSize: 0,
-        dotSpacing: 15.0,
-        dotColor: Colors.lightGreenAccent,
-        indicatorBgPadding: 5.0,
-        dotBgColor: Colors.transparent,
-        borderRadius: false,
-        moveIndicatorFromBottom: 300.0,
-        noRadiusForIndicator: true,
-        overlayShadow: false,
-        overlayShadowColors: Colors.transparent,
-        overlayShadowSize: 0,
-      ),
+      // child: AnotherCarousel(
+      //   images: [
+      //     Image.asset(
+      //       'assets/images/tab-slide.png',
+      //       fit: BoxFit.cover,
+      //     ),
+      //     Image.asset(
+      //       'assets/images/dep-slide.png',
+      //       fit: BoxFit.cover,
+      //     ),
+      //     Image.asset(
+      //       'assets/images/kredit-slide.png',
+      //       fit: BoxFit.cover,
+      //     ),
+      //     // Image.asset(
+      //     //   'assets/images/tabusaha-slider.png',
+      //     //   fit: BoxFit.cover,
+      //     // ),
+      //     // Image.asset(
+      //     //   'assets/images/tabkeluarga-slider.png',
+      //     //   fit: BoxFit.cover,
+      //     // ),
+      //     // Image.asset(
+      //     //   'assets/images/deposito-slider.png',
+      //     //   fit: BoxFit.cover,
+      //     // ),
+      //     // Image.asset(
+      //     //   'assets/images/tabjangka-slider.png',
+      //     //   fit: BoxFit.cover,
+      //     // ),
+      //     // Image.asset(
+      //     //   'assets/images/kredit-slider.png',
+      //     //   fit: BoxFit.cover,
+      //     // ),
+      //   ],
+      //   dotSize: 0,
+      //   dotSpacing: 15.0,
+      //   dotColor: Colors.lightGreenAccent,
+      //   indicatorBgPadding: 5.0,
+      //   dotBgColor: Colors.transparent,
+      //   borderRadius: false,
+      //   moveIndicatorFromBottom: 300.0,
+      //   noRadiusForIndicator: true,
+      //   overlayShadow: false,
+      //   overlayShadowColors: Colors.transparent,
+      //   overlayShadowSize: 0,
+      // ),
     );
   }
 }

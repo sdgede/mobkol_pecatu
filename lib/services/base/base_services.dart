@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dart_ipify/dart_ipify.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -12,14 +11,16 @@ import '../../services/config/config.dart';
 import '../../services/viewmodel/global_provider.dart';
 
 enum RequestType { GET, POST, DELETE }
+
 enum RequestTypeToken { APK, BERITA, MERCHANT }
+
 enum TypeEncrypt { APK, MERCHANT }
 
 class BaseServices {
-  GlobalProvider globalProv;
+  GlobalProvider? globalProv;
 
   Dio _dio = new Dio();
-  Options _headersOption;
+  Options? _headersOption;
 
   Future _getTokenAPK() async {
     var _token = await AuthUtils.instance.getTokenAPK();
@@ -32,17 +33,17 @@ class BaseServices {
   }
 
   Future<dynamic> request({
-    String url,
-    RequestType type,
-    BuildContext context,
+    String? url,
+    RequestType? type,
+    BuildContext? context,
     dynamic data,
     RequestTypeToken typeToken = RequestTypeToken.APK,
     TypeEncrypt typeEncrypt = TypeEncrypt.APK,
   }) async {
-    Response response;
-    DioErrorType errorType;
+    Response? response;
+    DioErrorType? errorType;
 
-    await _addGlobalvalue(context, data);
+    await _addGlobalvalue(context!, data);
     print(data);
     if (typeToken == RequestTypeToken.APK) {
       await _getTokenAPK();
@@ -55,31 +56,32 @@ class BaseServices {
       switch (type) {
         case RequestType.POST:
           if (typeToken == RequestTypeToken.MERCHANT)
-            response = await _dio.post(url,
+            response = await _dio.post(url!,
                 data: data != null ? data : null, options: _headersOption);
           else
-            response = await _dio.post(url,
+            response = await _dio.post(url!,
                 data: data != null ? FormData.fromMap(data) : null,
                 options: _headersOption);
           break;
         case RequestType.GET:
-          response = await _dio.get(url, options: _headersOption);
+          response = await _dio.get(url!, options: _headersOption);
           break;
         case RequestType.DELETE:
-          response = await _dio.delete(url,
+          response = await _dio.delete(url!,
               data: data != null ? data : null, options: _headersOption);
           break;
       }
     } on DioError catch (e) {
       print(e);
-      response = e.response;
+      response = e.response!;
       errorType = e.type;
     }
-    int statusCode = response.statusCode;
 
-    if (errorType == DioErrorType.CONNECT_TIMEOUT ||
-        errorType == DioErrorType.RECEIVE_TIMEOUT ||
-        errorType == DioErrorType.DEFAULT) {
+    int statusCode = response!.statusCode!;
+
+    if (errorType == DioErrorType.connectionTimeout ||
+        errorType == DioErrorType.receiveTimeout ||
+        errorType == DioErrorType.unknown) {
       await DialogUtils.instance.showError(
         context: context,
         text:
@@ -133,15 +135,13 @@ class BaseServices {
     var wilayahCdKol =
         dataLogin.containsKey('wilayah') ? dataLogin['wilayah'] : '0';
 
-    if (dataParse != null) {
-      dataParse["user_kol"] = _encrypt(user);
-      dataParse["pwd_kol"] = _encrypt(pwd);
-      dataParse["imei_kol"] = _encrypt(imei);
-      dataParse["groupCd_kolektor"] = _encrypt(groupCdKol);
-      dataParse["wilayahCd_kolektor"] = _encrypt(wilayahCdKol);
-      dataParse["lat"] = _encrypt(globalProv.myLatitude.toString());
-      dataParse["longi"] = _encrypt(globalProv.myLongitude.toString());
-    }
+    dataParse["user_kol"] = _encrypt(user);
+    dataParse["pwd_kol"] = _encrypt(pwd);
+    dataParse["imei_kol"] = _encrypt(imei);
+    dataParse["groupCd_kolektor"] = _encrypt(groupCdKol);
+    dataParse["wilayahCd_kolektor"] = _encrypt(wilayahCdKol);
+    dataParse["lat"] = _encrypt(globalProv!.myLatitude.toString());
+    dataParse["longi"] = _encrypt(globalProv!.myLongitude.toString());
   }
 
   String _encrypt(String val) {

@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/utils/image_utils.dart';
 import '../../../services/viewmodel/global_provider.dart';
 import '../../constant/constant.dart';
-import '../../widgets/maps/maps_item.dart';
 import '../../widgets/app_bar.dart';
 
 class MapsScreen extends StatefulWidget {
@@ -18,18 +16,18 @@ class MapsScreen extends StatefulWidget {
 
 class _MapsScreenState extends State<MapsScreen> {
   Completer<GoogleMapController> _controller = Completer();
-  GlobalProvider globalProvider;
+  GlobalProvider? globalProvider;
   bool isDisabled = false;
 
   void currentLocation() async {
     final GoogleMapController controller = await _controller.future;
 
-    await globalProvider.loadLocation(context);
+    await globalProvider!.loadLocation(context);
 
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
         bearing: 0,
-        target: LatLng(globalProvider.latitude, globalProvider.longitude),
+        target: LatLng(globalProvider!.latitude, globalProvider!.longitude),
         zoom: 20.0,
       ),
     ));
@@ -49,7 +47,7 @@ class _MapsScreenState extends State<MapsScreen> {
 
     LatLng location = await controller.getLatLng(screenCoordinate);
 
-    await globalProvider.setLocation(
+    await globalProvider!.setLocation(
       latitude: location.latitude,
       longitude: location.longitude,
     );
@@ -116,7 +114,8 @@ class _MapsScreenState extends State<MapsScreen> {
           child: IconButton(
             padding: EdgeInsets.zero,
             icon: Icon(
-              FlutterIcons.my_location_mdi,
+              // FlutterIcons.my_location_mdi,
+              Iconsax.location,
               color: Colors.grey,
             ),
             onPressed: currentLocation,

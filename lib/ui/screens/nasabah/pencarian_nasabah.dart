@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 import '../../../services/viewmodel/produk_provider.dart';
-import '../../../ui/screens/nasabah/SearchController.dart';
+// import '../../../ui/screens/nasabah/SearchController.dart';
+import '../../../ui/screens/nasabah/SearchController.dart' as sc;
 import '../../../ui/widgets/floating_action_button.dart';
 import '../../../ui/widgets/loader/lottie_loader.dart';
 import '../../../ui/widgets/slide/slide_list_produk.dart';
@@ -16,18 +17,19 @@ class PencarianNasabah extends StatefulWidget {
 }
 
 class _PencarianNasabah extends State<PencarianNasabah> {
-  ProdukCollectionProvider produkProvider;
+  ProdukCollectionProvider? produkProvider;
   var searchController = TextEditingController();
-  double _width, _primaryPadding = 15;
+  double? _width, _primaryPadding = 15;
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  ScrollController produkScrollCOntroller;
+  ScrollController? produkScrollCOntroller;
 
   @override
   void initState() {
     super.initState();
     produkProvider =
         Provider.of<ProdukCollectionProvider>(context, listen: false);
-        produkProvider.setAllDatafirstSelectedProduct(context:context,isListen: false);
+    produkProvider!
+        .setAllDatafirstSelectedProduct(context: context, isListen: false);
   }
 
   @override
@@ -47,7 +49,7 @@ class _PencarianNasabah extends State<PencarianNasabah> {
                 (produkProv.getSelectedProdukName ?? ' - ').toLowerCase(),
             isCenter: true,
             isRefresh: true,
-            onRefresh: () => produkProvider.refreshAllMenuKlad(),
+            onRefresh: () => produkProvider!.refreshAllMenuKlad(),
           ),
           key: scaffoldKey,
           body: Container(
@@ -77,7 +79,8 @@ class _PencarianNasabah extends State<PencarianNasabah> {
       child: Row(
         children: [
           Icon(
-            FlutterIcons.account_search_outline_mco,
+            // FlutterIcons.account_search_outline_mco,
+            Iconsax.user_search,
             color: accentColor,
           ),
           Text('Pencarian produk nasabah berdasarkan nama'),
@@ -93,7 +96,7 @@ class _PencarianNasabah extends State<PencarianNasabah> {
           builder: (context, produkProv, _) {
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: SearchController(
+              child: sc.SearchController(
                 controller: searchController,
                 onClick: () => produkProv.goToSearchNasbah(context),
                 readOnly: true,

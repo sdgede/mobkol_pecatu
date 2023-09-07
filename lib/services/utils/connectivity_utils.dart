@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -11,8 +11,8 @@ import '../utils/dialog_utils.dart';
 
 class ConnectivityUtils {
   static ConnectivityUtils distance = ConnectivityUtils();
-  ConnectivityResult previous;
-  Timer alert;
+  ConnectivityResult? previous;
+  Timer? alert;
   var timer = 30;
 
   onCheckConnectivity(context) {
@@ -29,7 +29,7 @@ class ConnectivityUtils {
       } else if (previous == ConnectivityResult.none) {
         // internet conn
         EasyLoading.dismiss();
-        alert.cancel();
+        alert!.cancel();
       }
       previous = connresult;
     });
@@ -41,7 +41,7 @@ class ConnectivityUtils {
         if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
           // internet conn available
           EasyLoading.dismiss();
-          alert.cancel();
+          alert!.cancel();
         } else {
           // no conn
           EasyLoading.show(status: config.Reconnect);

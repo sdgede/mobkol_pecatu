@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../../services/config/config.dart';
 import '../../constant/constant.dart';
@@ -29,7 +29,10 @@ class _AboutScreenState extends State<AboutScreen> {
           leading: Icon(null),
           actions: [
             IconButton(
-              icon: Icon(FlutterIcons.ios_close_ion, size: 42),
+              icon: Icon(
+                  // FlutterIcons.ios_close_ion,
+                  Iconsax.close_circle,
+                  size: 42),
               onPressed: () => Navigator.of(context).pop(),
             )
           ],

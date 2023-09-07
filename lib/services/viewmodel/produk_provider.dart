@@ -18,17 +18,18 @@ class ProdukCollectionProvider extends ChangeNotifier {
   final dbHelper = DatabaseHelper.instance;
   ProdukCollectionServices produkCollectionServices =
       setup<ProdukCollectionServices>();
-  GlobalProvider gobalProv;
+  GlobalProvider? gobalProv;
   // daftar produk
-  List<ProdukCollection> _produkCollection;
-  List<ProdukCollection> get produkCollection => _produkCollection;
+  List<ProdukCollection>? _produkCollection;
+  List<ProdukCollection> get produkCollection => _produkCollection!;
   void refreshProdukCollection() {
     _produkCollection = null;
     notifyListeners();
   }
-  
-  List<ProdukCollection> _produkCollectionMigrasi;
-  List<ProdukCollection> get produkCollectionMigrasi => _produkCollectionMigrasi;
+
+  List<ProdukCollection>? _produkCollectionMigrasi;
+  List<ProdukCollection> get produkCollectionMigrasi =>
+      _produkCollectionMigrasi!;
   void refreshProdukCollectionMigrasi() {
     _produkCollectionMigrasi = null;
     notifyListeners();
@@ -41,15 +42,15 @@ class ProdukCollectionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedRekCdProduk;
-  String get getSelectedRkCdProduk => _selectedRekCdProduk;
+  String? _selectedRekCdProduk;
+  String get getSelectedRkCdProduk => _selectedRekCdProduk!;
   void setSelectedRekCdProduk(String rekCd, {bool listen = true}) {
     _selectedRekCdProduk = rekCd;
     if (listen) notifyListeners();
   }
 
-  String _selectedgroupProdukProduk;
-  String get getSelectedgroupProdukProduk => _selectedgroupProdukProduk;
+  String? _selectedgroupProdukProduk;
+  String get getSelectedgroupProdukProduk => _selectedgroupProdukProduk!;
   void setSelectedgroupProdukProduk(String group, {bool listen = true}) {
     _selectedgroupProdukProduk = group;
     if (listen) notifyListeners();
@@ -60,41 +61,41 @@ class ProdukCollectionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedProdukName;
-  String get getSelectedProdukName => _selectedProdukName;
+  String? _selectedProdukName;
+  String get getSelectedProdukName => _selectedProdukName!;
   void setSelectedProdukName(String name, {bool listen = true}) {
     _selectedProdukName = name;
     if (listen) notifyListeners();
   }
 
-  String _selectedMinSetoran;
-  String get getSelectedMinSetoran => _selectedMinSetoran;
+  String? _selectedMinSetoran;
+  String get getSelectedMinSetoran => _selectedMinSetoran!;
   void setSelectedMinSetoran(String minSet, {bool listen = true}) {
     _selectedMinSetoran = minSet;
     if (listen) notifyListeners();
   }
 
-  String _selectedRekShortcut;
-  String get getSelectedRekShortcut => _selectedRekShortcut;
+  String? _selectedRekShortcut;
+  String get getSelectedRekShortcut => _selectedRekShortcut!;
   void setSelectedRekShortcut(String minSet, {bool listen = true}) {
     _selectedRekShortcut = minSet;
     if (listen) notifyListeners();
   }
 
-  String _selectedProdukIcon;
-  String get getSelectedProdukIcon => _selectedProdukIcon;
+  String? _selectedProdukIcon;
+  String get getSelectedProdukIcon => _selectedProdukIcon!;
   void setSelectedProdukIcon(String ic, {bool listen = true}) {
     _selectedProdukIcon = ic;
     if (listen) notifyListeners();
   }
 
   Future<void> setAllDatafirstSelectedProduct(
-      {bool isListen = true, BuildContext context}) async {
+      {bool isListen = true, BuildContext? context}) async {
     if (_produkCollection == null) {
-      await dataProduk(context);
+      dataProduk(context!);
       //return EasyLoading.show(status: config.Loading);
     }
-    var _dataProduk = _produkCollection
+    var _dataProduk = _produkCollection!
         .where((element) => element.urut_menu.toString() == '1')
         .first;
     _selectedRekCdProduk = _dataProduk.rekCd;
@@ -107,10 +108,11 @@ class ProdukCollectionProvider extends ChangeNotifier {
     if (isListen) notifyListeners();
   }
 
-  void dataProduk(BuildContext context, {isMessage = true, migrasi = false}) async {
+  void dataProduk(BuildContext context,
+      {isMessage = true, migrasi = false}) async {
     try {
-      var produkCollection =
-          await produkCollectionServices.dataProduk(context: context, migrasi: migrasi);
+      var produkCollection = await produkCollectionServices.dataProduk(
+          context: context, migrasi: migrasi);
       if (produkCollection == null) {
         if (isMessage) DialogUtils.instance.showError(context: context);
         return null;
@@ -130,8 +132,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
   void dataProdukMigrasi(BuildContext context, {isMessage = true}) async {
     try {
       // EasyLoading.show(status: 'Loading');
-      var produkCollectionMigrasi =
-          await produkCollectionServices.dataProduk(context: context, migrasi: true);
+      var produkCollectionMigrasi = await produkCollectionServices.dataProduk(
+          context: context, migrasi: true);
       if (produkCollectionMigrasi == null) {
         if (isMessage) DialogUtils.instance.showError(context: context);
         return null;
@@ -152,8 +154,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   // list daftar produk
-  List<ListProdukCollection> _listProdukCollection;
-  List<ListProdukCollection> get listProdukCollection => _listProdukCollection;
+  List<ListProdukCollection>? _listProdukCollection;
+  List<ListProdukCollection> get listProdukCollection => _listProdukCollection!;
   void refreshListProdukCollection() {
     _listProdukCollection = null;
     notifyListeners();
@@ -166,22 +168,22 @@ class ProdukCollectionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _jenisProduk;
-  String get jenisProduk => _jenisProduk;
+  String? _jenisProduk;
+  String get jenisProduk => _jenisProduk!;
   void setjenisProduk(String jenisProduk) {
     _jenisProduk = jenisProduk;
   }
 
-  String _saldoResult;
-  String get saldoResult => _saldoResult;
+  String? _saldoResult;
+  String get saldoResult => _saldoResult!;
   void setSaldoResult(String saldo, {bool isListen = true}) {
     _saldoResult = saldo;
     if (isListen) notifyListeners();
   }
 
   void getDataMutasi({
-    BuildContext context,
-    String idProduk,
+    BuildContext? context,
+    String? idProduk,
     String norek = '0',
   }) async {
     try {
@@ -220,8 +222,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
         groupProduk: _selectedgroupProdukProduk,
         // lat: gobalProv.myLatitude.toString() ?? '0.0',
         // long: gobalProv.myLatitude.toString() ?? '0.0',
-        startDate: DateFormat("yyyy-MM-dd").format(_tglAwal),
-        endDate: DateFormat("yyyy-MM-dd").format(_tglAkhir),
+        startDate: DateFormat("yyyy-MM-dd").format(_tglAwal!),
+        endDate: DateFormat("yyyy-MM-dd").format(_tglAkhir!),
       );
       if (listMutasi == null) {
         DialogUtils.instance.showError(context: context);
@@ -241,9 +243,9 @@ class ProdukCollectionProvider extends ChangeNotifier {
 
   //saldokol
 
-  List<SaldoKolektorModel> _saldoKolektorCollection;
+  List<SaldoKolektorModel>? _saldoKolektorCollection;
   List<SaldoKolektorModel> get saldoKolektorCollection =>
-      _saldoKolektorCollection;
+      _saldoKolektorCollection!;
 
   void refreshSaldoKolektor() {
     _saldoKolektorCollection = null;
@@ -276,9 +278,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   //saldokol menu
-  List<SaldoKolektor> _saldoKolektorMenu;
-  List<SaldoKolektor> get saldoKolektorMenu =>
-      _saldoKolektorMenu;
+  List<SaldoKolektor>? _saldoKolektorMenu;
+  List<SaldoKolektor> get saldoKolektorMenu => _saldoKolektorMenu!;
 
   void refreshSaldoKolektorMenu() {
     _saldoKolektorMenu = null;
@@ -302,17 +303,17 @@ class ProdukCollectionProvider extends ChangeNotifier {
 
   //pencarian
 
-  List<NasabahProdukModel> _nasabahList;
-  List<NasabahProdukModel> get getNasabahList => _nasabahList;
+  List<NasabahProdukModel>? _nasabahList;
+  List<NasabahProdukModel> get getNasabahList => _nasabahList!;
 
   void clearSearchNasabah({isListen = true}) {
     _nasabahList = null;
     if (isListen) notifyListeners();
   }
 
-  List<MutasiProdukCollection> _mutasiProdukCollectionSearch;
+  List<MutasiProdukCollection>? _mutasiProdukCollectionSearch;
   List<MutasiProdukCollection> get mutasiProdukCollectionSearch =>
-      _mutasiProdukCollectionSearch;
+      _mutasiProdukCollectionSearch!;
   void refreshMutasiProdukCollectionSearch() {
     _mutasiProdukCollectionSearch = null;
     notifyListeners();
@@ -327,20 +328,21 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   void goToSearchNasbah(BuildContext context) async {
-    await clearSearchNasabah();
+    clearSearchNasabah();
     Navigator.pushNamed(context, RouterGenerator.adapterPencarianNasabah);
   }
 
   void goToSearchMutasi(BuildContext context) async {
-    await clearSearchNasabah();
+    clearSearchNasabah();
     Navigator.pushNamed(context, RouterGenerator.adapterPencarianNasabah);
   }
 
-  void getDataSearchMutasi({BuildContext context, String keyword}) {
+  void getDataSearchMutasi({BuildContext? context, String? keyword}) {
     var dataJSon = json.encode(_muatasiProdukCollection);
     json.decode(dataJSon).forEach((val) {
       if (val.norek.contains(keyword)) {
-        _mutasiProdukCollectionSearch.add(MutasiProdukCollection.fromJson(val));
+        _mutasiProdukCollectionSearch!
+            .add(MutasiProdukCollection.fromJson(val));
       }
     });
     notifyListeners();
@@ -349,7 +351,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   Future getDataSerachNasbah(String keyword, BuildContext context) async {
     setOnSearch(true);
 
-    await clearSearchNasabah();
+    clearSearchNasabah();
 
     final locationProv = Provider.of<GlobalProvider>(context, listen: false);
     try {
@@ -387,8 +389,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
     locationProv.loadLocation(context);
     try {
       var res = await produkCollectionServices.getDataPenagihanPinajaman(
-        tglAwal: DateFormat("yyyy-MM-dd").format(_tglAwal),
-        tglAkhir: DateFormat("yyyy-MM-dd").format(_tglAkhir),
+        tglAwal: DateFormat("yyyy-MM-dd").format(_tglAwal!),
+        tglAkhir: DateFormat("yyyy-MM-dd").format(_tglAkhir!),
         context: context,
       );
       if (res == null) {
@@ -437,9 +439,9 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   // detail produk
-  List<DetailProdukCollection> _detailProdukCollection;
+  List<DetailProdukCollection>? _detailProdukCollection;
   List<DetailProdukCollection> get detailProdukCollection =>
-      _detailProdukCollection;
+      _detailProdukCollection!;
   void refreshDetailProdukCollection() {
     _detailProdukCollection = null;
     notifyListeners();
@@ -542,7 +544,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
           return false;
         } else {
           var jsonData = json.decode(detailProdukCollection);
-          detailProdukCollection = new List<DetailProdukCollection>();
+          detailProdukCollection = [];
           jsonData.forEach((val) {
             print(val);
             detailProdukCollection.add(DetailProdukCollection.fromJson(val));
@@ -565,20 +567,20 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   Future getDataMigrasi({
-    BuildContext context,
-    String groupProduk,
-    String rekCd,
-    String descMigrasi,
+    BuildContext? context,
+    String? groupProduk,
+    String? rekCd,
+    String? descMigrasi,
   }) async {
     EasyLoading.show(status: config.Loading);
-    final globalProv = Provider.of<GlobalProvider>(context, listen: false);
+    final globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     try {
       var dataMigrasi = await produkCollectionServices.getDataMigrasi(
         context: context,
         groupProduk: groupProduk,
         rekCd: rekCd,
         tglAwal: DateFormat("yyyy-MM-dd").format(tglAwal),
-        tglAkhir: DateFormat("yyyy-MM-dd").format(_tglAkhir),
+        tglAkhir: DateFormat("yyyy-MM-dd").format(_tglAkhir!),
         lat: globalProv.latitude.toString(),
         long: globalProv.longitude.toString(),
       );
@@ -615,7 +617,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
             context: context,
             isCancel: false,
             title: "Pemberitahuan!",
-            text: descMigrasi +
+            text: descMigrasi! +
                 " per tanggal " +
                 DateFormat("dd-MM-yyyy").format(tglAwal) +
                 " - " +
@@ -644,9 +646,9 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   // mutasi produk
-  List<MutasiProdukCollection> _muatasiProdukCollection;
+  List<MutasiProdukCollection>? _muatasiProdukCollection;
   List<MutasiProdukCollection> get muatasiProdukCollection =>
-      _muatasiProdukCollection;
+      _muatasiProdukCollection!;
 
   void resetMutasiTransaksi({isListen = true}) {
     _muatasiProdukCollection = null;
@@ -666,22 +668,22 @@ class ProdukCollectionProvider extends ChangeNotifier {
     if (isNotify) notifyListeners();
   }
 
-  DateTime _tglAwal;
-  DateTime get tglAwal => _tglAwal;
+  DateTime? _tglAwal;
+  DateTime get tglAwal => _tglAwal!;
   void setTglAwal(DateTime tglAwal, [bool isNotify = false]) {
     _tglAwal = tglAwal;
     if (isNotify) notifyListeners();
   }
 
-  DateTime _tglAkhir;
-  DateTime get tglAkhir => _tglAkhir;
+  DateTime? _tglAkhir;
+  DateTime get tglAkhir => _tglAkhir!;
   void setTglAkhir(DateTime tglAkhir, [bool isNotify = false]) {
     _tglAkhir = tglAkhir;
     if (isNotify) notifyListeners();
   }
 
-  String _idProduk;
-  String get idProduk => _idProduk;
+  String? _idProduk;
+  String get idProduk => _idProduk!;
   void setIdProduk(String idProduk, [bool isNotify = false]) {
     _idProduk = idProduk;
     if (isNotify) notifyListeners();
@@ -722,21 +724,20 @@ class ProdukTabunganProvider extends ChangeNotifier {
   ProdukCollectionServices produkCollectionServices =
       setup<ProdukCollectionServices>();
 
-  List<ProdukTabunganUserModel> _produkTabunganUser;
-  List<ProdukTabunganUserModel> get produkTabunganUser => _produkTabunganUser;
+  List<ProdukTabunganUserModel>? _produkTabunganUser;
+  List<ProdukTabunganUserModel> get produkTabunganUser => _produkTabunganUser!;
 
-  String _rekSumber, _namaSumber, _saldoSumber;
-  String get rekSumber => _rekSumber;
-  String get namaSumber => _namaSumber;
-  String get saldoSumber => _saldoSumber;
+  String? _rekSumber, _namaSumber, _saldoSumber;
+  String get rekSumber => _rekSumber!;
+  String get namaSumber => _namaSumber!;
+  String get saldoSumber => _saldoSumber!;
 
-  String _rekDefaultSumber, _namaDefaultSumber, _saldoDefaultSumber;
-  String get rekDefaultSumber => _rekDefaultSumber;
-  String get namaDefaultSumber => _namaDefaultSumber;
-  String get saldoDefaultSumber => _saldoDefaultSumber;
-  String get pemilikNamaRekSumber => _rekSumber == null || _namaSumber == null
-      ? ""
-      : _rekSumber + " - " + _namaSumber;
+  String? _rekDefaultSumber, _namaDefaultSumber, _saldoDefaultSumber;
+  String get rekDefaultSumber => _rekDefaultSumber!;
+  String get namaDefaultSumber => _namaDefaultSumber!;
+  String get saldoDefaultSumber => _saldoDefaultSumber!;
+  String get pemilikNamaRekSumber =>
+      _namaSumber == null ? "" : _rekSumber! + " - " + _namaSumber!;
 
   bool _isLoading = true;
   bool get isLoading => _isLoading;
@@ -768,16 +769,13 @@ class ProdukTabunganProvider extends ChangeNotifier {
         if (isSet) {
           final rekSumberDefault = prefs.getString('rekSumber');
           if (rekSumberDefault == null || rekSumberDefault == "") {
-            prefs.setString('rekSumber', produkTabunganUser[0].no_rek);
-            setDefaultRekSumber(
-              produkTabunganUser[0].no_rek,
-              produkTabunganUser[0].nama,
-              produkTabunganUser[0].saldo,
-            );
+            prefs.setString('rekSumber', produkTabunganUser[0].no_rek!);
+            setDefaultRekSumber(produkTabunganUser[0].no_rek!,
+                produkTabunganUser[0].nama!, produkTabunganUser[0].saldo!);
           } else {
             produkTabunganUser.forEach((val) {
               if (val.no_rek == rekSumberDefault) {
-                setDefaultRekSumber(val.no_rek, val.nama, val.saldo);
+                setDefaultRekSumber(val.no_rek!, val.nama!, val.saldo!);
               }
             });
           }
@@ -805,7 +803,7 @@ class ProdukTabunganProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setRekSumber({String noRek}) async {
+  void setRekSumber({String? noRek}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _rekSumber = noRek ?? prefs.getString('rekSumber');
     produkTabunganUser.forEach((val) {

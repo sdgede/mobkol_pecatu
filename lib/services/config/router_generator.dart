@@ -79,7 +79,7 @@ class RouterGenerator {
   // menu daftar pinjaman jatuh tempo
   static const exportDatabase = "/export_database/exportDatabasePage";
   // ignore: missing_return
-  static Route<dynamic> generateRoute(RouteSettings settings) {
+  static Route<dynamic>? generateRoute(RouteSettings settings) {
     final args = settings.arguments;
 
     switch (settings.name) {
@@ -98,17 +98,17 @@ class RouterGenerator {
         return MaterialPageRoute(builder: (_) => LoginPage());
         break;
       case homeKolektor:
-        return MaterialPageRoute(builder: (_) => 
-          ShowCaseWidget (
-            onFinish: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setBool('first_time', false);
-            },
-            builder: Builder(
-              builder: (context) => HomeKolektor(),
-            ),
-          )
-        );
+        return MaterialPageRoute(
+            builder: (_) => ShowCaseWidget(
+                  onFinish: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setBool('first_time', false);
+                  },
+                  builder: Builder(
+                    builder: (context) => HomeKolektor(),
+                  ),
+                ));
         break;
 
       //setting
@@ -137,7 +137,7 @@ class RouterGenerator {
       case hasilPencarianProduk:
         return MaterialPageRoute(
           builder: (_) => HasilPencarianProduk(
-            arguments: args,
+            arguments: args as Map<String, dynamic>,
           ),
         );
         break;
@@ -154,14 +154,14 @@ class RouterGenerator {
       case mutasiTransaksi:
         return MaterialPageRoute(
           builder: (_) => MutasiTransaksi(
-            arguments: args,
+            arguments: args as Map<String, dynamic>,
           ),
         );
         break;
       case mutasiKredit:
         return MaterialPageRoute(
           builder: (_) => MutasiKredit(
-            arguments: args,
+            arguments: args as Map<String, dynamic>,
           ),
         );
         break;
@@ -204,5 +204,6 @@ class RouterGenerator {
         return MaterialPageRoute(builder: (_) => ExportDatabase());
         break;
     }
+    return null;
   }
 }

@@ -10,7 +10,7 @@ import '../../../database/databaseHelper.dart';
 import '../../constant/constant.dart';
 
 class SplashPage extends StatefulWidget {
-  SplashPage({Key key}) : super(key: key);
+  SplashPage({Key? key}) : super(key: key);
 
   @override
   _SplashPageState createState() => _SplashPageState();
@@ -19,53 +19,49 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage>
     with SingleTickerProviderStateMixin {
   final dbHelper = DatabaseHelper.instance;
-  AnimationController animationController;
-  Animation<double> animation;
+  AnimationController? animationController;
+  Animation<double>? animation;
   List<Color> colors = [
     Colors.black,
   ];
 
-  ProdukCollectionProvider produkProv;
-  GlobalProvider globalProv;
+  ProdukCollectionProvider? produkProv;
+  GlobalProvider? globalProv;
 
   int durationSplashScreen = 5;
 
   startTimeout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool firstTime = prefs.getBool('first_time');
+    bool firstTime = prefs.getBool('first_time')!;
     var _redirectPage;
 
-    await globalProv.checkUpdate(context);
+    await globalProv!.checkUpdate(context);
 
-    if(
-      globalProv.updateInfo.type == config.MANDATORY_UPDATE || 
-      globalProv.updateInfo.type == config.NORMAL_UPDATE ||
-      globalProv.updateInfo.type == config.MAINTENANCE 
-    ){
+    if (globalProv!.updateInfo.type == config.MANDATORY_UPDATE ||
+        globalProv!.updateInfo.type == config.NORMAL_UPDATE ||
+        globalProv!.updateInfo.type == config.MAINTENANCE) {
       _redirectPage = RouterGenerator.pageUpdate;
-    }  else {
+    } else {
       _redirectPage = RouterGenerator.pageLogin;
     }
 
     Future.delayed(Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(
-        context, _redirectPage, 
-        arguments: {'route': RouterGenerator.pageLogin}
-      );
+      Navigator.pushReplacementNamed(context, _redirectPage,
+          arguments: {'route': RouterGenerator.pageLogin});
     });
   }
 
   loadAllData() async {
     // load data config
-    await globalProv.getLocalConfig();
+    await globalProv!.getLocalConfig();
 
     await dbHelper.database;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var nama = prefs.getString('nama');
     if (nama != "" && nama != null) config.PersonName = nama;
 
-    produkProv.dataProduk(context);
-    produkProv.dataProdukMigrasi(context);
+    produkProv!.dataProduk(context);
+    produkProv!.dataProdukMigrasi(context);
   }
 
   @override
@@ -83,12 +79,12 @@ class _SplashPageState extends State<SplashPage>
     );
 
     animation = new CurvedAnimation(
-      parent: animationController,
+      parent: animationController!,
       curve: Curves.easeOut,
     );
 
-    animation.addListener(() => this.setState(() {}));
-    animationController.forward();
+    animation!.addListener(() => this.setState(() {}));
+    animationController!.forward();
 
     startTimeout();
   }
@@ -118,7 +114,7 @@ class _SplashPageState extends State<SplashPage>
               left: 50,
               right: 50,
               child: FadeTransition(
-                opacity: animation,
+                opacity: animation!,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

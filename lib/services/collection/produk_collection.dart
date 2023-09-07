@@ -10,20 +10,22 @@ import '../config/config.dart' as config;
 import '../utils/mcrypt_utils.dart';
 
 class ProdukCollectionServices extends BaseServices {
-  GlobalProvider _globalProv;
+  GlobalProvider? _globalProv;
   final dbHelper = DatabaseHelper.instance;
 
-  Future<List<ProdukCollection>> dataProduk({BuildContext context, bool migrasi = false}) async {
-    _globalProv = Provider.of<GlobalProvider>(context, listen: false);
+  Future<List<ProdukCollection>> dataProduk(
+      {BuildContext? context, bool migrasi = false}) async {
+    _globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     var dataProduk = Map<String, dynamic>();
     dataProduk["req"] = "getIconProdukApp";
-    dataProduk["context"] = migrasi ?  McryptUtils.instance.encrypt("migrasi") : "";
+    dataProduk["context"] =
+        migrasi ? McryptUtils.instance.encrypt("migrasi") : "";
     dataProduk["id_user"] =
         McryptUtils.instance.encrypt(config.dataLogin['ID_USER']);
 
     var resp;
 
-    if (_globalProv.getConnectionMode == config.onlineMode)
+    if (_globalProv!.getConnectionMode == config.onlineMode)
       resp = await request(
         context: context,
         url: config.urlApiLogin,
@@ -33,13 +35,13 @@ class ProdukCollectionServices extends BaseServices {
     else
       resp = await dbHelper.getIconProdukOffline(dataParse: dataProduk);
 
-    print("response ${resp}");
+    print("response $resp");
 
-    var produkCollection;
+    List<ProdukCollection> produkCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      produkCollection = new List<ProdukCollection>();
+      List<ProdukCollection> produkCollection = [];
       jsonData.forEach((val) {
         produkCollection.add(ProdukCollection.fromJson(val));
       });
@@ -48,11 +50,11 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<MutasiProdukCollection>> getDataMutasi({
-    BuildContext context,
-    String idProduk,
-    String rekCd,
-    String groupProduk,
-    String norek,
+    BuildContext? context,
+    String? idProduk,
+    String? rekCd,
+    String? groupProduk,
+    String? norek,
   }) async {
     var dataProduk = Map<String, dynamic>();
     var urlWs = config.urlApiNasabahProduk;
@@ -70,9 +72,9 @@ class ProdukCollectionServices extends BaseServices {
       urlWs = config.urlApiNasabahKredit;
     }
 
-    dataProduk["id_produk"] = McryptUtils.instance.encrypt(idProduk);
-    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd);
-    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk);
+    dataProduk["id_produk"] = McryptUtils.instance.encrypt(idProduk!);
+    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
+    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
     dataProduk["norek"] = McryptUtils.instance.encrypt(norek ?? '0');
 
     dataProduk["user"] =
@@ -93,11 +95,10 @@ class ProdukCollectionServices extends BaseServices {
       data: dataProduk,
     );
 
-    var listProdukCollection;
+    List<MutasiProdukCollection> listProdukCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      listProdukCollection = new List<MutasiProdukCollection>();
       jsonData.forEach((val) {
         listProdukCollection.add(MutasiProdukCollection.fromJson(val));
       });
@@ -106,13 +107,13 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<MutasiProdukCollection>> getDataKlad({
-    BuildContext context,
-    String rekCd,
-    String groupProduk,
-    String lat,
-    String long,
-    String startDate,
-    String endDate,
+    BuildContext? context,
+    String? rekCd,
+    String? groupProduk,
+    String? lat,
+    String? long,
+    String? startDate,
+    String? endDate,
   }) async {
     var dataProduk = Map<String, dynamic>();
     var urlWs = config.urlApiTransaksiTabungan;
@@ -130,8 +131,8 @@ class ProdukCollectionServices extends BaseServices {
       urlWs = config.urlApiTransaksiKredit;
     }
 
-    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd);
-    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk);
+    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
+    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
 
     dataProduk["user"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
@@ -141,14 +142,14 @@ class ProdukCollectionServices extends BaseServices {
         McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
     dataProduk["remark"] =
         McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
-    dataProduk["tglAwal"] = McryptUtils.instance.encrypt(startDate);
-    dataProduk["tglAkhir"] = McryptUtils.instance.encrypt(endDate);
-    dataProduk["lat"] = McryptUtils.instance.encrypt(lat);
-    dataProduk["longi"] = McryptUtils.instance.encrypt(long);
+    dataProduk["tglAwal"] = McryptUtils.instance.encrypt(startDate!);
+    dataProduk["tglAkhir"] = McryptUtils.instance.encrypt(endDate!);
+    dataProduk["lat"] = McryptUtils.instance.encrypt(lat!);
+    dataProduk["longi"] = McryptUtils.instance.encrypt(long!);
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
 
     var resp;
-    if (_globalProv.getConnectionMode == config.offlineMode)
+    if (_globalProv!.getConnectionMode == config.offlineMode)
       resp = await dbHelper.getKladOffline(dataParse: dataProduk);
     else
       resp = await request(
@@ -160,11 +161,10 @@ class ProdukCollectionServices extends BaseServices {
 
     print(resp);
 
-    var listProdukCollection;
+    List<MutasiProdukCollection> listProdukCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      listProdukCollection = new List<MutasiProdukCollection>();
       jsonData.forEach((val) {
         listProdukCollection.add(MutasiProdukCollection.fromJson(val));
       });
@@ -173,17 +173,17 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<SaldoKolektorModel>> getDataSaldoKolektor({
-    BuildContext context,
-    String rekCd,
-    String groupProduk,
+    BuildContext? context,
+    String? rekCd,
+    String? groupProduk,
   }) async {
-    _globalProv = Provider.of<GlobalProvider>(context, listen: false);
+    _globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     var dataProduk = Map<String, dynamic>();
     var urlWs = config.urlApiNasabahProduk;
     dataProduk["req"] = "getSaldoKolektor";
 
-    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd);
-    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk);
+    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
+    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
 
     dataProduk["user"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
@@ -198,7 +198,7 @@ class ProdukCollectionServices extends BaseServices {
 
     var resp;
 
-    if (_globalProv.getConnectionMode == config.offlineMode)
+    if (_globalProv!.getConnectionMode == config.offlineMode)
       resp = await dbHelper.getSaldoKolOffline(dataParse: dataProduk);
     else
       resp = await request(
@@ -210,11 +210,10 @@ class ProdukCollectionServices extends BaseServices {
 
     print(resp);
 
-    var listProdukCollection;
+    List<SaldoKolektorModel> listProdukCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      listProdukCollection = new List<SaldoKolektorModel>();
       jsonData.forEach((val) {
         listProdukCollection.add(SaldoKolektorModel.fromJson(val));
       });
@@ -223,33 +222,30 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<SaldoKolektor>> getSaldoKolektor({
-    BuildContext context,
+    BuildContext? context,
   }) async {
-    _globalProv = Provider.of<GlobalProvider>(context, listen: false);
+    _globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     var dataProduk = Map<String, dynamic>();
 
     var urlWs = config.urlApiNasabahProduk;
-    dataProduk["req"] = "getSaldoKolektor"; 
+    dataProduk["req"] = "getSaldoKolektor";
 
     var resp;
 
-    if (_globalProv.getConnectionMode == config.offlineMode)
+    if (_globalProv!.getConnectionMode == config.offlineMode)
       resp = await dbHelper.getSaldoKolOffline(dataParse: dataProduk);
-    else{
+    else {
       resp = await request(
-        context: context,
-        url: urlWs,
-        type: RequestType.POST,
-        data: dataProduk
-      );
+          context: context,
+          url: urlWs,
+          type: RequestType.POST,
+          data: dataProduk);
     }
 
-    var listProdukCollection;
+    List<SaldoKolektor> listProdukCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-
-      listProdukCollection = new List<SaldoKolektor>();
       jsonData.forEach((val) {
         listProdukCollection.add(SaldoKolektor.fromJson(val));
       });
@@ -258,14 +254,14 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<NasabahProdukModel>> getDataSearchNasabah({
-    BuildContext context,
-    String keyword,
-    String rekCd,
-    String groupProduk,
-    String latitude,
-    String longitude,
+    BuildContext? context,
+    String? keyword,
+    String? rekCd,
+    String? groupProduk,
+    String? latitude,
+    String? longitude,
   }) async {
-    _globalProv = Provider.of<GlobalProvider>(context, listen: false);
+    _globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     var dataProduk = Map<String, dynamic>();
     var urlWs = config.urlApiNasabahProduk;
 
@@ -280,14 +276,14 @@ class ProdukCollectionServices extends BaseServices {
       dataProduk["req"] = "getDataPencarianKredit";
     }
 
-    dataProduk["keyword"] = McryptUtils.instance.encrypt(keyword);
-    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd);
-    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk);
+    dataProduk["keyword"] = McryptUtils.instance.encrypt(keyword!);
+    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
+    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
     dataProduk["user"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
 
     var resp;
-    if (_globalProv.getConnectionMode == config.offlineMode)
+    if (_globalProv!.getConnectionMode == config.offlineMode)
       resp = await dbHelper.pencarianNasabahTabOffline(dataParse: dataProduk);
     else
       resp = await request(
@@ -297,11 +293,10 @@ class ProdukCollectionServices extends BaseServices {
         data: dataProduk,
       );
 
-    var listProdukCollection;
+    List<NasabahProdukModel> listProdukCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      listProdukCollection = new List<NasabahProdukModel>();
       jsonData.forEach((val) {
         listProdukCollection.add(NasabahProdukModel.fromJson(val));
       });
@@ -310,16 +305,16 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<NasabahProdukModel>> getDataPenagihanPinajaman({
-    BuildContext context,
-    String tglAwal,
-    String tglAkhir,
-    String latitude,
-    String longitude,
+    BuildContext? context,
+    String? tglAwal,
+    String? tglAkhir,
+    String? latitude,
+    String? longitude,
   }) async {
     var dataProduk = Map<String, dynamic>();
     dataProduk["req"] = "getDataPenagihanPinjaman";
-    dataProduk["tgl_awal"] = McryptUtils.instance.encrypt(tglAwal);
-    dataProduk["tgl_akhir"] = McryptUtils.instance.encrypt(tglAkhir);
+    dataProduk["tgl_awal"] = McryptUtils.instance.encrypt(tglAwal!);
+    dataProduk["tgl_akhir"] = McryptUtils.instance.encrypt(tglAkhir!);
 
     var resp = await request(
       context: context,
@@ -328,11 +323,10 @@ class ProdukCollectionServices extends BaseServices {
       data: dataProduk,
     );
 
-    var listProdukCollection;
+    List<NasabahProdukModel> listProdukCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      listProdukCollection = new List<NasabahProdukModel>();
       jsonData.forEach((val) {
         listProdukCollection.add(NasabahProdukModel.fromJson(val));
       });
@@ -341,14 +335,14 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<ListProdukCollection>> getDataProdukByUserId({
-    BuildContext context,
-    String idUser,
-    String rekCd,
+    BuildContext? context,
+    String? idUser,
+    String? rekCd,
   }) async {
     var dataProduk = Map<String, dynamic>();
     dataProduk["req"] = "spGetProdukByProdukIdUser";
-    dataProduk["id"] = McryptUtils.instance.encrypt(idUser);
-    dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd);
+    dataProduk["id"] = McryptUtils.instance.encrypt(idUser!);
+    dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd!);
     dataProduk["user"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
@@ -367,11 +361,10 @@ class ProdukCollectionServices extends BaseServices {
       data: dataProduk,
     );
 
-    var listProdukCollection;
+    List<ListProdukCollection> listProdukCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      listProdukCollection = new List<ListProdukCollection>();
       jsonData.forEach((val) {
         listProdukCollection.add(ListProdukCollection.fromJson(val));
       });
@@ -380,14 +373,14 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<DetailProdukCollection>> getDataDetailProdukByProdukId({
-    BuildContext context,
-    String produkId,
-    String rekCd,
+    BuildContext? context,
+    String? produkId,
+    String? rekCd,
   }) async {
     var dataProduk = Map<String, dynamic>();
     dataProduk["req"] = "spGetDetailProdukByProdukId";
-    dataProduk["id"] = McryptUtils.instance.encrypt(produkId);
-    dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd);
+    dataProduk["id"] = McryptUtils.instance.encrypt(produkId!);
+    dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd!);
     dataProduk["user"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
@@ -412,7 +405,7 @@ class ProdukCollectionServices extends BaseServices {
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      detailProdukCollection = new List<DetailProdukCollection>();
+      List<ListProdukCollection> listProdukCollection = [];
       jsonData.forEach((val) {
         detailProdukCollection.add(DetailProdukCollection.fromJson(val));
       });
@@ -421,14 +414,14 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<DetailProdukCollection>> getDataDetailProdukByNasabahId({
-    BuildContext context,
-    String idUser,
-    String rekCd,
+    BuildContext? context,
+    String? idUser,
+    String? rekCd,
   }) async {
     var dataProduk = Map<String, dynamic>();
     dataProduk["req"] = "getDataDetailProdukByNasabahId";
-    dataProduk["id"] = McryptUtils.instance.encrypt(idUser);
-    dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd);
+    dataProduk["id"] = McryptUtils.instance.encrypt(idUser!);
+    dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd!);
     dataProduk["user"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
@@ -449,11 +442,10 @@ class ProdukCollectionServices extends BaseServices {
 
     print(resp);
 
-    var detailProdukCollection;
+    List<DetailProdukCollection> detailProdukCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      detailProdukCollection = new List<DetailProdukCollection>();
       jsonData.forEach((val) {
         print(val);
         detailProdukCollection.add(DetailProdukCollection.fromJson(val));
@@ -463,12 +455,12 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   dynamic getDataProdukByRek({
-    BuildContext context,
-    String norek,
-    String groupProduk,
-    String rekCd,
-    String lat,
-    String long,
+    BuildContext? context,
+    String? norek,
+    String? groupProduk,
+    String? rekCd,
+    String? lat,
+    String? long,
   }) async {
     var dataProduk = Map<String, dynamic>();
     var urlWs = config.urlApiNasabahProduk;
@@ -485,18 +477,18 @@ class ProdukCollectionServices extends BaseServices {
       dataProduk["req"] = "getRincianKreditByRek";
       urlWs = config.urlApiNasabahKredit;
     }
-    dataProduk["norek"] = McryptUtils.instance.encrypt(norek);
-    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd);
-    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk);
+    dataProduk["norek"] = McryptUtils.instance.encrypt(norek!);
+    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
+    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
     dataProduk["kolektor"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
-    dataProduk["lat"] = McryptUtils.instance.encrypt(lat);
-    dataProduk["longi"] = McryptUtils.instance.encrypt(long);
+    dataProduk["lat"] = McryptUtils.instance.encrypt(lat!);
+    dataProduk["longi"] = McryptUtils.instance.encrypt(long!);
 
     //getDataProdukByRek
     var resp;
 
-    if (_globalProv.getConnectionMode == config.offlineMode)
+    if (_globalProv!.getConnectionMode == config.offlineMode)
       resp = await dbHelper.getDataProduk(dataParse: dataProduk);
     else
       resp = await request(
@@ -526,13 +518,13 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   dynamic getDataMigrasi({
-    BuildContext context,
-    String groupProduk,
-    String rekCd,
-    String tglAwal,
-    String tglAkhir,
-    String lat,
-    String long,
+    BuildContext? context,
+    String? groupProduk,
+    String? rekCd,
+    String? tglAwal,
+    String? tglAkhir,
+    String? lat,
+    String? long,
   }) async {
     var dataProduk = Map<String, dynamic>();
     var urlWs = config.urlApiNasabahProduk;
@@ -556,14 +548,14 @@ class ProdukCollectionServices extends BaseServices {
       urlWs = config.urlApiLogin;
     }
 
-    dataProduk["tglAwal"] = McryptUtils.instance.encrypt(tglAwal);
-    dataProduk["tglAkhir"] = McryptUtils.instance.encrypt(tglAkhir);
-    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd);
-    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk);
+    dataProduk["tglAwal"] = McryptUtils.instance.encrypt(tglAwal!);
+    dataProduk["tglAkhir"] = McryptUtils.instance.encrypt(tglAkhir!);
+    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
+    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
     dataProduk["kolektor"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
-    dataProduk["lat"] = McryptUtils.instance.encrypt(lat);
-    dataProduk["longi"] = McryptUtils.instance.encrypt(long);
+    dataProduk["lat"] = McryptUtils.instance.encrypt(lat!);
+    dataProduk["longi"] = McryptUtils.instance.encrypt(long!);
 
     var resp = await request(
       context: context,
@@ -576,18 +568,18 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<MutasiProdukCollection>> getMutasiProdukByProdukIdDateRage({
-    BuildContext context,
-    String produkId,
-    String rekCd,
-    String tglAwal,
-    String tglAkhir,
+    BuildContext? context,
+    String? produkId,
+    String? rekCd,
+    String? tglAwal,
+    String? tglAkhir,
   }) async {
     var dataProduk = Map<String, dynamic>();
     dataProduk["req"] = "getPrimaNotaByProdukIdDateRange";
-    dataProduk["id"] = McryptUtils.instance.encrypt(produkId);
-    dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd);
-    dataProduk["tgl_awal"] = McryptUtils.instance.encrypt(tglAwal);
-    dataProduk["tgl_akhir"] = McryptUtils.instance.encrypt(tglAkhir);
+    dataProduk["id"] = McryptUtils.instance.encrypt(produkId!);
+    dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd!);
+    dataProduk["tgl_awal"] = McryptUtils.instance.encrypt(tglAwal!);
+    dataProduk["tgl_akhir"] = McryptUtils.instance.encrypt(tglAkhir!);
     dataProduk["user"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
@@ -606,11 +598,10 @@ class ProdukCollectionServices extends BaseServices {
       data: dataProduk,
     );
 
-    var muatasiProdukCollection;
+    List<MutasiProdukCollection> muatasiProdukCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      muatasiProdukCollection = new List<MutasiProdukCollection>();
       jsonData.forEach((val) {
         muatasiProdukCollection.add(MutasiProdukCollection.fromJson(val));
       });
@@ -619,12 +610,12 @@ class ProdukCollectionServices extends BaseServices {
   }
 
   Future<List<ProdukTabunganUserModel>> spGetTabunganIdUser({
-    BuildContext context,
-    String idUser,
+    BuildContext? context,
+    String? idUser,
   }) async {
     var dataProduk = Map<String, dynamic>();
     dataProduk["req"] = "spGetTabunganIdUser";
-    dataProduk["id"] = McryptUtils.instance.encrypt(idUser);
+    dataProduk["id"] = McryptUtils.instance.encrypt(idUser!);
     dataProduk["user"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
@@ -645,11 +636,10 @@ class ProdukCollectionServices extends BaseServices {
       data: dataProduk,
     );
 
-    var produkTabunganUser;
+    List<ProdukTabunganUserModel> produkTabunganUser = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      produkTabunganUser = new List<ProdukTabunganUserModel>();
       jsonData.forEach((val) {
         produkTabunganUser.add(ProdukTabunganUserModel.fromJson(val));
       });

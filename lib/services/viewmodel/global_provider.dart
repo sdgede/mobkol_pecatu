@@ -36,24 +36,24 @@ class GlobalProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  BluetoothDevice _selectedPrinter;
-  BluetoothDevice get getSelectedPrinter => _selectedPrinter;
+  BluetoothDevice? _selectedPrinter;
+  BluetoothDevice get getSelectedPrinter => _selectedPrinter!;
 
   void setSelectedPrinter(BluetoothDevice printer) {
     _selectedPrinter = printer;
     notifyListeners();
   }
 
-  String _selectedPrinterName;
-  String get getSelectedPrinterName => _selectedPrinterName;
+  String? _selectedPrinterName;
+  String get getSelectedPrinterName => _selectedPrinterName!;
 
   void setSelectedPrinterName(String printerName) {
     _selectedPrinterName = printerName;
     notifyListeners();
   }
 
-  String _invoiceImage;
-  String get getInvoiceImage => _invoiceImage;
+  String? _invoiceImage;
+  String get getInvoiceImage => _invoiceImage!;
 
   void setInvoiceImage(String val) {
     _invoiceImage = val;
@@ -68,9 +68,9 @@ class GlobalProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-dynamic _dataLogin;
-dynamic get dataLogin => _dataLogin;
-Future getLogin(
+  dynamic _dataLogin;
+  dynamic get dataLogin => _dataLogin;
+  Future getLogin(
       BuildContext context, String username, String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     EasyLoading.show(status: config.Loading);
@@ -83,7 +83,7 @@ Future getLogin(
       var result = res;
       if (_connectionMode == config.onlineMode)
         result = res == null ? null : json.decode(res);
-        _dataLogin = result;
+      _dataLogin = result;
 
       if (result == null) {
         EasyLoading.dismiss();
@@ -132,29 +132,29 @@ Future getLogin(
   }
 
   Future syncAcount() async {
-      try {
-        if(dataLogin != null){
-          var syncData = await globalCollectionServices.syncAccount(dataLogin['dataUser']);
-          print("Account sync was successful with response $syncData");
-        }
-      } catch (e) {
-        print("Error sync data user: $e");
+    try {
+      if (dataLogin != null) {
+        var syncData =
+            await globalCollectionServices.syncAccount(dataLogin['dataUser']);
+        print("Account sync was successful with response $syncData");
       }
+    } catch (e) {
+      print("Error sync data user: $e");
+    }
   }
 
-  Future syncMigrateData({
-    BuildContext context, 
-    var groupProduk, 
-    var rekCd,
-    DateTime tglAwal,
-    DateTime tglAkhir
-  }) async {
+  Future syncMigrateData(
+      {BuildContext? context,
+      var groupProduk,
+      var rekCd,
+      DateTime? tglAwal,
+      DateTime? tglAkhir}) async {
     var dataMigrasi = await produkCollectionServices.getDataMigrasi(
       context: context,
       groupProduk: groupProduk,
       rekCd: rekCd,
-      tglAwal: DateFormat("yyyy-MM-dd").format(tglAwal),
-      tglAkhir: DateFormat("yyyy-MM-dd").format(tglAkhir),
+      tglAwal: DateFormat("yyyy-MM-dd").format(tglAwal!),
+      tglAkhir: DateFormat("yyyy-MM-dd").format(tglAkhir!),
       lat: latitude.toString(),
       long: longitude.toString(),
     );
@@ -162,7 +162,7 @@ Future getLogin(
     print("dataMigrasi $groupProduk $dataMigrasi");
     if (result == null) {
       return null;
-    }else{
+    } else {
       if (result[0]['res_status'] == 'Gagal') {
         return null;
       }
@@ -176,92 +176,90 @@ Future getLogin(
   }
 
   Future syncData(BuildContext context, var products) async {
-      try {
-        EasyLoading.show(status: config.Loading);
-        DateTime last = await globalCollectionServices.lastSync();
-        DateTime current = DateTime.now();
-        int ditambahkan  = 0;
-        int diperbaharui = 0;
-        String updatedText = '';
-       
-        // statis: master nasabah
-        var effectedRowCF = await syncMigrateData(
+    try {
+      EasyLoading.show(status: config.Loading);
+      DateTime last = await globalCollectionServices.lastSync();
+      DateTime current = DateTime.now();
+      int ditambahkan = 0;
+      int diperbaharui = 0;
+      String updatedText = '';
+
+      // statis: master nasabah
+      var effectedRowCF = await syncMigrateData(
           context: context,
-          groupProduk: 'CONFIG', 
+          groupProduk: 'CONFIG',
           rekCd: 'CONFIG',
           tglAwal: last,
-          tglAkhir: current  
-        );
-        if(effectedRowCF != null){
-          updatedText += ' Config,';
-          ditambahkan += effectedRowCF['row_add'];
-          diperbaharui += effectedRowCF['row_edit'];
-        }
-        var effectedRowMN = await syncMigrateData(
+          tglAkhir: current);
+      if (effectedRowCF != null) {
+        updatedText += ' Config,';
+        ditambahkan += effectedRowCF['row_add'] as int;
+        diperbaharui += effectedRowCF['row_edit'] as int;
+      }
+      var effectedRowMN = await syncMigrateData(
           context: context,
-          groupProduk: 'MASTER_NASABAH', 
+          groupProduk: 'MASTER_NASABAH',
           rekCd: 'MASTER_NASABAH',
           tglAwal: last,
-          tglAkhir: current  
-        );
-        if(effectedRowMN != null){
-          updatedText += ' Master Nasabah,';
-          ditambahkan += effectedRowMN['row_add'];
-          diperbaharui += effectedRowMN['row_edit'];
-        }
-        // dinamis: produk
-        for (ProdukCollection product in products) {
-          print("Sync data available: ${product.nama}");
-        }
-        for (ProdukCollection product in products) {
-          var effectedRow = await syncMigrateData(
+          tglAkhir: current);
+      if (effectedRowMN != null) {
+        updatedText += ' Master Nasabah,';
+        ditambahkan += effectedRowMN['row_add'] as int;
+        diperbaharui += effectedRowMN['row_edit'] as int;
+      }
+      // dinamis: produk
+      for (ProdukCollection product in products) {
+        print("Sync data available: ${product.nama}");
+      }
+      for (ProdukCollection product in products) {
+        var effectedRow = await syncMigrateData(
             context: context,
-            groupProduk: product.slug, 
+            groupProduk: product.slug,
             rekCd: product.rekCd,
             tglAwal: last,
-            tglAkhir: current  
-          );
-          if(effectedRow != null){
-            updatedText += ' '+TextUtils().capitalizeEachWord(product.nama)+',';
-            ditambahkan += effectedRow['row_add'];
-            diperbaharui += effectedRow['row_edit'];
-          }
+            tglAkhir: current);
+        if (effectedRow != null) {
+          updatedText +=
+              ' ' + TextUtils().capitalizeEachWord(product.nama!) + ',';
+          ditambahkan += effectedRow['row_add'] as int;
+          diperbaharui += effectedRow['row_edit'] as int;
         }
-        // update db version
-        await globalCollectionServices.updateSync(DateFormat('yyyy-MM-dd').format(current));
-
-        // jika sudah selesai
-        print("Data {$updatedText} was successfully synchronized");
-        EasyLoading.dismiss();
-        await DialogUtils.instance.showInfo(
-          context: context,
-          isCancel: false,
-          title: "Pemberitahuan!",
-          text: "Data berhasil diperbaharui \n\n" +
-              "Data ditambahkan : " +
-              ditambahkan.toString() +
-              "\n" +
-              "Data diperbarui : " +
-              diperbaharui.toString() +
-              "\n\nData yang diperbaharui: $updatedText",
-          clickOKText: "TUTUP",
-        );
-        return true;
-      } catch (e) {
-        print("Error sync data: $e");
-        EasyLoading.dismiss();
       }
+      // update db version
+      await globalCollectionServices
+          .updateSync(DateFormat('yyyy-MM-dd').format(current));
+
+      // jika sudah selesai
+      print("Data {$updatedText} was successfully synchronized");
+      EasyLoading.dismiss();
+      await DialogUtils.instance.showInfo(
+        context: context,
+        isCancel: false,
+        title: "Pemberitahuan!",
+        text: "Data berhasil diperbaharui \n\n" +
+            "Data ditambahkan : " +
+            ditambahkan.toString() +
+            "\n" +
+            "Data diperbarui : " +
+            diperbaharui.toString() +
+            "\n\nData yang diperbaharui: $updatedText",
+        clickOKText: "TUTUP",
+      );
+      return true;
+    } catch (e) {
+      print("Error sync data: $e");
+      EasyLoading.dismiss();
+    }
   }
-  
 
   Future isNeedSync() async {
-      try {
-        bool syncData = await globalCollectionServices.isNeedSync();
-        print("syncData $syncData");
-        return syncData;
-      } catch (e) {
-        print("Error is need sync: $e");
-      }
+    try {
+      bool syncData = await globalCollectionServices.isNeedSync();
+      print("syncData $syncData");
+      return syncData;
+    } catch (e) {
+      print("Error is need sync: $e");
+    }
   }
 
   dynamic getLoginPin(BuildContext context, String pin) async {
@@ -445,22 +443,22 @@ Future getLogin(
   }
 
   //my location service
-  String _myAddress;
-  String get myAddress => _myAddress;
+  String? _myAddress;
+  String get myAddress => _myAddress!;
 
-  double _myLatitude;
-  double get myLatitude => _myLatitude;
-  double _myLongitude;
-  double get myLongitude => _myLongitude;
+  double? _myLatitude;
+  double get myLatitude => _myLatitude!;
+  double? _myLongitude;
+  double get myLongitude => _myLongitude!;
 
   //location service
-  String _address;
-  String get address => _address;
+  String? _address;
+  String get address => _address!;
 
-  double _latitude;
-  double get latitude => _latitude;
-  double _longitude;
-  double get longitude => _longitude;
+  double? _latitude;
+  double get latitude => _latitude!;
+  double? _longitude;
+  double get longitude => _longitude!;
 
   LocationUtils locationUtils = setup<LocationUtils>();
 
@@ -475,8 +473,8 @@ Future getLogin(
   }
 
   dynamic setLocation({
-    double latitude,
-    double longitude,
+    double? latitude,
+    double? longitude,
   }) async {
     _address = await locationUtils.getAddressByCoordinates(
       latitude: latitude,
@@ -535,17 +533,19 @@ Future getLogin(
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       Platform.isAndroid ? "ANDROID" : "IOS",
       config.companyName,
-      config.companyFullName,
-      importance: Importance.Max,
-      priority: Priority.High,
+      channelDescription: config.companyFullName,
+      importance: Importance.max,
+      priority: Priority.high,
       onlyAlertOnce: true,
       showProgress: true,
       maxProgress: maxProgress,
       progress: progress,
     );
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    // var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
         123,
         "Upload transaksi offline",
@@ -556,47 +556,48 @@ Future getLogin(
   dynamic exportDB(BuildContext context, String path) async {
     try {
       File result = await globalCollectionServices.copyDB();
-                    
-      Directory documentsDirectory = 
-                Directory(path);
 
-      String newPath = join(documentsDirectory.absolute.path + '/' + config.mobileName.replaceAll(RegExp(r' '), '_') + '_db.db');
+      Directory documentsDirectory = Directory(path);
 
-      File b = File("${result.path}"+"/sqlite_koperasi.db");
-                              
-      if ( await Permission.storage.request().isGranted &&
-          await Permission.accessMediaLocation.request().isGranted 
-      ){
+      String newPath = join(documentsDirectory.absolute.path +
+          '/' +
+          config.mobileName.replaceAll(RegExp(r' '), '_') +
+          '_db.db');
+
+      File b = File("${result.path}" + "/sqlite_koperasi.db");
+
+      if (await Permission.storage.request().isGranted &&
+          await Permission.accessMediaLocation.request().isGranted) {
         File a = await b.copy(newPath);
         DialogUtils.instance.showInfo(
-          context: context,
-          title: 'Database Tersimpan',
-          text: "Database berhasil disimpan pada $a",
-          isCancel: false,
-          clickOKText: "TUTUP"
-        );
+            context: context,
+            title: 'Database Tersimpan',
+            text: "Database berhasil disimpan pada $a",
+            isCancel: false,
+            clickOKText: "TUTUP");
       } else {
-        DialogUtils.instance.showError(context: context, text: "Export Database error: No Permission Granted!");
+        DialogUtils.instance.showError(
+            context: context,
+            text: "Export Database error: No Permission Granted!");
       }
     } catch (e) {
-       DialogUtils.instance.showError(context: context, text: "Export Database error: $e");
+      DialogUtils.instance
+          .showError(context: context, text: "Export Database error: $e");
     }
   }
 
-  UpdateInfo _updateInfo;
-  UpdateInfo get updateInfo => _updateInfo;
+  UpdateInfo? _updateInfo;
+  UpdateInfo get updateInfo => _updateInfo!;
 
   dynamic checkUpdate(BuildContext context) async {
     try {
-      UpdateInfo resp = await globalCollectionServices.checkUpdate(context: context);
+      UpdateInfo? resp =
+          await globalCollectionServices.checkUpdate(context: context);
 
-      if(resp == null) {
-        _updateInfo = new UpdateInfo(
-          title: '', 
-          version: '', 
-          desc: '', 
-          type: 'NO_UPDATE');
-      }else {
+      if (resp == null) {
+        _updateInfo =
+            new UpdateInfo(title: '', version: '', desc: '', type: 'NO_UPDATE');
+      } else {
         _updateInfo = resp;
       }
     } catch (e) {

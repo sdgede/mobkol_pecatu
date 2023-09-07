@@ -1,8 +1,8 @@
 class ListChoiceModel {
-  String title, value, value2, desc, desc2, image, typeInput, navigator;
-  String remark, remark2;
-  bool isInput, isChoicePage, isCheckBox, isImage;
-  int focusCamera;
+  String? title, value, value2, desc, desc2, image, typeInput, navigator;
+  String? remark, remark2;
+  bool? isInput, isChoicePage, isCheckBox, isImage;
+  int? focusCamera;
 
   ListChoiceModel({
     this.title,
@@ -44,7 +44,7 @@ class ListChoiceModel {
 }
 
 class OTPCollectionModel {
-  String value;
+  String? value;
 
   OTPCollectionModel({
     this.value,
@@ -58,10 +58,14 @@ class OTPCollectionModel {
 }
 
 class HistoryEformModel {
-  String tipe, produkCd, nomorMohon, rekSumber, nominal, trxDate, keterangan;
-  String statusProduk, statusProdukStr, jw, jaminan, dataLain, status, pesan;
-  String scoreUsia, scorePendidikan, scoreUsaha, scoreIstri, scoreSendiri;
-  String scoreBersih, scoreJaminan, scorePekerjaan, scoreTmptTinggal, sukuBunga;
+  String? tipe, produkCd, nomorMohon, rekSumber, nominal, trxDate, keterangan;
+  String? statusProduk, statusProdukStr, jw, jaminan, dataLain, status, pesan;
+  String? scoreUsia, scorePendidikan, scoreUsaha, scoreIstri, scoreSendiri;
+  String? scoreBersih,
+      scoreJaminan,
+      scorePekerjaan,
+      scoreTmptTinggal,
+      sukuBunga;
 
   HistoryEformModel({
     this.tipe,
@@ -121,7 +125,7 @@ class HistoryEformModel {
 }
 
 class SimulasiModel {
-  String bulanKe, setoran, bunga, jumlah, saldo, status, pesan;
+  String? bulanKe, setoran, bunga, jumlah, saldo, status, pesan;
 
   SimulasiModel({
     this.bulanKe,

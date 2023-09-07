@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
@@ -23,14 +22,14 @@ class MainSettingPrinter extends StatefulWidget {
 
 class _MainSettingPrinter extends State<MainSettingPrinter> {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<BluetoothDevice> _devices = [];
-  BluetoothDevice _device;
+  BluetoothDevice? _device;
   bool _connected = false;
   bool _pressed = false;
   bool _isConnected = false;
-  String pathImage;
-  GlobalProvider globalProv;
+  String? pathImage;
+  GlobalProvider? globalProv;
   @override
   void initState() {
     super.initState();
@@ -297,8 +296,8 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
   }
 
   Widget _btnSamplePrint({
-    String tittle,
-    Function printAction,
+    String? tittle,
+    Function? printAction,
   }) {
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
@@ -312,11 +311,11 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              printAction();
+              printAction!();
             },
             child: Center(
               child: Text(
-                tittle,
+                tittle!,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -345,9 +344,7 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              if (globalProv.getSelectedPrinter != null) {
-                connectToPrinter(context, globalProv.getSelectedPrinter);
-              }
+              connectToPrinter(context, globalProv.getSelectedPrinter);
             },
             child: Center(
               child: Text(
@@ -374,7 +371,7 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
         _isConnected = true;
       });
       bluetooth.isConnected.then((isConnected) {
-        if (!isConnected) {
+        if (!isConnected!) {
           bluetooth.connect(blDevice).catchError((error) {
             setState(() => _pressed = false);
           });
@@ -393,9 +390,9 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
 
   void _formatTab() async {
     bluetooth.isConnected.then((isConnected) {
-      if (isConnected) {
+      if (isConnected!) {
         //tabungan
-        bluetooth.printImage(pathImage);
+        bluetooth.printImage(pathImage!);
         bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.printCustom("SETORAN TUNAI TABUNGAN", 1, 1);
@@ -424,9 +421,9 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
 
   void _formatAgt() async {
     bluetooth.isConnected.then((isConnected) {
-      if (isConnected) {
+      if (isConnected!) {
         //tabungan
-        bluetooth.printImage(globalProv.getInvoiceImage);
+        bluetooth.printImage(globalProv!.getInvoiceImage);
         bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.printCustom("SETORAN TUNAI SIMPANAN WAJIB", 1, 1);
@@ -455,9 +452,9 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
 
   void _formatJangka() async {
     bluetooth.isConnected.then((isConnected) {
-      if (isConnected) {
+      if (isConnected!) {
         //tabungan
-        bluetooth.printImage(pathImage);
+        bluetooth.printImage(pathImage!);
         bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.printCustom("SETORAN TUNAI TABUNGAN BERJANGKA", 1, 1);
@@ -486,9 +483,9 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
 
   void _formatKredit() async {
     bluetooth.isConnected.then((isConnected) {
-      if (isConnected) {
+      if (isConnected!) {
         //kredit
-        bluetooth.printImage(pathImage);
+        bluetooth.printImage(pathImage!);
         bluetooth.printNewLine();
         bluetooth.printNewLine();
         bluetooth.printCustom("PEMBAYARAN PINJAMAN TUNAI", 1, 1);
@@ -518,9 +515,10 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
   }
 
   Future _show(String message,
-      {Duration duration: const Duration(seconds: 3), BuildContext ctx}) async {
+      {Duration duration = const Duration(seconds: 3),
+      BuildContext? ctx}) async {
     await new Future.delayed(new Duration(milliseconds: 100));
-    Scaffold.of(ctx).showSnackBar(
+    ScaffoldMessenger.of(ctx!).showSnackBar(
       new SnackBar(
         content: new Text(
           message,
@@ -534,7 +532,8 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
   }
 
   void alertSnack(BuildContext ctx, String message) {
-    _scaffoldKey.currentState.showSnackBar(
+    // _scaffoldKey.currentState!.ShowSnackBar(
+    ScaffoldMessenger.of(ctx).showSnackBar(
       new SnackBar(
         content: new Text(
           message,
@@ -554,23 +553,23 @@ class ThermalPrinterAction {
   String pathImage = '0', getPathImg = '0';
 
   dynamic printAction({
-    BuildContext contex,
-    SuksesTransaksiModel dataTrx,
+    BuildContext? contex,
+    SuksesTransaksiModel? dataTrx,
   }) async {
-    final _globalProv = Provider.of<GlobalProvider>(contex, listen: false);
-    String rekDesc = dataTrx.groupProduk == 'KREDIT' ? 'No. Krdit' : 'No Rek';
+    final _globalProv = Provider.of<GlobalProvider>(contex!, listen: false);
+    String rekDesc = dataTrx!.groupProduk == 'KREDIT' ? 'No. Krdit' : 'No Rek';
     String saldoAkhirDesc =
         dataTrx.groupProduk == 'KREDIT' ? 'Bakidebet' : 'Saldo Akhir';
 
     bluetooth.printImage(_globalProv.getInvoiceImage);
     bluetooth.printNewLine();
-    bluetooth.printCustom(dataTrx.kode, 1, 0);
+    bluetooth.printCustom(dataTrx.kode!, 1, 0);
     bluetooth.printCustom("================================", 1, 0);
     bluetooth.printNewLine();
-    bluetooth.printCustom("Tanggal    : " + dataTrx.trxDate ?? '-', 1, 0);
-    bluetooth.printCustom("No.Slip    : " + dataTrx.noReferensi ?? '-', 1, 0);
-    bluetooth.printCustom(rekDesc + "     : " + dataTrx.norek ?? '-', 1, 0);
-    bluetooth.printCustom("Nama       : " + dataTrx.nama ?? '-', 1, 0);
+    bluetooth.printCustom("Tanggal    : " + dataTrx.trxDate! ?? '-', 1, 0);
+    bluetooth.printCustom("No.Slip    : " + dataTrx.noReferensi! ?? '-', 1, 0);
+    bluetooth.printCustom(rekDesc + "     : " + dataTrx.norek! ?? '-', 1, 0);
+    bluetooth.printCustom("Nama       : " + dataTrx.nama! ?? '-', 1, 0);
     bluetooth.printCustom("No.Telp    : " + dataTrx.hp.toString() ?? '-', 1, 0);
     bluetooth.printNewLine();
 
@@ -592,14 +591,14 @@ class ThermalPrinterAction {
     bluetooth.printCustom(
         "Jumlah     : " + _currency(dataTrx.jumlah.toString()) ?? '-', 1, 0);
 
-    bluetooth.printCustom("(" + dataTrx.terbilang + ")", 1, 0);
+    bluetooth.printCustom("(" + dataTrx.terbilang! + ")", 1, 0);
     bluetooth.printCustom(
         saldoAkhirDesc + ": " + _currency(dataTrx.saldo_akhir.toString()) ??
             '-',
         1,
         0);
     bluetooth.printCustom("--------------------------------", 1, 0);
-    bluetooth.printCustom("Petugas    : " + dataTrx.who ?? '-', 1, 0);
+    bluetooth.printCustom("Petugas    : " + dataTrx.who! ?? '-', 1, 0);
     bluetooth.printCustom("================================", 1, 0);
     bluetooth.printCustom("Mohon dicek kembali.Terima kasih", 1, 0);
     bluetooth.printNewLine();
@@ -608,25 +607,25 @@ class ThermalPrinterAction {
   }
 
   dynamic printActionV2({
-    BuildContext contex,
-    String groupProduk,
-    String kode,
-    String trxDate,
-    String noref,
-    String norek,
-    String nama,
-    String hp,
-    String saldoAwal,
-    String pokok,
-    String bunga,
-    String denda,
-    String lateCHarge,
-    String jumlah,
-    String terbilang,
-    String saldoAkhir,
-    String who,
+    BuildContext? contex,
+    String? groupProduk,
+    String? kode,
+    String? trxDate,
+    String? noref,
+    String? norek,
+    String? nama,
+    String? hp,
+    String? saldoAwal,
+    String? pokok,
+    String? bunga,
+    String? denda,
+    String? lateCHarge,
+    String? jumlah,
+    String? terbilang,
+    String? saldoAkhir,
+    String? who,
   }) async {
-    final _globalProv = Provider.of<GlobalProvider>(contex, listen: false);
+    final _globalProv = Provider.of<GlobalProvider>(contex!, listen: false);
     String rekDesc = groupProduk == 'KREDIT' ? 'No.Krdt' : 'No.Rek';
     String saldoAkhirDesc =
         groupProduk == 'KREDIT' ? 'Bakidebet' : 'Saldo Akhir';
@@ -636,14 +635,14 @@ class ThermalPrinterAction {
     bluetooth.printCustom(kode ?? '-', 1, 1);
     bluetooth.printCustom("================================", 1, 0);
     bluetooth.printNewLine();
-    bluetooth.printCustom("Tanggal    : " + trxDate ?? ' - ', 1, 0);
-    bluetooth.printCustom("No.Slip    : " + noref ?? ' - ', 1, 0);
+    bluetooth.printCustom("Tanggal    : " + trxDate! ?? ' - ', 1, 0);
+    bluetooth.printCustom("No.Slip    : " + noref! ?? ' - ', 1, 0);
     if (groupProduk != 'KREDIT')
-      bluetooth.printCustom(rekDesc + "     : " + norek ?? '-', 1, 0);
+      bluetooth.printCustom(rekDesc + "     : " + norek! ?? '-', 1, 0);
     else
-      bluetooth.printCustom(rekDesc + "    : " + norek ?? '-', 1, 0);
-    bluetooth.printCustom("Nama       : " + nama ?? ' - ', 1, 0);
-    bluetooth.printCustom("No.Telp    : " + hp ?? ' - ', 1, 0);
+      bluetooth.printCustom(rekDesc + "    : " + norek! ?? '-', 1, 0);
+    bluetooth.printCustom("Nama       : " + nama! ?? ' - ', 1, 0);
+    bluetooth.printCustom("No.Telp    : " + hp! ?? ' - ', 1, 0);
     bluetooth.printNewLine();
 
     if (groupProduk != 'KREDIT')
@@ -662,7 +661,7 @@ class ThermalPrinterAction {
     bluetooth.printCustom(
         "Jumlah      : " + _currency(jumlah.toString()) ?? '-', 1, 0);
 
-    bluetooth.printCustom("(" + terbilang + ")", 1, 0);
+    bluetooth.printCustom("(" + terbilang! + ")", 1, 0);
 
     if (groupProduk != 'KREDIT')
       bluetooth.printCustom(
@@ -675,7 +674,7 @@ class ThermalPrinterAction {
           1,
           0);
     bluetooth.printCustom("--------------------------------", 1, 0);
-    bluetooth.printCustom("Petugas    : " + who ?? '-', 1, 0);
+    bluetooth.printCustom("Petugas    : " + who! ?? '-', 1, 0);
     bluetooth.printCustom("================================", 1, 0);
     bluetooth.printCustom("Mohon dicek kembali.Terima kasih", 1, 0);
     bluetooth.printNewLine();

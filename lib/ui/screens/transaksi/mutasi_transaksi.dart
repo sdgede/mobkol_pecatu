@@ -11,8 +11,8 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/not_found.dart';
 
 class MutasiTransaksi extends StatefulWidget {
-  final Map arguments;
-  const MutasiTransaksi({Key key, this.arguments}) : super(key: key);
+  final Map? arguments;
+  const MutasiTransaksi({Key? key, this.arguments}) : super(key: key);
 
   @override
   _MutasiTransaksi createState() => _MutasiTransaksi();
@@ -23,27 +23,27 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
   final scaffoldKey = GlobalKey<ScaffoldState>(),
       _formKeyStep1 = GlobalKey<FormState>();
   bool _autoValidateStep1 = false;
-  String _idProduk, _rekCd, _groupProduk;
-  ProdukCollectionProvider produkProvider;
+  String? _idProduk, _rekCd, _groupProduk;
+  ProdukCollectionProvider? produkProvider;
 
   @override
   void initState() {
     super.initState();
     produkProvider =
         Provider.of<ProdukCollectionProvider>(context, listen: false);
-    _idProduk = widget.arguments['idProduk'];
-    _rekCd = widget.arguments['rekCd'];
-    _groupProduk = widget.arguments['groupProduk'];
-    produkProvider.resetMutasiTransaksi(isListen: false);
+    _idProduk = widget.arguments!['idProduk'];
+    _rekCd = widget.arguments!['rekCd'];
+    _groupProduk = widget.arguments!['groupProduk'];
+    produkProvider!.resetMutasiTransaksi(isListen: false);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: DefaultAppBar(context, widget.arguments['title'],
+      appBar: DefaultAppBar(context, widget.arguments!['title'],
           isRefresh: true,
-          onRefresh: () => produkProvider.resetMutasiTransaksi()),
+          onRefresh: () => produkProvider!.resetMutasiTransaksi()),
       key: scaffoldKey,
       body: SafeArea(
         child: Container(
@@ -51,7 +51,8 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
           width: deviceWidth(context),
           child: Form(
             key: _formKeyStep1,
-            autovalidate: _autoValidateStep1,
+            // autovalidate: _autoValidateStep1,
+            autovalidateMode: AutovalidateMode.disabled,
             child: Consumer<ProdukCollectionProvider>(
               builder: (context, produkProv, _) {
                 if (produkProv.muatasiProdukCollection == null) {
@@ -87,15 +88,15 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
                       child: Column(
                         children: [
                           dataNasabah(
-                            produkProv.muatasiProdukCollection[index].kode,
-                            produkProv.muatasiProdukCollection[index].tgl,
-                            produkProv.muatasiProdukCollection[index].jumlah,
-                            produkProv.muatasiProdukCollection[index].saldo,
-                            produkProv.muatasiProdukCollection[index].remark,
-                            produkProv.muatasiProdukCollection[index].op,
+                            produkProv.muatasiProdukCollection[index].kode!,
+                            produkProv.muatasiProdukCollection[index].tgl!,
+                            produkProv.muatasiProdukCollection[index].jumlah!,
+                            produkProv.muatasiProdukCollection[index].saldo!,
+                            produkProv.muatasiProdukCollection[index].remark!,
+                            produkProv.muatasiProdukCollection[index].op!,
                             produkProv
-                                .muatasiProdukCollection[index].saldo_awal,
-                            produkProv.muatasiProdukCollection[index].dbcr,
+                                .muatasiProdukCollection[index].saldo_awal!,
+                            produkProv.muatasiProdukCollection[index].dbcr!,
                             produkProv.muatasiProdukCollection[index],
                           )
                         ],
@@ -223,9 +224,9 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
   }
 
   Widget listMutasi({
-    String text,
+    String? text,
     bool isTextBold = false,
-    String value,
+    String? value,
     bool isValueBold = false,
     bool isNumber = true,
   }) {

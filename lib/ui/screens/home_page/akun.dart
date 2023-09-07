@@ -1,5 +1,7 @@
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter/services.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../services/config/config.dart';
@@ -8,8 +10,8 @@ import '../../../services/utils/dialog_utils.dart';
 import '../../constant/constant.dart';
 
 class ListModel {
-  String title, navigator;
-  IconData icon;
+  String? title, navigator;
+  IconData? icon;
   bool isDev;
   ListModel({this.title, this.navigator, this.icon, this.isDev = false});
 }
@@ -21,19 +23,21 @@ class AkunScreen extends StatefulWidget {
 
 class _AkunScreenState extends State<AkunScreen> {
   bool isVisible = false;
-  ScrollController scrollController;
-  String hp, wa;
+  ScrollController? scrollController;
+  String? hp, wa;
 
   List<ListModel> dataListAkun = [
     ListModel(
       title: 'Ganti Password',
       navigator: RouterGenerator.resetPassword,
-      icon: FlutterIcons.lock_ant,
+      // icon: FlutterIcons.lock_ant,
+      icon: Iconsax.lock,
     ),
     ListModel(
       title: 'Ganti PIN',
       navigator: RouterGenerator.resetPin,
-      icon: FlutterIcons.dots_horizontal_mco,
+      // icon: FlutterIcons.dots_horizontal_mco,
+      icon: Iconsax.more,
     ),
   ];
 
@@ -41,29 +45,31 @@ class _AkunScreenState extends State<AkunScreen> {
     ListModel(
       title: 'Petunjuk Penggunaan',
       navigator: RouterGenerator.kontakKami,
-      icon: FlutterIcons.ios_help_circle_outline_ion,
+      // icon: FlutterIcons.ios_help_circle_outline_ion,
+      icon: Iconsax.message_question,
       isDev: true,
     ),
     ListModel(
       title: 'Syarat dan ketentuan',
       navigator: RouterGenerator.kontakKami,
-      icon: FlutterIcons.file_check_outline_mco,
+      // icon: FlutterIcons.file_check_outline_mco,
+      icon: Iconsax.card_tick_1,
       isDev: true,
     ),
     ListModel(
-      title: 'Kontak Kami',
-      navigator: RouterGenerator.kontakKami,
-      icon: FlutterIcons.ios_call_ion,
-    ),
+        title: 'Kontak Kami',
+        navigator: RouterGenerator.kontakKami,
+        // icon: FlutterIcons.ios_call_ion,
+        icon: Iconsax.call),
     ListModel(
-      title: 'Tentang Aplikasi',
-      navigator: RouterGenerator.about,
-      icon: FlutterIcons.ios_information_circle_outline_ion,
-    ),
+        title: 'Tentang Aplikasi',
+        navigator: RouterGenerator.about,
+        // icon: FlutterIcons.ios_information_circle_outline_ion,
+        icon: Iconsax.info_circle),
   ];
 
   _scrollListener() {
-    if (scrollController.offset >= 50) {
+    if (scrollController!.offset >= 50) {
       setState(() {
         isVisible = true;
       });
@@ -84,7 +90,7 @@ class _AkunScreenState extends State<AkunScreen> {
 
     if (res) {
       prefs.setBool('first_time_login', true);
-      prefs.setString('nama', null);
+      prefs.setString('nama', '');
       PersonName = 'User';
 
       Navigator.of(context).pushNamedAndRemoveUntil(
@@ -96,7 +102,7 @@ class _AkunScreenState extends State<AkunScreen> {
   void initState() {
     super.initState();
     scrollController = new ScrollController();
-    scrollController.addListener(_scrollListener);
+    scrollController!.addListener(_scrollListener);
     hp = dataLogin['hp'] ?? "-";
     wa = dataLogin['no_wa'] ?? "-";
   }
@@ -116,7 +122,6 @@ class _AkunScreenState extends State<AkunScreen> {
 
   Widget appBarAkun() {
     return SliverAppBar(
-      brightness: Brightness.dark,
       backgroundColor: isVisible ? accentColor : Colors.white,
       expandedHeight: 125,
       pinned: true,
@@ -173,6 +178,7 @@ class _AkunScreenState extends State<AkunScreen> {
           ],
         ),
       ),
+      systemOverlayStyle: SystemUiOverlayStyle.light,
     );
   }
 
@@ -201,13 +207,15 @@ class _AkunScreenState extends State<AkunScreen> {
           ),
           SizedBox(height: 10),
           iconValueHeader(
-            icon: FlutterIcons.ios_call_ion,
-            value: hp == "" ? "-" : hp,
+            // icon: FlutterIcons.ios_call_ion,
+            icon: Iconsax.call,
+            value: hp == null || hp == "" ? "-" : hp as String,
           ),
           SizedBox(height: 5),
           iconValueHeader(
-            icon: FlutterIcons.logo_whatsapp_ion,
-            value: wa == "" ? "-" : wa,
+            // icon: FlutterIcons.logo_whatsapp_ion,
+            icon: BootstrapIcons.whatsapp,
+            value: wa == null || wa == "" ? "-" : wa as String,
           ),
           SizedBox(height: 15),
         ],
@@ -215,7 +223,7 @@ class _AkunScreenState extends State<AkunScreen> {
     );
   }
 
-  Widget iconValueHeader({IconData icon, String value}) {
+  Widget iconValueHeader({IconData? icon, String? value}) {
     return Container(
       margin: EdgeInsets.only(left: 15),
       height: 20,
@@ -231,7 +239,7 @@ class _AkunScreenState extends State<AkunScreen> {
           SizedBox(width: 5),
           Center(
             child: Text(
-              value,
+              value!,
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
@@ -263,7 +271,7 @@ class _AkunScreenState extends State<AkunScreen> {
     );
   }
 
-  Widget titleContent({String title}) {
+  Widget titleContent({String? title}) {
     return Padding(
       padding: const EdgeInsets.only(left: 15, top: 15),
       child: Text(
@@ -277,12 +285,12 @@ class _AkunScreenState extends State<AkunScreen> {
     );
   }
 
-  Widget listContentAkun({List<ListModel> list}) {
+  Widget listContentAkun({List<ListModel>? list}) {
     return ListView.builder(
       padding: EdgeInsets.zero,
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: list.length,
+      itemCount: list!.length,
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
@@ -293,7 +301,7 @@ class _AkunScreenState extends State<AkunScreen> {
               );
             } else {
               Navigator.of(context).pushNamed(
-                list[index].navigator,
+                list[index].navigator!,
                 arguments: {'title': list[index].title},
               );
             }
@@ -313,7 +321,7 @@ class _AkunScreenState extends State<AkunScreen> {
                 ],
               ),
               title: Text(
-                list[index].title,
+                list[index].title!,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -324,7 +332,8 @@ class _AkunScreenState extends State<AkunScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(
-                    FlutterIcons.ios_arrow_forward_ion,
+                    // FlutterIcons.ios_arrow_forward_ion,
+                    Iconsax.arrow_right,
                     color: Colors.black38,
                   ),
                 ],
@@ -350,7 +359,10 @@ class _AkunScreenState extends State<AkunScreen> {
           leading: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(FlutterIcons.logout_ant, color: Colors.blue.shade400),
+              Icon(
+                  // FlutterIcons.logout_ant,
+                  Iconsax.logout,
+                  color: Colors.blue.shade400),
             ],
           ),
           title: Text(

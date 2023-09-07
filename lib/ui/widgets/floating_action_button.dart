@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 import '../../services/utils/dialog_utils.dart';
 import '../../services/viewmodel/transaksi_provider.dart';
@@ -9,9 +8,9 @@ import '../../services/viewmodel/produk_provider.dart';
 import '../../services/viewmodel/global_provider.dart';
 import '../../services/config/config.dart' as config;
 
-GlobalProvider globalProv;
+GlobalProvider? globalProv;
 String _mode = config.onlineMode;
-TransaksiProvider trxProv;
+TransaksiProvider? trxProv;
 
 Widget floatingActionSwitchMode(BuildContext context, {isKlad = false}) {
   return Consumer2<GlobalProvider, ProdukCollectionProvider>(
@@ -73,7 +72,8 @@ Widget floatingActionUploadTrx(BuildContext context) {
           if (_confirm) {}
         },
         child: Icon(
-          FlutterIcons.upload_multiple_mco,
+          // FlutterIcons.upload_multiple_mco,
+          Iconsax.document_upload,
           color: Colors.white,
         ),
         heroTag: null,

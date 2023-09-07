@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../services/config/config.dart' as config;
 import '../constant/constant.dart';
 
@@ -34,22 +34,23 @@ Widget AppBarLogo() {
 }
 
 // ignore: non_constant_identifier_names
-Widget DefaultAppBar(
+AppBar DefaultAppBar(
   BuildContext context,
   String title, {
   bool isRefresh = false,
-  Function onRefresh,
+  Function? onRefresh,
   bool isCenter = false,
-  Function onBack,
+  Function? onBack,
   bool isBack = true,
-  List<Widget> actions,
+  List<Widget>? actions,
 }) {
   return new AppBar(
     backgroundColor: accentColor,
     leading: isBack
         ? IconButton(
             icon: new Icon(
-              FlutterIcons.ios_arrow_back_ion,
+              // FlutterIcons.ios_arrow_back_ion,\
+              Iconsax.arrow_left,
               color: Colors.white,
             ),
             onPressed: () => onBack != null ? onBack() : Navigator.pop(context),
@@ -61,7 +62,8 @@ Widget DefaultAppBar(
             ? [
                 IconButton(
                   icon: new Icon(
-                    FlutterIcons.ios_refresh_ion,
+                    // FlutterIcons.ios_refresh_ion,
+                    Iconsax.refresh,
                     color: Colors.white,
                   ),
                   onPressed: () => onRefresh != null ? onRefresh() : {},
@@ -124,7 +126,8 @@ Widget DefaultAppBarWithoutShadow(BuildContext context, String title) {
     backgroundColor: accentColor,
     leading: IconButton(
       icon: new Icon(
-        FlutterIcons.ios_arrow_back_ion,
+        // FlutterIcons.ios_arrow_back_ion,
+        Iconsax.arrow_left,
         color: Colors.white,
       ),
       onPressed: () {
@@ -144,11 +147,11 @@ Widget DefaultAppBarWithoutShadow(BuildContext context, String title) {
 
 // ignore: non_constant_identifier_names
 Widget DefaultAppBarDaftarOnline({
-  BuildContext context,
-  String title,
+  BuildContext? context,
+  String? title,
   bool isIcon = true,
   bool isExit = true,
-  Function onClick,
+  Function? onClick,
 }) {
   return new AppBar(
     backgroundColor: accentColor,
@@ -156,18 +159,20 @@ Widget DefaultAppBarDaftarOnline({
         ? IconButton(
             icon: new Icon(
               isExit
-                  ? FlutterIcons.md_exit_ion
-                  : FlutterIcons.ios_arrow_back_ion,
+                  // ? FlutterIcons.md_exit_ion
+                  ? Iconsax.logout
+                  // : FlutterIcons.ios_arrow_back_ion,
+                  : Iconsax.arrow_left,
               color: Colors.white,
             ),
-            onPressed: onClick,
+            onPressed: onClick != null ? () => onClick() : null,
           )
         : IconButton(icon: Icon(null), onPressed: null),
     title: Center(
       child: Container(
-        margin: EdgeInsets.only(right: MediaQuery.of(context).size.width / 6),
+        margin: EdgeInsets.only(right: MediaQuery.of(context!).size.width / 6),
         child: Text(
-          title,
+          title!,
           style: GoogleFonts.ubuntu(
             textStyle: TextStyle(
               fontSize: 16,
@@ -181,23 +186,24 @@ Widget DefaultAppBarDaftarOnline({
 
 // ignore: non_constant_identifier_names
 Widget AppBarDaftarTersimpan({
-  BuildContext context,
-  String title,
-  TabController tabController,
+  BuildContext? context,
+  String? title,
+  TabController? tabController,
 }) {
   return AppBar(
     backgroundColor: accentColor,
     leading: IconButton(
       icon: Icon(
-        FlutterIcons.ios_arrow_back_ion,
+        // FlutterIcons.ios_arrow_back_ion,
+        Iconsax.arrow_left,
         color: Colors.white,
       ),
       onPressed: () {
-        Navigator.pop(context);
+        Navigator.pop(context!);
       },
     ),
     title: Text(
-      title,
+      title!,
       style: GoogleFonts.ubuntu(
         textStyle: TextStyle(
           fontSize: 16,
@@ -231,12 +237,13 @@ Widget AppBarDaftarTersimpan({
 }
 
 // ignore: non_constant_identifier_names
-Widget AppBarTransparent(BuildContext context, {Color colors}) {
+Widget AppBarTransparent(BuildContext context, {Color? colors}) {
   return AppBar(
     backgroundColor: colors ?? Colors.transparent,
     leading: IconButton(
       icon: new Icon(
-        FlutterIcons.ios_arrow_back_ion,
+        // FlutterIcons.ios_arrow_back_ion,
+        Iconsax.arrow_left,
         color: Colors.white,
       ),
       onPressed: () => Navigator.pop(context),
@@ -246,15 +253,16 @@ Widget AppBarTransparent(BuildContext context, {Color colors}) {
 }
 
 // ignore: non_constant_identifier_names
-Widget AppBarGoogleMaps({BuildContext context, String title}) {
+PreferredSizeWidget AppBarGoogleMaps({BuildContext? context, String? title}) {
   return AppBar(
     backgroundColor: accentColor,
     leading: IconButton(
       icon: new Icon(
-        FlutterIcons.ios_arrow_back_ion,
+        // FlutterIcons.ios_arrow_back_ion,
+        Iconsax.arrow_left,
         color: Colors.white,
       ),
-      onPressed: () => Navigator.pop(context),
+      onPressed: () => Navigator.pop(context!),
     ),
     title: Text(
       title ?? 'Loading...',
@@ -272,26 +280,26 @@ Widget NoAppBar() {
   return PreferredSize(
     preferredSize: Size(0.0, 0.0),
     child: AppBar(
-      brightness: Brightness.light,
       backgroundColor: Colors.white,
       elevation: 0.0,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
     ),
   );
 }
 
 // ignore: non_constant_identifier_names
 Widget AppBarHistoryTransaksi({
-  BuildContext context,
-  String title,
-  TabController tabController,
-  Function onRefresh,
+  BuildContext? context,
+  String? title,
+  TabController? tabController,
+  Function? onRefresh,
 }) {
   return AppBar(
     backgroundColor: accentColor,
     leading: null,
     centerTitle: true,
     title: Text(
-      title,
+      title!,
       style: GoogleFonts.ubuntu(
         textStyle: TextStyle(
           fontSize: 16,
@@ -301,10 +309,11 @@ Widget AppBarHistoryTransaksi({
     actions: [
       IconButton(
         icon: new Icon(
-          FlutterIcons.ios_refresh_ion,
+          // FlutterIcons.ios_refresh_ion,
+          Iconsax.refresh,
           color: Colors.white,
         ),
-        onPressed: () => onRefresh(),
+        onPressed: () => onRefresh!(),
       )
     ],
     bottom: TabBar(

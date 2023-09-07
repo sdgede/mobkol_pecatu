@@ -14,12 +14,12 @@ class ListPrinterDevice extends StatefulWidget {
 
 class _ListPrinterDevice extends State<ListPrinterDevice> {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
-  GlobalProvider globalProv;
+  GlobalProvider? globalProv;
   List<BluetoothDevice> _devices = [];
-  BluetoothDevice _device;
+  BluetoothDevice? _device;
   bool _connected = false;
   bool _pressed = false;
-  String pathImage;
+  String? pathImage;
 
   @override
   void initState() {
@@ -67,9 +67,8 @@ class _ListPrinterDevice extends State<ListPrinterDevice> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        await globalProv.setSelectedPrinter(listDevice);
-                        await globalProv
-                            .setSelectedPrinterName(listDevice.name);
+                        globalProv!.setSelectedPrinter(listDevice);
+                        globalProv!.setSelectedPrinterName(listDevice.name!);
                         Navigator.of(context, rootNavigator: true).pop(context);
                       },
                       onLongPress: () {},
@@ -91,14 +90,14 @@ class _ListPrinterDevice extends State<ListPrinterDevice> {
                             ],
                           ),
                           title: Text(
-                            listDevice.name,
+                            listDevice.name!,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           subtitle: Text(
-                            listDevice.address,
+                            listDevice.address!,
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,

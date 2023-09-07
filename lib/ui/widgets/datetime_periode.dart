@@ -1,17 +1,14 @@
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/viewmodel/transaksi_provider.dart';
 import '../../services/viewmodel/produk_provider.dart';
 import '../../services/viewmodel/global_provider.dart';
-import '../../services/config/config.dart' as config;
 
-GlobalProvider globalProv;
-TransaksiProvider trxProv;
-final format = DateFormat("dd-MM-yyyy");
+GlobalProvider? globalProv;
+TransaksiProvider? trxProv;
+final format = "dd-MM-yyyy";
 
 Widget getDatePeriode(BuildContext context, {bool isKlad = false}) {
   return Consumer<ProdukCollectionProvider>(builder: (contex, produkProv, _) {
@@ -23,24 +20,28 @@ Widget getDatePeriode(BuildContext context, {bool isKlad = false}) {
           return Row(
             children: <Widget>[
               Expanded(
-                child: DateTimeField(
-                  format: format,
-                  onShowPicker: (context, currentValue) {
-                    return showDatePicker(
-                      context: context,
-                      firstDate: DateTime(1900),
-                      initialDate: DateTime.now(),
-                      lastDate: DateTime(3100),
-                      locale: const Locale('id', 'ID'),
-                    );
-                  },
-                  initialValue: produkProv.tglAwal,
-                  decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.calendar_today),
-                  ),
-                  textAlign: TextAlign.center,
-                  onChanged: (currentValue) {
-                    produkProv.setTglAwal(currentValue, true);
+                child: SfDateRangePicker(
+                  // dateMask: format,
+                  // onShowPicker: (context, currentValue) {
+                  //   return showDatePicker(
+                  //     context: context,
+                  //     firstDate: DateTime(1900),
+                  //     initialDate: DateTime.now(),
+                  //     lastDate: DateTime(3100),
+                  //     locale: const Locale('id', 'ID'),
+                  //   );
+                  // },
+                  // initialValue: produkProv.tglAwal.toString(),
+                  enablePastDates: false,
+                  initialSelectedDate: produkProv.tglAwal,
+                  // decoration: InputDecoration(
+                  //   suffixIcon: Icon(Icons.calendar_today),
+                  // ),
+                  // textAlign: TextAlign.center,
+
+                  onSelectionChanged: (currentValue) {
+                    produkProv.setTglAwal(
+                        DateTime.parse(currentValue.value.toString()), true);
                     if (produkProv.tglAwal
                             .difference(produkProv.tglAkhir)
                             .inDays <
@@ -60,24 +61,27 @@ Widget getDatePeriode(BuildContext context, {bool isKlad = false}) {
                 ),
               ),
               Expanded(
-                child: DateTimeField(
-                  format: format,
-                  onShowPicker: (context, currentValue) {
-                    return showDatePicker(
-                      context: context,
-                      firstDate: DateTime(1900),
-                      initialDate: DateTime.now(),
-                      lastDate: DateTime(3100),
-                      locale: const Locale('id', 'ID'),
-                    );
-                  },
-                  initialValue: produkProv.tglAkhir,
-                  decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.calendar_today),
-                  ),
-                  textAlign: TextAlign.center,
-                  onChanged: (currentValue) {
-                    produkProv.setTglAkhir(currentValue, true);
+                child: SfDateRangePicker(
+                  // dateMask: format,
+                  // onShowPicker: (context, currentValue) {
+                  //   return showDatePicker(
+                  //     context: context,
+                  //     firstDate: DateTime(1900),
+                  //     initialDate: DateTime.now(),
+                  //     lastDate: DateTime(3100),
+                  //     locale: const Locale('id', 'ID'),
+                  //   );
+                  // },
+                  // initialValue: produkProv.tglAkhir.toString(),
+                  enablePastDates: false,
+                  initialSelectedDate: produkProv.tglAkhir,
+                  // decoration: InputDecoration(
+                  //   suffixIcon: Icon(Icons.calendar_today),
+                  // ),
+                  // textAlign: TextAlign.center,
+                  onSelectionChanged: (currentValue) {
+                    produkProv.setTglAkhir(
+                        DateTime.parse(currentValue.value.toString()), true);
                     if (produkProv.tglAkhir
                             .difference(produkProv.tglAwal)
                             .inDays >
@@ -104,24 +108,25 @@ Widget getSingleDatePeriode(BuildContext context, {bool isKlad = false}) {
       child: Consumer<ProdukCollectionProvider>(
         builder: (context, produkProv, _) {
           return Expanded(
-            child: DateTimeField(
-              format: format,
-              onShowPicker: (context, currentValue) {
-                return showDatePicker(
-                  context: context,
-                  firstDate: DateTime(1900),
-                  initialDate: DateTime.now(),
-                  lastDate: DateTime(3100),
-                  locale: const Locale('id', 'ID'),
-                );
-              },
-              initialValue: produkProv.tglAwal,
-              decoration: InputDecoration(
-                suffixIcon: Icon(Icons.calendar_today),
-              ),
-              textAlign: TextAlign.right,
-              onChanged: (currentValue) {
-                produkProv.setTglAwal(currentValue, true);
+            child: SfDateRangePicker(
+              // dateMask: format,
+              // onShowPicker: (context, currentValue) {
+              //   return showDatePicker(
+              //     context: context,
+              //     firstDate: DateTime(1900),
+              //     initialDate: DateTime.now(),
+              //     lastDate: DateTime(3100),
+              //     locale: const Locale('id', 'ID'),
+              //   );
+              // },
+              // initialValue: produkProv.tglAwal.toString(),
+              // decoration: InputDecoration(
+              //   suffixIcon: Icon(Icons.calendar_today),
+              // ),
+              // textAlign: TextAlign.right,
+              onSelectionChanged: (currentValue) {
+                produkProv.setTglAwal(
+                    DateTime.parse(currentValue.value.toString()), true);
                 if (produkProv.tglAwal.difference(produkProv.tglAkhir).inDays <
                     1) {
                   produkProv.setMutasiLoading(true, true);

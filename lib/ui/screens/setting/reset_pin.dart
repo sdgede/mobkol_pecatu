@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/config/config.dart';
@@ -16,7 +15,7 @@ import '../../widgets/app_bar.dart';
 
 class ResetPin extends StatefulWidget {
   final bool isBuat;
-  const ResetPin({Key key, this.isBuat = false}) : super(key: key);
+  const ResetPin({Key? key, this.isBuat = false}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ResetPinState();
@@ -33,12 +32,12 @@ class _ResetPinState extends State<ResetPin> {
       pinController = new TextEditingController(),
       rePinController = new TextEditingController(),
       sumberDanaController = new TextEditingController();
-  GlobalProvider globalProv;
-  TransaksiProvider transaksiProvider;
+  GlobalProvider? globalProv;
+  TransaksiProvider? transaksiProvider;
 
   void savePin() async {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       bool isReset = true;
       if (pinLamaController.text !=
@@ -51,8 +50,8 @@ class _ResetPinState extends State<ResetPin> {
       }
       if (isReset) {
         if (widget.isBuat) {
-          bool res = await globalProv.resetPin(
-              context, pinController.text, widget.isBuat);
+          bool res = await globalProv!
+              .resetPin(context, pinController.text, widget.isBuat);
           if (widget.isBuat && res) {
             Navigator.of(context)
                 .pushReplacementNamed(RouterGenerator.pageHomeLogin);
@@ -76,8 +75,8 @@ class _ResetPinState extends State<ResetPin> {
     super.initState();
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
     transaksiProvider = Provider.of<TransaksiProvider>(context, listen: false);
-    transaksiProvider.setTipeOTP("GANTI_PIN");
-    transaksiProvider.resetRequestOTP();
+    transaksiProvider!.setTipeOTP("GANTI_PIN");
+    transaksiProvider!.resetRequestOTP();
   }
 
   Future<bool> _onBackPressed() async {
@@ -125,7 +124,8 @@ class _ResetPinState extends State<ResetPin> {
                         produkTabunganProv.pemilikNamaRekSumber ?? "";
                     return Form(
                       key: formKey,
-                      autovalidate: autoValidate,
+                      // autovalidate: autoValidate,
+                      autovalidateMode: AutovalidateMode.disabled,
                       child: Column(
                         children: <Widget>[
                           SizedBox(height: 20),
@@ -228,7 +228,7 @@ class _ResetPinState extends State<ResetPin> {
     );
   }
 
-  Widget textKetentuanPin({String text}) {
+  Widget textKetentuanPin({String? text}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,7 +240,7 @@ class _ResetPinState extends State<ResetPin> {
         SizedBox(width: 5),
         Expanded(
           child: Text(
-            text,
+            text!,
             style: TextStyle(fontSize: 12),
           ),
         )
@@ -249,13 +249,13 @@ class _ResetPinState extends State<ResetPin> {
   }
 
   Widget _inputText({
-    String desc,
-    bool isFirst,
-    bool isLast,
-    bool isLeft,
-    TextEditingController textController,
-    bool isVisible,
-    Function onVisible,
+    String? desc,
+    bool? isFirst,
+    bool? isLast,
+    bool? isLeft,
+    TextEditingController? textController,
+    bool? isVisible,
+    Function? onVisible,
     bool isRePin = false,
   }) {
     return Center(
@@ -263,9 +263,9 @@ class _ResetPinState extends State<ResetPin> {
         decoration: BoxDecoration(
           border: Border.all(color: accentColor),
           borderRadius: BorderRadius.only(
-            topLeft: isFirst ? Radius.circular(8) : Radius.zero,
+            topLeft: isFirst! ? Radius.circular(8) : Radius.zero,
             topRight: isFirst ? Radius.circular(8) : Radius.zero,
-            bottomLeft: isLast ? Radius.circular(8) : Radius.zero,
+            bottomLeft: isLast! ? Radius.circular(8) : Radius.zero,
             bottomRight: isLast ? Radius.circular(8) : Radius.zero,
           ),
         ),
@@ -279,7 +279,7 @@ class _ResetPinState extends State<ResetPin> {
                   TextFormField(
                     controller: textController,
                     keyboardType: TextInputType.number,
-                    obscureText: isVisible ? false : true,
+                    obscureText: isVisible! ? false : true,
                     maxLength: 6,
                     decoration: InputDecoration(
                       hintText: desc,
@@ -295,8 +295,8 @@ class _ResetPinState extends State<ResetPin> {
                       border: InputBorder.none,
                     ),
                     validator: (value) {
-                      if (value.isEmpty) {
-                        return desc + " masih kosong!";
+                      if (value!.isEmpty) {
+                        return desc! + " masih kosong!";
                       }
                       if (value.length < 6) {
                         return "Panjang PIN adalah 6 digit!";
@@ -309,10 +309,9 @@ class _ResetPinState extends State<ResetPin> {
                     style: TextStyle(fontSize: 14, color: Colors.black),
                   ),
                   IconButton(
-                    icon: isVisible
-                        ? Icon(FlutterIcons.ios_eye_ion)
-                        : Icon(FlutterIcons.ios_eye_off_ion),
-                    onPressed: onVisible,
+                    icon:
+                        isVisible ? Icon(Iconsax.eye) : Icon(Iconsax.eye_slash),
+                    onPressed: () => onVisible!(),
                   ),
                 ],
               ),
@@ -388,7 +387,8 @@ class _ResetPinState extends State<ResetPin> {
                       suffixIcon: Padding(
                         padding: EdgeInsets.only(top: 20),
                         child: Icon(
-                          FlutterIcons.ios_arrow_down_ion,
+                          // FlutterIcons.ios_arrow_down_ion,
+                          Iconsax.arrow_down,
                           color: Colors.black,
                           size: 20,
                         ),
@@ -396,7 +396,7 @@ class _ResetPinState extends State<ResetPin> {
                     ),
                     style: TextStyle(fontSize: 14, color: Colors.black),
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value!.isEmpty) {
                         return "Sumber dana masih kosong!";
                       }
                       return null;

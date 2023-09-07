@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/config/config.dart';
@@ -16,7 +15,7 @@ import '../../widgets/app_bar.dart';
 
 class ResetPassword extends StatefulWidget {
   final bool isBuat;
-  const ResetPassword({Key key, this.isBuat = false}) : super(key: key);
+  const ResetPassword({Key? key, this.isBuat = false}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ResetPasswordState();
@@ -33,12 +32,12 @@ class _ResetPasswordState extends State<ResetPassword> {
       passwordController = new TextEditingController(),
       rePasswordController = new TextEditingController(),
       sumberDanaController = new TextEditingController();
-  GlobalProvider globalProv;
-  TransaksiProvider transaksiProvider;
+  GlobalProvider? globalProv;
+  TransaksiProvider? transaksiProvider;
 
   void savePassword() async {
     final form = formKey.currentState;
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
       bool isReset = true;
       if (passwordLamaController.text !=
@@ -51,8 +50,8 @@ class _ResetPasswordState extends State<ResetPassword> {
       }
       if (isReset) {
         if (widget.isBuat) {
-          bool res = await globalProv.resetPassword(
-              context, passwordController.text, widget.isBuat);
+          bool res = await globalProv!
+              .resetPassword(context, passwordController.text, widget.isBuat);
           if (widget.isBuat && res) {
             Navigator.of(context).pushReplacementNamed(RouterGenerator.resetPin,
                 arguments: {'isBuat': widget.isBuat});
@@ -76,8 +75,8 @@ class _ResetPasswordState extends State<ResetPassword> {
     super.initState();
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
     transaksiProvider = Provider.of<TransaksiProvider>(context, listen: false);
-    transaksiProvider.setTipeOTP("GANTI_PASSWORD");
-    transaksiProvider.resetRequestOTP();
+    transaksiProvider!.setTipeOTP("GANTI_PASSWORD");
+    transaksiProvider!.resetRequestOTP();
   }
 
   Future<bool> _onBackPressed() async {
@@ -124,7 +123,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                         produkTabunganProv.pemilikNamaRekSumber ?? "";
                     return Form(
                       key: formKey,
-                      autovalidate: autoValidate,
+                      // autovalidate: autoValidate,
+                      autovalidateMode: AutovalidateMode.disabled,
                       child: Column(
                         children: <Widget>[
                           SizedBox(height: 20),
@@ -232,7 +232,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     );
   }
 
-  Widget textKetentuanPassword({String text}) {
+  Widget textKetentuanPassword({String? text}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,7 +246,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         SizedBox(width: 5),
         Expanded(
           child: Text(
-            text,
+            text!,
             style: TextStyle(fontSize: 12),
           ),
         )
@@ -255,13 +255,13 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   Widget _inputText({
-    String desc,
-    bool isFirst,
-    bool isLast,
-    bool isLeft,
-    TextEditingController textController,
-    bool isVisible,
-    Function onVisible,
+    String? desc,
+    bool? isFirst,
+    bool? isLast,
+    bool? isLeft,
+    TextEditingController? textController,
+    bool? isVisible,
+    Function? onVisible,
     bool isRePassword = false,
     bool isOldPassword = false,
   }) {
@@ -270,9 +270,9 @@ class _ResetPasswordState extends State<ResetPassword> {
         decoration: BoxDecoration(
           border: Border.all(color: accentColor),
           borderRadius: BorderRadius.only(
-            topLeft: isFirst ? Radius.circular(8) : Radius.zero,
+            topLeft: isFirst! ? Radius.circular(8) : Radius.zero,
             topRight: isFirst ? Radius.circular(8) : Radius.zero,
-            bottomLeft: isLast ? Radius.circular(8) : Radius.zero,
+            bottomLeft: isLast! ? Radius.circular(8) : Radius.zero,
             bottomRight: isLast ? Radius.circular(8) : Radius.zero,
           ),
         ),
@@ -284,7 +284,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 TextFormField(
                   controller: textController,
                   keyboardType: TextInputType.text,
-                  obscureText: isVisible ? false : true,
+                  obscureText: isVisible! ? false : true,
                   decoration: InputDecoration(
                     hintText: desc,
                     labelText: desc,
@@ -298,8 +298,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                     border: InputBorder.none,
                   ),
                   validator: (value) {
-                    if (value.isEmpty) {
-                      return desc + " masih kosong!";
+                    if (value!.isEmpty) {
+                      return desc! + " masih kosong!";
                     }
                     if (value.length < 8 && !isOldPassword) {
                       return "Panjang karakter minimal 8 digit!";
@@ -315,10 +315,12 @@ class _ResetPasswordState extends State<ResetPassword> {
                   style: TextStyle(fontSize: 14, color: Colors.black),
                 ),
                 IconButton(
-                  icon: isVisible
-                      ? Icon(FlutterIcons.ios_eye_ion)
-                      : Icon(FlutterIcons.ios_eye_off_ion),
-                  onPressed: onVisible,
+                  icon: isVisible ? Icon(
+                      // FlutterIcons.ios_eye_ion
+                      Iconsax.eye) : Icon(
+                      // FlutterIcons.ios_eye_off_ion
+                      Iconsax.eye_slash),
+                  onPressed: () => onVisible!(),
                 ),
               ]),
             ],
@@ -393,7 +395,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                       suffixIcon: Padding(
                         padding: EdgeInsets.only(top: 20),
                         child: Icon(
-                          FlutterIcons.ios_arrow_down_ion,
+                          // FlutterIcons.ios_arrow_down_ion,
+                          Iconsax.arrow_down,
                           color: Colors.black,
                           size: 20,
                         ),
@@ -401,7 +404,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     ),
                     style: TextStyle(fontSize: 14, color: Colors.black),
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value!.isEmpty) {
                         return "Sumber dana masih kosong!";
                       }
                       return null;

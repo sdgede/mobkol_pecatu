@@ -1,8 +1,5 @@
-import 'dart:ui';
 import 'package:provider/provider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/produk_model.dart';
@@ -15,12 +12,12 @@ import '../../../services/config/config.dart' as config;
 import '../../constant/constant.dart';
 
 class CustomTransDialog extends StatefulWidget {
-  final DetailProdukCollection produkModel;
-  final String title, groupProduk, rekCd, tipeTrans, norek;
-  final String img, produkId;
+  final DetailProdukCollection? produkModel;
+  final String? title, groupProduk, rekCd, tipeTrans, norek;
+  final String? img, produkId;
 
   const CustomTransDialog({
-    Key key,
+    Key? key,
     this.title,
     this.groupProduk,
     this.rekCd,
@@ -48,9 +45,9 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
   int _totBayar = 0;
 
   String _pesanStatusTransaksi = "-";
-  ProdukCollectionProvider produkProvider;
-  TransaksiProvider transaksiPorvider;
-  GlobalProvider globalProv;
+  ProdukCollectionProvider? produkProvider;
+  TransaksiProvider? transaksiPorvider;
+  GlobalProvider? globalProv;
   MoneyMaskedTextController nominalController = MoneyMaskedTextController(
       decimalSeparator: '', thousandSeparator: '.', precision: 0);
   MoneyMaskedTextController bungaController = MoneyMaskedTextController(
@@ -74,7 +71,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
         Provider.of<ProdukCollectionProvider>(context, listen: false);
     transaksiPorvider = Provider.of<TransaksiProvider>(context, listen: false);
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
-    globalProv.loadLocation(context);
+    globalProv!.loadLocation(context);
     _formValue = 'FORM_INPUT';
     if (widget.groupProduk == 'KREDIT') _setFormKredit();
     checkButtonLanjut();
@@ -82,13 +79,13 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
 
   void _setFormKredit() {
     if (widget.tipeTrans == 'PELUNASAN') {
-      _pokok = int.parse(widget.produkModel.baki_debet);
-      _bunga = int.parse(widget.produkModel.tunggakan_bunga);
-      _denda = int.parse(widget.produkModel.denda);
+      _pokok = int.parse(widget.produkModel!.baki_debet);
+      _bunga = int.parse(widget.produkModel!.tunggakan_bunga);
+      _denda = int.parse(widget.produkModel!.denda);
     } else {
-      _pokok = int.parse(widget.produkModel.pokok_bln_ini);
-      _bunga = int.parse(widget.produkModel.bnga_bln_ini);
-      _denda = int.parse(widget.produkModel.denda);
+      _pokok = int.parse(widget.produkModel!.pokok_bln_ini);
+      _bunga = int.parse(widget.produkModel!.bnga_bln_ini);
+      _denda = int.parse(widget.produkModel!.denda);
     }
     _totBayar = _pokok + _bunga + _denda;
 
@@ -209,10 +206,10 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
     //     ? widget.produkModel.min_setoran
     //     : produkProvider.getSelectedMinSetoran;
     if (widget.groupProduk == 'KREDIT')
-      await _hitungPembayaranKredit(
+      _hitungPembayaranKredit(
           int.parse(nominalController.text.replaceAll(".", "")));
 
-    String _minSetoran = produkProvider.getSelectedMinSetoran;
+    String _minSetoran = produkProvider!.getSelectedMinSetoran;
 
     if (int.parse(nominalController.text.replaceAll('.', '')) <
             int.parse(_minSetoran) &&
@@ -226,18 +223,18 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
                 TextUtils.instance.numberFormat(_minSetoran),
       );
     } else {
-      _rekCd = widget.rekCd;
-      _groupProduk = widget.groupProduk;
-      _produkId = widget.produkId;
-      _tipeTrans = widget.tipeTrans;
-      _norek = widget.norek;
+      _rekCd = widget.rekCd!;
+      _groupProduk = widget.groupProduk!;
+      _produkId = widget.produkId!;
+      _tipeTrans = widget.tipeTrans!;
+      _norek = widget.norek!;
       _jumlah = nominalController.text;
       _remark = keteranganController.text;
       _pokokParse = pokokController.text;
       _bungaParse = bungaController.text;
       _dendaParse = dendaController.text;
       //_lateCharge = lateChargeController.text;
-      await transaksiPorvider.prosesTransaksiKolektor(
+      await transaksiPorvider!.prosesTransaksiKolektor(
         context: context,
         rekCd: _rekCd,
         groupProduk: _groupProduk,
@@ -295,7 +292,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
                 formPengisianData(),
                 Align(
                   alignment: Alignment.bottomRight,
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -317,10 +314,10 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
             radius: avatarRadius,
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(avatarRadius)),
-              child: globalProv.getConnectionMode == config.offlineMode
-                  ? Image.asset('assets/icon/' + widget.img)
+              child: globalProv!.getConnectionMode == config.offlineMode
+                  ? Image.asset('assets/icon/' + widget.img!)
                   : Image.network(
-                      config.iconLink + widget.img,
+                      config.iconLink + widget.img!,
                       width: 60,
                       height: 60,
                     ),
@@ -528,7 +525,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
             ),
           ),
           style: TextStyle(fontSize: 14),
-          onSaved: (String value) => null,
+          onSaved: (String? value) => null,
           onChanged: (value) {
             if (isNumber && value.isEmpty) {
               controller.text = '0';
@@ -540,7 +537,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
             checkButtonLanjut();
           },
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return "$tittle masih kosong!";
             }
             return null;

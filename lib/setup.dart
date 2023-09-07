@@ -8,8 +8,8 @@ import 'services/collection/transaksi_collection.dart';
 GetIt setup = GetIt.instance;
 void setupApp() async {
   //* Register as singleton
-  await setup.registerSingleton(LocationUtils());
-  await setup.registerSingleton(GlobalCollectionServices());
-  await setup.registerSingleton(ProdukCollectionServices());
-  await setup.registerSingleton(TransaksiCollectionServices());
+  setup.registerSingleton(LocationUtils());
+  setup.registerSingleton(GlobalCollectionServices());
+  setup.registerSingleton(ProdukCollectionServices());
+  setup.registerSingleton(TransaksiCollectionServices());
 }

@@ -3,13 +3,11 @@ import 'package:flutter_html/flutter_html.dart';
 // import 'package:flutter_html/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../services/config/router_generator.dart';
 import '../../../services/utils/url_launcher_utils.dart';
 import '../../../services/viewmodel/global_provider.dart';
 import '../../../ui/constant/constant.dart';
 import 'package:provider/provider.dart';
 import '../../../services/config/config.dart' as config;
-import 'package:html/dom.dart' as dom;
 
 class UpdatePage extends StatefulWidget {
   @override
@@ -17,18 +15,18 @@ class UpdatePage extends StatefulWidget {
 }
 
 class _UpdatePageState extends State<UpdatePage> {
-  GlobalProvider globalProv;
+  GlobalProvider? globalProv;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
   }
 
   @override
   Widget build(BuildContext context) {
-    final dynamic args = ModalRoute.of(context).settings.arguments as dynamic;
-    ScreenUtil().init(context);
+    final dynamic args = ModalRoute.of(context)!.settings.arguments as dynamic;
+    ScreenUtil.init(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: updatePageBody(args['route']),
@@ -36,68 +34,62 @@ class _UpdatePageState extends State<UpdatePage> {
   }
 
   Widget updatePageBody(String route) => Container(
-    child: Container(
-      width: deviceWidth(context),
-      height: deviceHeight(context),
-      margin: EdgeInsets.all(10.0),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Expanded(
-              child: Center(
-                child: Column(
-                  children: [
-                    SizedBox(height: 30),
-                    ImageNetwork(urlImage: config.urlImg+globalProv.updateInfo.img),
-                    SizedBox(height: 30),
-                    Html(
-                      data: '<h3>${globalProv.updateInfo.title}</h3>${globalProv.updateInfo.desc}',
-                      useRichText: true,
-                      customTextAlign: (dom.Node node) {
-                        if (node is dom.Element) {
-                          switch (node.localName) {
-                            case "h3":
-                              return TextAlign.center;
-                          }
-                        }
-                        return null;
-                      },
+        child: Container(
+          width: deviceWidth(context),
+          height: deviceHeight(context),
+          margin: EdgeInsets.all(10.0),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 30),
+                        ImageNetwork(
+                            urlImage:
+                                config.urlImg + globalProv!.updateInfo.img!),
+                        SizedBox(height: 30),
+                        Html(
+                          data:
+                              '<h3>${globalProv!.updateInfo.title}</h3>${globalProv!.updateInfo.desc}',
+                          style: {"h3": Style(textAlign: TextAlign.center)},
+                        ),
+                      ],
                     ),
-                    
-                  ],
+                  ),
                 ),
-              ),
+                if (globalProv!.updateInfo.type != config.MAINTENANCE)
+                  _updateButton(globalProv!.updateInfo.url!),
+                if (globalProv!.updateInfo.type != config.MANDATORY_UPDATE &&
+                    globalProv!.updateInfo.type != config.MAINTENANCE)
+                  _ignoreButton(route)
+              ],
             ),
-            if(globalProv.updateInfo.type != config.MAINTENANCE ) _updateButton(globalProv.updateInfo.url),
-            if(globalProv.updateInfo.type != config.MANDATORY_UPDATE && globalProv.updateInfo.type != config.MAINTENANCE ) _ignoreButton(route)
-          ], 
+          ),
+        ),
+      );
+
+  _ignoreButton(String route) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: InkWell(
+        onTap: () {
+          Navigator.pushReplacementNamed(context, route);
+        },
+        child: Text(
+          "Nanti saja",
+          style: TextStyle(
+            color: Colors.black45,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 
-_ignoreButton(String route) {
-  return Container(
-    margin: EdgeInsets.only(top: 20),
-    child: InkWell(
-      onTap: () {
-        Navigator.pushReplacementNamed(
-        context, route
-        );
-      },
-      child: Text(
-        "Nanti saja",
-        style: TextStyle(
-          color: Colors.black45,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    ),
-  );
-}
-
-_updateButton(String url) {
+  _updateButton(String url) {
     return Container(
       height: ScreenUtil().setHeight(100),
       decoration: BoxDecoration(
@@ -133,15 +125,10 @@ _updateButton(String url) {
   }
 }
 
-
 class ImageNetwork extends StatelessWidget {
-
   final String urlImage;
 
-  const ImageNetwork({
-    Key key,
-    @required this.urlImage
-  }) : super(key: key);
+  const ImageNetwork({Key? key, required this.urlImage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +137,7 @@ class ImageNetwork extends StatelessWidget {
       fit: BoxFit.fill,
       height: ScreenUtil().setHeight(550),
       loadingBuilder: (BuildContext context, Widget child,
-          ImageChunkEvent loadingProgress) {
+          ImageChunkEvent? loadingProgress) {
         if (loadingProgress == null) return child;
         return Container(
           height: ScreenUtil().setHeight(150),
@@ -158,7 +145,7 @@ class ImageNetwork extends StatelessWidget {
             child: CircularProgressIndicator(
               value: loadingProgress.expectedTotalBytes != null
                   ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes
+                      loadingProgress.expectedTotalBytes!
                   : null,
             ),
           ),

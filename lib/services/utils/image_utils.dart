@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:ui' as ui;
-import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:exif/exif.dart';
@@ -18,7 +17,7 @@ class ImageUtils {
 
     img.Image fixedImage;
 
-    fixedImage = img.flipVertical(originalImage);
+    fixedImage = img.flipVertical(originalImage!);
 
     final fixedFile =
         await originalFile.writeAsBytes(img.encodeJpg(fixedImage));
@@ -32,7 +31,7 @@ class ImageUtils {
 
     final originalImage = img.decodeImage(imageBytes);
 
-    final height = originalImage.height;
+    final height = originalImage!.height;
     final width = originalImage.width;
 
     if (height >= width) {
@@ -40,12 +39,12 @@ class ImageUtils {
     }
     final exifData = await readExifFromBytes(imageBytes);
 
-    img.Image fixedImage;
+    img.Image? fixedImage;
 
     if (height < width) {
-      if (exifData['Image Orientation'].printable.contains('Horizontal')) {
+      if (exifData['Image Orientation']!.printable.contains('Horizontal')) {
         fixedImage = img.copyRotate(originalImage, 90);
-      } else if (exifData['Image Orientation'].printable.contains('180')) {
+      } else if (exifData['Image Orientation']!.printable.contains('180')) {
         fixedImage = img.copyRotate(originalImage, -90);
       } else {
         fixedImage = img.copyRotate(originalImage, 0);
@@ -53,7 +52,7 @@ class ImageUtils {
     }
 
     final fixedFile =
-        await originalFile.writeAsBytes(img.encodeJpg(fixedImage));
+        await originalFile.writeAsBytes(img.encodeJpg(fixedImage!));
 
     return fixedFile;
   }
@@ -70,25 +69,25 @@ class ImageUtils {
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
         targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
         .buffer
         .asUint8List();
   }
 
   Future<String> saveTemporaryImage({
-    Uint8List imageFile,
-    String fileName,
+    Uint8List? imageFile,
+    String? fileName,
   }) async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = '${tempDir.path}$fileName';
     File image = File(tempPath);
     bool isExist = await image.exists();
     if (isExist) await image.delete();
-    await File(tempPath).writeAsBytes(imageFile);
+    await File(tempPath).writeAsBytes(imageFile!);
     return tempPath;
   }
 
-  void deleteTemporaryImage({String fileName}) async {
+  void deleteTemporaryImage({String? fileName}) async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = '${tempDir.path}$fileName';
     File image = File(tempPath);

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class CustomIcons {
-  String image, name, navigator, tipe, title;
+  String? image, name, navigator, tipe, title;
   bool isDev, isPembayaran;
 
   CustomIcons({
@@ -21,28 +21,28 @@ class Slider {
   final String sliderSubHeading;
 
   Slider({
-    @required this.sliderImageUrl,
-    @required this.sliderHeading,
-    @required this.sliderSubHeading,
+    required this.sliderImageUrl,
+    required this.sliderHeading,
+    required this.sliderSubHeading,
   });
 }
 
 class ComboBoxModel {
-  final String value, desc, data;
+  final String? value, desc, data;
 
   ComboBoxModel({
-    @required this.value,
-    @required this.desc,
+    required this.value,
+    required this.desc,
     this.data,
   });
 }
 
 class SuksesTransaksiModel {
-  String noReferensi, trxDate, status, pesan, kode, rekCd;
-  String who, keterangan, groupProduk, norek, nama, hp, terbilang;
+  String? noReferensi, trxDate, status, pesan, kode, rekCd;
+  String? who, keterangan, groupProduk, norek, nama, hp, terbilang;
   dynamic saldo, saldo_awal, saldo_akhir, pokok, bunga, denda, jumlah, adm;
   dynamic idTrx;
-  List<Map<String, dynamic>> dataNotif;
+  List<Map<String, dynamic>>? dataNotif;
 
   SuksesTransaksiModel({
     this.noReferensi,
@@ -71,7 +71,7 @@ class SuksesTransaksiModel {
   });
 
   factory SuksesTransaksiModel.fromJson(Map<String, dynamic> json) {
-    List<Map<String, dynamic>> _dataNotif = [];
+    List<Map<String, dynamic>>? _dataNotif = [];
     if (json['dataNotif'] != null)
       for (var val in json['dataNotif']) {
         _dataNotif.add({
@@ -159,8 +159,8 @@ class BluetoothPrinterModel {
 }
 
 class OTPModel {
-  String requestOtpId, serverId, kodeOtp, tglRequest, tglExpired;
-  String tglExpired2, status, pesan;
+  String? requestOtpId, serverId, kodeOtp, tglRequest, tglExpired;
+  String? tglExpired2, status, pesan;
 
   OTPModel({
     this.requestOtpId,
@@ -188,31 +188,31 @@ class OTPModel {
 }
 
 class ListModelKol {
-  String title, navigator, description;
-  String icon, type;
-  bool isDev;
-  GlobalKey key;
+  String? title, navigator, description;
+  String? icon, type;
+  bool? isDev;
+  GlobalKey? key;
 
-  ListModelKol({
-    this.type,
-    this.title,
-    this.navigator,
-    this.icon,
-    this.isDev = false,
-    this.key,
-    this.description
-  });
+  ListModelKol(
+      {this.type,
+      this.title,
+      this.navigator,
+      this.icon,
+      this.isDev = false,
+      this.key,
+      this.description});
 }
 
 class UpdateInfo {
-  String version;
-  String title;
-  String desc;
-  String type;
-  String img;
-  String url;
+  String? version;
+  String? title;
+  String? desc;
+  String? type;
+  String? img;
+  String? url;
 
-  UpdateInfo({this.version, this.title, this.desc, this.type, this.img, this.url});
+  UpdateInfo(
+      {this.version, this.title, this.desc, this.type, this.img, this.url});
 
   factory UpdateInfo.fromJson(Map<String, dynamic> json) {
     return UpdateInfo(

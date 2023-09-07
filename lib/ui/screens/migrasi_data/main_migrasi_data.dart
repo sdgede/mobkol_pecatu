@@ -13,48 +13,47 @@ import '../../widgets/loader/lottie_loader.dart';
 import '../../../services/config/config.dart' as config;
 
 class MainMigrasiData extends StatefulWidget {
-  MainMigrasiData({Key key}) : super(key: key);
+  MainMigrasiData({Key? key}) : super(key: key);
 
   @override
   _MainMigrasiData createState() => _MainMigrasiData();
 }
 
 class _MainMigrasiData extends State<MainMigrasiData> {
-  ProdukCollectionProvider produkProv;
-  GlobalProvider globalProv;
+  ProdukCollectionProvider? produkProv;
+  GlobalProvider? globalProv;
   final format = DateFormat("dd-MM-yyyy");
   DateTime _tglAwal = DateTime.parse(DateTime.now().year.toString() +
       (DateTime.now().month < 10 ? "-0" : "-") +
       DateTime.now().month.toString() +
       "-01");
   DateTime _tglAkhir = DateTime.now();
-  String tglAwalParse, tglAkhirParse;
-
+  String? tglAwalParse, tglAkhirParse;
 
   var masterDataListMigrasi = [
-        {
-        'title': 'Master Nasabah',
-        'desc': 'Migrasi data master nasabah',
-        'icon': 'icons8-nas_migrate.png',
-        'rekCd': 'MASTER_NASABAH',
-        'groupProduk': 'MASTER_NASABAH',
-        'color': '0xff1967d2',
-        'color2': '0xff03d0ea',
-        'isDev': false,
-        'isMaster': true
-      },
-      {
-        'title': 'Data Akun',
-        'desc': 'Migrasi data akun kolektor',
-        'icon': 'icons8-user-100.png',
-        'rekCd': 'DATA_AKUN',
-        'groupProduk': 'DATA_AKUN',
-        'color': '0xff1967d2',
-        'color2': '0xff03d0ea',
-        'isDev': false,
-        'isMaster': true
-      },
-      {
+    {
+      'title': 'Master Nasabah',
+      'desc': 'Migrasi data master nasabah',
+      'icon': 'icons8-nas_migrate.png',
+      'rekCd': 'MASTER_NASABAH',
+      'groupProduk': 'MASTER_NASABAH',
+      'color': '0xff1967d2',
+      'color2': '0xff03d0ea',
+      'isDev': false,
+      'isMaster': true
+    },
+    {
+      'title': 'Data Akun',
+      'desc': 'Migrasi data akun kolektor',
+      'icon': 'icons8-user-100.png',
+      'rekCd': 'DATA_AKUN',
+      'groupProduk': 'DATA_AKUN',
+      'color': '0xff1967d2',
+      'color2': '0xff03d0ea',
+      'isDev': false,
+      'isMaster': true
+    },
+    {
       'title': 'Data Config',
       'desc': 'Migrasi data config',
       'icon': 'icons8_migrate.png',
@@ -62,36 +61,34 @@ class _MainMigrasiData extends State<MainMigrasiData> {
       'groupProduk': 'CONFIG',
       'color': '0xff1967d2',
       'color2': '0xff03d0ea',
-      'isDev':false,
+      'isDev': false,
       'isMaster': true
-      },
-    ];
+    },
+  ];
 
   var dataListMigrasi = [];
-
 
   @override
   void initState() {
     super.initState();
     produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
-    produkProv.setTglAwal(_tglAwal);
-    produkProv.setTglAkhir(_tglAkhir);
+    produkProv!.setTglAwal(_tglAwal);
+    produkProv!.setTglAkhir(_tglAkhir);
 
     setMenuCollection(false);
   }
 
   void setMenuCollection(bool isRefresh) async {
-    if(isRefresh){
-      await produkProv.dataProdukMigrasi(context);
+    if (isRefresh) {
+      produkProv!.dataProdukMigrasi(context);
     }
 
-    if(produkProv.produkCollectionMigrasi != null){
-      dataListMigrasi = [...masterDataListMigrasi];
-      for(var product in produkProv.produkCollectionMigrasi){
+    dataListMigrasi = [...masterDataListMigrasi];
+    for (var product in produkProv!.produkCollectionMigrasi) {
       dataListMigrasi.add({
-        'title': TextUtils().capitalizeEachWord(product.nama),
-        'desc': "Migrasi data ${TextUtils().capitalizeEachWord(product.nama)}",
+        'title': TextUtils().capitalizeEachWord(product.nama!),
+        'desc': "Migrasi data ${TextUtils().capitalizeEachWord(product.nama!)}",
         'icon': product.icon,
         'rekCd': product.rekCd,
         'groupProduk': product.slug,
@@ -101,21 +98,21 @@ class _MainMigrasiData extends State<MainMigrasiData> {
         'isMaster': false
       });
     }
-    }
   }
 
   void refreshMenuCollection() async {
-    await produkProv.refreshProdukCollectionMigrasi();
+    produkProv!.refreshProdukCollectionMigrasi();
     setMenuCollection(true);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultAppBar(context, 'Migrasi Data', isRefresh: true, onRefresh: () => refreshMenuCollection()),
+      appBar: DefaultAppBar(context, 'Migrasi Data',
+          isRefresh: true, onRefresh: () => refreshMenuCollection()),
       body: Consumer<ProdukCollectionProvider>(
         builder: (context, mutasiProdukProvider, _) {
-          if (produkProv.produkCollectionMigrasi == null) {
+          if (produkProv!.produkCollectionMigrasi == null) {
             // produkProv.dataProduk(context);
             setMenuCollection(true);
             return LottiePrimaryLoader();
@@ -157,7 +154,7 @@ class _MainMigrasiData extends State<MainMigrasiData> {
                     text: "Layanan sedang dalam fase pengembangan!",
                   );
                 } else {
-                  produkProv.getDataMigrasi(
+                  produkProv!.getDataMigrasi(
                     context: context,
                     rekCd: dataListMigrasi[index]['rekCd'],
                     groupProduk: dataListMigrasi[index]['groupProduk'],
@@ -195,12 +192,14 @@ class _MainMigrasiData extends State<MainMigrasiData> {
                   ),
                   child: ListTile(
                     contentPadding: EdgeInsets.all(20),
-                    leading: globalProv.getConnectionMode == config.onlineMode && !dataListMigrasi[index]['isMaster']
-                                ? Image.network(
-                                    config.iconLink  + dataListMigrasi[index]['icon'],
-                                  )
-                                : Image.asset(
-                                    'assets/icon/' + dataListMigrasi[index]['icon']),
+                    leading: globalProv!.getConnectionMode ==
+                                config.onlineMode &&
+                            !dataListMigrasi[index]['isMaster']
+                        ? Image.network(
+                            config.iconLink + dataListMigrasi[index]['icon'],
+                          )
+                        : Image.asset(
+                            'assets/icon/' + dataListMigrasi[index]['icon']),
                     title: Text(
                       dataListMigrasi[index]['title'],
                       style: TextStyle(

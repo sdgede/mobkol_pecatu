@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +11,8 @@ import '../../widgets/app_bar.dart';
 import '../../widgets/dialog/custom_trans_dialog.dart';
 
 class HasilPencarianProduk extends StatefulWidget {
-  final Map arguments;
-  const HasilPencarianProduk({Key key, this.arguments}) : super(key: key);
+  final Map? arguments;
+  const HasilPencarianProduk({Key? key, this.arguments}) : super(key: key);
 
   @override
   _HasilPencarianProduk createState() => _HasilPencarianProduk();
@@ -24,8 +22,8 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>(),
       _formKeyStep1 = GlobalKey<FormState>();
-  GlobalProvider _globalProvider;
-  ProdukCollectionProvider _produkProv;
+  GlobalProvider? _globalProvider;
+  ProdukCollectionProvider? _produkProv;
   bool _autoValidateStep1 = false,
       _btnTarikStatus = true,
       _btnHistoryStatus = true;
@@ -37,26 +35,26 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
     _globalProvider = Provider.of<GlobalProvider>(context, listen: false);
     _produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _produkProv.setSaldoResult(null, isListen: false);
+      _produkProv!.setSaldoResult('', isListen: false);
 
       if (['ANGGOTA', 'DEPOSITO', 'BERENCANA']
-              .contains(widget.arguments['tipe']) ||
-          _globalProvider.getConnectionMode == config.offlineMode) {
+              .contains(widget.arguments!['tipe']) ||
+          _globalProvider!.getConnectionMode == config.offlineMode) {
         _btnTarikStatus = false;
-        if (_produkProv.getSelectedRkCdProduk == 'SIHARI')
+        if (_produkProv!.getSelectedRkCdProduk == 'SIHARI')
           _btnTarikStatus = true;
       } else {
         _btnTarikStatus = true;
       }
 
-      if (_globalProvider.getConnectionMode == config.offlineMode)
+      if (_globalProvider!.getConnectionMode == config.offlineMode)
         _btnHistoryStatus = false;
     });
   }
 
   String _getNoRekDesc() {
-    if (widget.arguments['tipe'] == 'ANGGOTA') return 'No Anggota';
-    if (widget.arguments['tipe'] == 'KREDIT')
+    if (widget.arguments!['tipe'] == 'ANGGOTA') return 'No Anggota';
+    if (widget.arguments!['tipe'] == 'KREDIT')
       return config.clientType == 'KOPERASI' ? 'No Pinjaman' : 'No Kredit';
     else
       return 'No Rekening';
@@ -67,7 +65,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      appBar: DefaultAppBar(context, widget.arguments['title']),
+      appBar: DefaultAppBar(context, widget.arguments!['title']),
       key: scaffoldKey,
       body: SafeArea(
         child: Container(
@@ -75,7 +73,8 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
           width: MediaQuery.of(context).size.width,
           child: Form(
             key: _formKeyStep1,
-            autovalidate: _autoValidateStep1,
+            // autovalidate: _autoValidateStep1,
+            autovalidateMode: AutovalidateMode.disabled,
             child: Consumer<ProdukCollectionProvider>(
               builder: (context, produkProv, _) {
                 return Column(
@@ -112,8 +111,8 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image:
-                          AssetImage('assets/icon/' + widget.arguments['icon']),
+                      image: AssetImage(
+                          'assets/icon/' + widget.arguments!['icon']),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -159,7 +158,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
               ),
             ],
           ),
-          // if (widget.arguments['tipe'] == 'BERENCANA')
+          // if (widget.arguments!['tipe'] == 'BERENCANA')
           // Column(
           //   children: [
           //     SizedBox(height: 10),
@@ -229,7 +228,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
               ),
             ),
             SizedBox(height: 10),
-            if (widget.arguments['tipe'] == 'KREDIT')
+            if (widget.arguments!['tipe'] == 'KREDIT')
               Column(
                 children: [
                   // textTagihan(
@@ -365,7 +364,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                   ),
                 ],
               ),
-            if (['DEPOSITO', 'BERENCANA'].contains(widget.arguments['tipe']))
+            if (['DEPOSITO', 'BERENCANA'].contains(widget.arguments!['tipe']))
               Column(
                 children: [
                   textTagihan(
@@ -442,7 +441,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                   ),
                 ],
               ),
-            if (['ANGGOTA', 'TABUNGAN'].contains(widget.arguments['tipe']))
+            if (['ANGGOTA', 'TABUNGAN'].contains(widget.arguments!['tipe']))
               Column(
                 children: [
                   textTagihan(
@@ -453,7 +452,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                             : produkProv.detailProdukCollection[0].saldo
                         : produkProv.saldoResult,
                   ),
-                  if (widget.arguments['tipe'] == 'TABUNGAN')
+                  if (widget.arguments!['tipe'] == 'TABUNGAN')
                     Column(
                       children: [
                         textTagihan(
@@ -468,7 +467,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                           value: produkProv.detailProdukCollection == null
                               ? ""
                               : produkProv
-                                  .detailProdukCollection[0].remarkBlokir,
+                                  .detailProdukCollection[0].remarkBlokir!,
                           isNumber: false,
                         ),
                       ],
@@ -481,7 +480,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
               value: config.dataLogin['username'],
               isNumber: false,
             ),
-            if (['ANGGOTA', 'TABUNGAN'].contains(widget.arguments['tipe']))
+            if (['ANGGOTA', 'TABUNGAN'].contains(widget.arguments!['tipe']))
               textTagihan(
                 text: "Tgl Transaksi Terakhir",
                 value: produkProv.detailProdukCollection[0].last_trans_date,
@@ -494,9 +493,9 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
   }
 
   Widget textTagihan({
-    String text,
+    String? text,
     bool isTextBold = false,
-    String value,
+    String? value,
     bool isValueBold = false,
     bool isNumber = true,
   }) {
@@ -551,11 +550,11 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                         context: context,
                         builder: (BuildContext context) {
                           return CustomTransDialog(
-                            img: widget.arguments['icon'],
-                            groupProduk: widget.arguments['tipe'],
-                            rekCd: widget.arguments['rekCd'],
-                            norek: widget.arguments['norek'],
-                            tipeTrans: widget.arguments['tipe'] == 'KREDIT'
+                            img: widget.arguments!['icon'],
+                            groupProduk: widget.arguments!['tipe'],
+                            rekCd: widget.arguments!['rekCd'],
+                            norek: widget.arguments!['norek'],
+                            tipeTrans: widget.arguments!['tipe'] == 'KREDIT'
                                 ? 'ANGSURAN'
                                 : 'SETOR',
                             produkModel: produkProv.detailProdukCollection[0],
@@ -566,7 +565,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                     },
                     child: Center(
                       child: Text(
-                        widget.arguments['tipe'] == 'KREDIT'
+                        widget.arguments!['tipe'] == 'KREDIT'
                             ? "ANGSURAN"
                             : "SETOR",
                         style: TextStyle(
@@ -598,11 +597,11 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                           context: context,
                           builder: (BuildContext context) {
                             return CustomTransDialog(
-                              img: widget.arguments['icon'],
-                              groupProduk: widget.arguments['tipe'],
-                              rekCd: widget.arguments['rekCd'],
-                              norek: widget.arguments['norek'],
-                              tipeTrans: widget.arguments['tipe'] == 'KREDIT'
+                              img: widget.arguments!['icon'],
+                              groupProduk: widget.arguments!['tipe'],
+                              rekCd: widget.arguments!['rekCd'],
+                              norek: widget.arguments!['norek'],
+                              tipeTrans: widget.arguments!['tipe'] == 'KREDIT'
                                   ? 'PELUNASAN'
                                   : 'TARIK',
                               produkModel: produkProv.detailProdukCollection[0],
@@ -613,7 +612,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                     },
                     child: Center(
                       child: Text(
-                        widget.arguments['tipe'] == 'KREDIT'
+                        widget.arguments!['tipe'] == 'KREDIT'
                             ? "PELUNASAN"
                             : "TARIK",
                         style: TextStyle(
@@ -628,7 +627,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
               ),
             ],
           ),
-          //if (widget.arguments['tipe'] != 'KREDIT')
+          //if (widget.arguments!['tipe'] != 'KREDIT')
           Container(
             margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
             padding: EdgeInsets.symmetric(horizontal: 20),
@@ -644,14 +643,14 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                 onTap: () {
                   if (_btnHistoryStatus) {
                     Map<String, dynamic> dataParse = {
-                      'tipe': widget.arguments['tipe'],
-                      'groupProduk': widget.arguments['tipe'],
-                      'rekCd': widget.arguments['rekCd'],
-                      'norek': widget.arguments['norek'],
+                      'tipe': widget.arguments!['tipe'],
+                      'groupProduk': widget.arguments!['tipe'],
+                      'rekCd': widget.arguments!['rekCd'],
+                      'norek': widget.arguments!['norek'],
                       'idProduk': produkProv.detailProdukCollection[0].tab_id,
                       'title': 'Mutasi Transaksi',
                     };
-                    if (widget.arguments['tipe'] == 'KREDIT')
+                    if (widget.arguments!['tipe'] == 'KREDIT')
                       Navigator.pushNamed(
                         context,
                         RouterGenerator.mutasiKredit,

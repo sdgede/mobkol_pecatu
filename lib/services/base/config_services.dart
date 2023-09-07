@@ -10,8 +10,10 @@ class ConfigServices {
     return Options(
       headers: _headers,
       contentType: "multipart/form-data",
-      sendTimeout: 60 * 1000, // 60 seconds
-      receiveTimeout: 60 * 1000, // 60 seconds
+      // sendTimeout: 60 * 1000 // 60 seconds
+      sendTimeout: Duration(seconds: 60), // 60 seconds
+      // receiveTimeout: 60 * 1000, // 60 seconds
+      receiveTimeout: Duration(seconds: 60), // 60 seconds
     );
   }
 

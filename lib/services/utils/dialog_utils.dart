@@ -11,46 +11,46 @@ import '../viewmodel/produk_provider.dart';
 import '../../ui/widgets/dialog/info_dialog.dart';
 
 class DialogUtils {
-  GlobalProvider globalProvider;
-  ProdukCollectionProvider produkProv;
+  GlobalProvider? globalProvider;
+  ProdukCollectionProvider? produkProv;
   static DialogUtils instance = DialogUtils();
 
   dynamic showInfo({
-    BuildContext context,
-    String title,
-    String text,
-    String clickOKText,
-    String clickCancelText,
-    Function onClickOK,
-    Function onClickCancel,
+    BuildContext? context,
+    String? title,
+    String? text,
+    String? clickOKText,
+    String? clickCancelText,
+    Function? onClickOK,
+    Function? onClickCancel,
     bool isCancel = true,
   }) {
     return showModal(
-      context: context,
+      context: context!,
       configuration:
           FadeScaleTransitionConfiguration(barrierDismissible: false),
       builder: (context) {
         return InfoDialog(
-          title: title,
-          text: text,
-          clickOKText: clickOKText,
-          onClickOK: onClickOK,
-          clickCancelText: clickCancelText,
-          onClickCancel: onClickCancel,
+          title: title!,
+          text: text!,
+          clickOKText: clickOKText!,
+          onClickOK: onClickOK!,
+          clickCancelText: clickCancelText!,
+          onClickCancel: onClickCancel!,
           isCancel: isCancel,
         );
       },
     );
   }
 
-  dynamic showError({BuildContext context, String text}) {
+  dynamic showError({BuildContext? context, String? text}) {
     return showModal(
-      context: context,
+      context: context!,
       configuration:
           FadeScaleTransitionConfiguration(barrierDismissible: false),
       builder: (context) {
         return ErrorDialog(
-          text: text,
+          text: text!,
         );
       },
     );
@@ -194,9 +194,9 @@ class DialogUtils {
   }
 
   dynamic dialogBackProses({
-    BuildContext context,
+    BuildContext? context,
     bool isSave = false,
-    String navigator,
+    String? navigator,
   }) async {
     bool res = await showInfo(
           context: context,
@@ -208,15 +208,15 @@ class DialogUtils {
         false;
 
     if (res) {
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(navigator, (Route<dynamic> route) => false);
+      Navigator.of(context!)
+          .pushNamedAndRemoveUntil(navigator!, (Route<dynamic> route) => false);
     }
   }
 
   Future<bool> onBackPressedBackProses({
-    BuildContext context,
+    BuildContext? context,
     bool isSave = false,
-    String navigator,
+    String? navigator,
   }) async {
     return (await dialogBackProses(
             context: context, isSave: isSave, navigator: navigator)) ??
@@ -225,11 +225,11 @@ class DialogUtils {
 
   Future validateSaldoTransaksi(
     BuildContext context, {
-    String price,
+    String? price,
   }) async {
     ProdukTabunganProvider tabProvider =
         Provider.of<ProdukTabunganProvider>(context, listen: false);
-    if (int.parse(price) >
+    if (int.parse(price!) >
         int.parse(double.parse(tabProvider.saldoSumber).toStringAsFixed(0))) {
       DialogUtils.instance.showError(
         context: context,
