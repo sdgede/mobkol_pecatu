@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
     
     <application
-        android:name="com.sevanam.awbp_mobkol.Application"
+        android:name="${applicationName}"
         android:label="AWBP Mobile Kolektor"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon">

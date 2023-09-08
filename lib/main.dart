@@ -26,6 +26,7 @@ import 'services/utils/connectivity_utils.dart';
 import 'setup.dart';
 import 'ui/constant/constant.dart';
 import 'services/utils/firebase_utils.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -34,7 +35,7 @@ final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
 final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
 
-final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+late FirebaseMessaging _firebaseMessaging;
 
 NotificationAppLaunchDetails? notificationAppLaunchDetails;
 
