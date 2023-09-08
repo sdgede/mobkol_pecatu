@@ -59,7 +59,7 @@ void main() async {
 
   var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
   // IOSInitializationSettings
-  var initializationSettingsIOS = IOSInitializationSettings(
+  var initializationSettingsIOS = DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
@@ -144,14 +144,14 @@ class _MyAppState extends State<MyApp> {
       var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         Platform.isAndroid ? "ANDROID" : "IOS",
         config.companyName,
-        config.companyFullName,
+        channelDescription: config.companyFullName,
         importance: Importance.max,
         priority: Priority.high,
         ticker: 'ticker',
         styleInformation: BigTextStyleInformation(''),
       );
-      var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-      // var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+      // var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+      var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
       // var platformChannelSpecifics = NotificationDetails({
       //     android: androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics
       // });

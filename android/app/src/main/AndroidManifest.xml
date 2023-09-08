@@ -1,10 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sevanam.awbp_mobkol">
-    <!-- io.flutter.app.FlutterApplication is an android.app.Application that
-         calls FlutterMain.startInitialization(this); in its onCreate method.
-         In most cases you can leave this as-is, but you if you want to provide
-         additional functionality it is fine to subclass or reimplement
-         FlutterApplication and put your custom class here. -->
+    <!-- Izin -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -17,31 +13,45 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
+    
     <application
         android:name="com.sevanam.awbp_mobkol.Application"
         android:label="AWBP Mobile Kolektor"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon">
+
+        <!-- Aktivitas Utama -->
         <activity
             android:name="com.sevanam.awbp_mobkol.MainActivity"
-            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- Receiver untuk Flutter Notification -->
         <receiver
             android:name="com.sevanam.awbp_mobkol.MyNotificationReceiver"
-            android:enabled="true"
-            >
+            android:exported="false"> <!-- Ubah nilai ini sesuai dengan kebutuhan Anda -->
             <intent-filter>
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver" />
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
             </intent-filter>
         </receiver>
 
@@ -50,6 +60,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- API Key untuk Google Maps (Jika digunakan) -->
         <meta-data 
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAl2dZ5YPW1NQKKGil_-9Hhgr4wDg2-Vrk"/>

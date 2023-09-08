@@ -533,8 +533,8 @@ class GlobalProvider extends ChangeNotifier {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       Platform.isAndroid ? "ANDROID" : "IOS",
       config.companyName,
-      config.companyFullName,
-      // channelDescription: config.companyFullName,
+      // config.companyFullName,
+      channelDescription: config.companyFullName,
       importance: Importance.max,
       priority: Priority.high,
       onlyAlertOnce: true,
@@ -542,8 +542,8 @@ class GlobalProvider extends ChangeNotifier {
       maxProgress: maxProgress,
       progress: progress,
     );
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    // var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+    // var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
