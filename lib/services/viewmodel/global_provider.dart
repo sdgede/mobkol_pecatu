@@ -533,7 +533,8 @@ class GlobalProvider extends ChangeNotifier {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       Platform.isAndroid ? "ANDROID" : "IOS",
       config.companyName,
-      channelDescription: config.companyFullName,
+      config.companyFullName,
+      // channelDescription: config.companyFullName,
       importance: Importance.max,
       priority: Priority.high,
       onlyAlertOnce: true,

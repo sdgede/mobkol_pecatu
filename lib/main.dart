@@ -144,7 +144,7 @@ class _MyAppState extends State<MyApp> {
       var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         Platform.isAndroid ? "ANDROID" : "IOS",
         config.companyName,
-        channelDescription: config.companyFullName,
+        config.companyFullName,
         importance: Importance.max,
         priority: Priority.high,
         ticker: 'ticker',
