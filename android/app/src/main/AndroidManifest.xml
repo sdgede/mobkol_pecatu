@@ -66,4 +66,26 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAl2dZ5YPW1NQKKGil_-9Hhgr4wDg2-Vrk"/>
     </application>
+
+    <!-- Provide required visibility configuration for API level 30 and above -->
+    <queries>
+        <!-- Checks for call support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tel" />
+        </intent>
+        
+        <!-- Checks for mail support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="mailto" />
+        </intent>
+        
+        <!-- Checks for browser support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
 </manifest>

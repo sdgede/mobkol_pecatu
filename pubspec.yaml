@@ -62,9 +62,9 @@ dependencies:
   syncfusion_flutter_datepicker: ^22.2.12
   ticket_widget: ^0.0.1
   webview_flutter: ^4.2.4
-  url_launcher: 6.0.5
   firebase_core: ^2.15.1
   encrypt: ^5.0.1
+  url_launcher: 6.0.5
   
   
 
