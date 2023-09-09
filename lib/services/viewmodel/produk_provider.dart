@@ -111,6 +111,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   void dataProduk(BuildContext context,
       {isMessage = true, migrasi = false}) async {
     try {
+      print('data produk');
       var produkCollection = await produkCollectionServices.dataProduk(
           context: context, migrasi: migrasi);
       if (produkCollection == null) {

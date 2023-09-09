@@ -21,8 +21,7 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["context"] =
         migrasi ? McryptUtils.instance.encrypt("migrasi") : "";
     dataProduk["id_user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['ID_USER']);
-
+        McryptUtils.instance.encrypt(config.dataLogin['ID_USER'] ?? "");
     var resp;
 
     if (_globalProv!.getConnectionMode == config.onlineMode)
