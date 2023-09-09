@@ -67,8 +67,9 @@ class ErrorDialog extends StatelessWidget {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       title: Text("Opps...!"),
-      content:
-          Text(text ?? "Terjadi kesalahan saat terhubung ke server. CODE:500"),
+      content: Text((text != null && text != '')
+          ? text!
+          : "Terjadi kesalahan saat terhubung ke server. CODE:500"),
       actions: <Widget>[
         TextButton(
           style: ButtonStyle(
