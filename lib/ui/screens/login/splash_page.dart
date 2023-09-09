@@ -31,8 +31,8 @@ class _SplashPageState extends State<SplashPage>
   int durationSplashScreen = 5;
 
   startTimeout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool firstTime = prefs.getBool('first_time') ?? false;
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // bool firstTime = prefs.getBool('first_time') ?? false;
     var _redirectPage;
 
     await globalProv!.checkUpdate(context);

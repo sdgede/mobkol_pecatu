@@ -91,7 +91,7 @@ class _UpdatePageState extends State<UpdatePage> {
 
   _updateButton(String url) {
     return Container(
-      height: ScreenUtil().setHeight(100),
+      height: ScreenUtil().setHeight(40),
       decoration: BoxDecoration(
         color: accentColor,
         borderRadius: BorderRadius.circular(6.0),
@@ -135,7 +135,7 @@ class ImageNetwork extends StatelessWidget {
     return Image.network(
       urlImage,
       fit: BoxFit.fill,
-      height: ScreenUtil().setHeight(550),
+      height: ScreenUtil().setHeight(250),
       loadingBuilder: (BuildContext context, Widget child,
           ImageChunkEvent? loadingProgress) {
         if (loadingProgress == null) return child;
