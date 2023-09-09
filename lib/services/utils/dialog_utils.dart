@@ -50,7 +50,7 @@ class DialogUtils {
           FadeScaleTransitionConfiguration(barrierDismissible: false),
       builder: (context) {
         return ErrorDialog(
-          text: text!,
+          text: text ?? '',
         );
       },
     );

@@ -32,19 +32,22 @@ class _SplashPageState extends State<SplashPage>
 
   startTimeout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool firstTime = prefs.getBool('first_time')!;
+    bool firstTime = prefs.getBool('first_time') ?? false;
     var _redirectPage;
 
     await globalProv!.checkUpdate(context);
 
-    if (globalProv!.updateInfo.type == config.MANDATORY_UPDATE ||
-        globalProv!.updateInfo.type == config.NORMAL_UPDATE ||
-        globalProv!.updateInfo.type == config.MAINTENANCE) {
-      _redirectPage = RouterGenerator.pageUpdate;
+    if (globalProv!.updateInfo != null) {
+      if (globalProv!.updateInfo!.type == config.MANDATORY_UPDATE ||
+          globalProv!.updateInfo!.type == config.NORMAL_UPDATE ||
+          globalProv!.updateInfo!.type == config.MAINTENANCE) {
+        _redirectPage = RouterGenerator.pageUpdate;
+      } else {
+        _redirectPage = RouterGenerator.pageLogin;
+      }
     } else {
       _redirectPage = RouterGenerator.pageLogin;
     }
-
     Future.delayed(Duration(seconds: 5), () {
       Navigator.pushReplacementNamed(context, _redirectPage,
           arguments: {'route': RouterGenerator.pageLogin});

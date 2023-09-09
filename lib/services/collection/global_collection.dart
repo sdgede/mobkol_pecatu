@@ -18,7 +18,7 @@ import '../config/config.dart' as config;
 import '../../ui/constant/constant.dart' as constant;
 
 class GlobalCollectionServices extends BaseServices {
-  GlobalProvider? globalProv;
+  late GlobalProvider globalProv;
   final dbHelper = DatabaseHelper.instance;
 
   Future<List<ListChoiceModel>> getDataCustom({

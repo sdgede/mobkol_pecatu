@@ -15,7 +15,8 @@ import 'package:mitraku_kolektor/services/config/config.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+// import 'firebase_options.dart';
 import 'services/config/config.dart' as config;
 import 'services/config/router_generator.dart';
 import 'services/viewmodel/produk_provider.dart';
@@ -26,7 +27,6 @@ import 'services/utils/connectivity_utils.dart';
 import 'setup.dart';
 import 'ui/constant/constant.dart';
 import 'services/utils/firebase_utils.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -35,7 +35,7 @@ final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
 final BehaviorSubject<String> selectNotificationSubject =
     BehaviorSubject<String>();
 
-late FirebaseMessaging _firebaseMessaging;
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
 NotificationAppLaunchDetails? notificationAppLaunchDetails;
 
@@ -55,6 +55,10 @@ class ReceivedNotification {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      // options: DefaultFirebaseOptions.currentPlatform,
+      );
+
   notificationAppLaunchDetails =
       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
@@ -134,8 +138,8 @@ class _MyAppState extends State<MyApp> {
       firebaseId = await _firebaseMessaging.getToken();
       prefs.setString('firebase_id', firebaseId!);
     }
-    print('MY FCM : ' + firebaseId!);
-    config.firebaseId = firebaseId;
+    print('MY FCM : ' + (firebaseId ?? ''));
+    config.firebaseId = (firebaseId ?? '');
     config.platform = await PlatformUtils.distance.initPlatformState();
   }
 

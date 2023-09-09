@@ -17,7 +17,7 @@ enum RequestTypeToken { APK, BERITA, MERCHANT }
 enum TypeEncrypt { APK, MERCHANT }
 
 class BaseServices {
-  GlobalProvider? globalProv;
+  late GlobalProvider globalProv;
 
   Dio _dio = new Dio();
   Options? _headersOption;
@@ -40,7 +40,7 @@ class BaseServices {
     RequestTypeToken typeToken = RequestTypeToken.APK,
     TypeEncrypt typeEncrypt = TypeEncrypt.APK,
   }) async {
-    Response? response;
+    late Response response;
     DioErrorType? errorType;
 
     await _addGlobalvalue(context!, data);
@@ -56,12 +56,12 @@ class BaseServices {
       switch (type) {
         case RequestType.POST:
           if (typeToken == RequestTypeToken.MERCHANT)
+            response =
+                await _dio.post(url!, data: data, options: _headersOption);
+          else {
             response = await _dio.post(url!,
-                data: data != null ? data : null, options: _headersOption);
-          else
-            response = await _dio.post(url!,
-                data: data != null ? FormData.fromMap(data) : null,
-                options: _headersOption);
+                data: FormData.fromMap(data), options: _headersOption);
+          }
           break;
         case RequestType.GET:
           response = await _dio.get(url!, options: _headersOption);
@@ -77,11 +77,12 @@ class BaseServices {
       errorType = e.type;
     }
 
-    int statusCode = response!.statusCode!;
+    int statusCode = response.statusCode!;
 
-    if (errorType == DioErrorType.connectionTimeout ||
-        errorType == DioErrorType.receiveTimeout ||
-        errorType == DioErrorType.unknown) {
+    if (errorType == DioExceptionType.connectionTimeout ||
+        errorType == DioExceptionType.receiveTimeout ||
+        errorType == DioExceptionType.unknown ||
+        statusCode != 200) {
       await DialogUtils.instance.showError(
         context: context,
         text:
@@ -140,15 +141,15 @@ class BaseServices {
     dataParse["imei_kol"] = _encrypt(imei);
     dataParse["groupCd_kolektor"] = _encrypt(groupCdKol);
     dataParse["wilayahCd_kolektor"] = _encrypt(wilayahCdKol);
-    dataParse["lat"] = _encrypt(globalProv!.myLatitude.toString());
-    dataParse["longi"] = _encrypt(globalProv!.myLongitude.toString());
+    dataParse["lat"] = _encrypt(globalProv.myLatitude.toString());
+    dataParse["longi"] = _encrypt(globalProv.myLongitude.toString());
   }
 
-  String _encrypt(String val) {
+  String _encrypt(String? val) {
     return McryptUtils.instance.encrypt(val ?? '0');
   }
 
-  String _decrypt(String val) {
+  String _decrypt(String? val) {
     return McryptUtils.instance.decrypt(val ?? '0');
   }
 }

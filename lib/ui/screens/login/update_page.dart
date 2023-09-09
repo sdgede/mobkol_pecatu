@@ -49,21 +49,21 @@ class _UpdatePageState extends State<UpdatePage> {
                         SizedBox(height: 30),
                         ImageNetwork(
                             urlImage:
-                                config.urlImg + globalProv!.updateInfo.img!),
+                                config.urlImg + globalProv!.updateInfo!.img!),
                         SizedBox(height: 30),
                         Html(
                           data:
-                              '<h3>${globalProv!.updateInfo.title}</h3>${globalProv!.updateInfo.desc}',
+                              '<h3>${globalProv!.updateInfo!.title}</h3>${globalProv!.updateInfo!.desc}',
                           style: {"h3": Style(textAlign: TextAlign.center)},
                         ),
                       ],
                     ),
                   ),
                 ),
-                if (globalProv!.updateInfo.type != config.MAINTENANCE)
-                  _updateButton(globalProv!.updateInfo.url!),
-                if (globalProv!.updateInfo.type != config.MANDATORY_UPDATE &&
-                    globalProv!.updateInfo.type != config.MAINTENANCE)
+                if (globalProv!.updateInfo!.type != config.MAINTENANCE)
+                  _updateButton(globalProv!.updateInfo!.url!),
+                if (globalProv!.updateInfo!.type != config.MANDATORY_UPDATE &&
+                    globalProv!.updateInfo!.type != config.MAINTENANCE)
                   _ignoreButton(route)
               ],
             ),

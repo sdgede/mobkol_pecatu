@@ -64,6 +64,7 @@ dependencies:
   webview_flutter: ^4.2.4
   url_launcher: 6.0.5
   firebase_core: ^2.15.1
+  encrypt: ^5.0.1
   
   
 

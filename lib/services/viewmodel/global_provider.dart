@@ -447,9 +447,9 @@ class GlobalProvider extends ChangeNotifier {
   String get myAddress => _myAddress!;
 
   double? _myLatitude;
-  double get myLatitude => _myLatitude!;
+  double? get myLatitude => _myLatitude;
   double? _myLongitude;
-  double get myLongitude => _myLongitude!;
+  double? get myLongitude => _myLongitude;
 
   //location service
   String? _address;
@@ -588,13 +588,12 @@ class GlobalProvider extends ChangeNotifier {
   }
 
   UpdateInfo? _updateInfo;
-  UpdateInfo get updateInfo => _updateInfo!;
+  UpdateInfo? get updateInfo => _updateInfo;
 
   dynamic checkUpdate(BuildContext context) async {
     try {
       UpdateInfo? resp =
           await globalCollectionServices.checkUpdate(context: context);
-
       if (resp == null) {
         _updateInfo =
             new UpdateInfo(title: '', version: '', desc: '', type: 'NO_UPDATE');
