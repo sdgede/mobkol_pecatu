@@ -73,24 +73,27 @@ class LocationUtils {
     return 'cek address';
     // var addresses = await Geocoder.local
     //     .findAddressesFromCoordinates(Coordinates(latitude, longitude));
-    var addresses = await Geocoder2.getDataFromCoordinates(
-        latitude: latitude!,
-        longitude: longitude!,
-        googleMapApiKey: (Platform.isAndroid ? apiMapMobile : apiMapIOS));
-    return addresses.address;
+
+    // var addresses = await Geocoder2.getDataFromCoordinates(
+    //     latitude: latitude!,
+    //     longitude: longitude!,
+    //     googleMapApiKey: (Platform.isAndroid ? apiMapMobile : apiMapIOS));
+    // return addresses.address;
   }
 
   Future<String> getAddressByCoordinates({
     @required double? latitude,
     @required double? longitude,
   }) async {
+    return 'cek address';
     // var addresses = await Geocoder2.local
     //     .findAddressesFromCoordinates(Coordinates(latitude, longitude));
-    var addresses = await Geocoder2.getDataFromCoordinates(
-        latitude: latitude!,
-        longitude: longitude!,
-        googleMapApiKey: (Platform.isAndroid ? apiMapMobile : apiMapIOS));
-    return addresses.address;
+
+    // var addresses = await Geocoder2.getDataFromCoordinates(
+    //     latitude: latitude!,
+    //     longitude: longitude!,
+    //     googleMapApiKey: (Platform.isAndroid ? apiMapMobile : apiMapIOS));
+    // return addresses.address;
   }
 
   Future<Map<String, dynamic>> getDistanceTime({

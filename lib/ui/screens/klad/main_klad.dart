@@ -159,12 +159,12 @@ class _MainKlad extends State<MainKlad> {
     double _totSaldo = 0, _totalTrx = 0;
     int _countSetoran = 0, _countTarikan = 0;
 
-    _totSaldo = double.parse(mutasiData[0].totSetoran!) -
-        double.parse(mutasiData[0].totTarikan!);
-    _totalTrx = double.parse(mutasiData[0].totSetoran!) +
+    _totSaldo = double.parse(mutasiData![0].totSetoran!) -
+        double.parse(mutasiData![0].totTarikan!);
+    _totalTrx = double.parse(mutasiData![0].totSetoran!) +
         double.parse(mutasiData[0].totTarikan!);
     _countSetoran =
-        mutasiData.where((element) => element.dbcr == 'CR').length ?? 0;
+        mutasiData!.where((element) => element.dbcr == 'CR').length ?? 0;
     _countTarikan =
         mutasiData.where((element) => element.dbcr == 'DB').length ?? 0;
 
@@ -446,12 +446,12 @@ class _MainKlad extends State<MainKlad> {
             );
           }
 
-          if (produkProv.muatasiProdukCollection[0].status == 'Gagal') {
+          if (produkProv.muatasiProdukCollection![0].status == 'Gagal') {
             return Center(
               child: Column(
                 children: [
                   DataNotFound(
-                    pesan: produkProv.muatasiProdukCollection[0].pesan,
+                    pesan: produkProv.muatasiProdukCollection![0].pesan,
                   ),
                   SizedBox(height: 10),
                   refreshDataKlad(),
@@ -463,11 +463,11 @@ class _MainKlad extends State<MainKlad> {
             shrinkWrap: true,
             itemCount: produkProv.muatasiProdukCollection == null
                 ? 0
-                : produkProv.muatasiProdukCollection.length,
+                : produkProv.muatasiProdukCollection!.length,
             scrollDirection: Axis.vertical,
             physics: BouncingScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
-              var dataTrans = produkProv.muatasiProdukCollection[index];
+              var dataTrans = produkProv.muatasiProdukCollection![index];
               return FieldListKlad(dataTrans: dataTrans);
             },
           );
