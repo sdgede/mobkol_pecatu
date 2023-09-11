@@ -372,7 +372,7 @@ class HomeKolektorState extends State<HomeKolektor> {
                               children: <Widget>[
                                 Icon(
                                   // FlutterIcons.ios_arrow_forward_ion,
-                                  Iconsax.arrow_right,
+                                  Iconsax.arrow_right_3,
                                   color: Colors.black38,
                                 ),
                               ],

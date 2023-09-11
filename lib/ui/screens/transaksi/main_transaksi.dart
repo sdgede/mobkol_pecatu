@@ -83,8 +83,8 @@ class _MainTransaksi extends State<MainTransaksi> {
                   SizedBox(height: 10),
                   _checkBox(type: "isScan", text: "Mode scan"),
                   SizedBox(height: 20),
-                  textFieldNorek(produkProv.getSelectedRekShortcut,
-                      produkProv.getSelectedgroupProdukProduk),
+                  textFieldNorek(produkProv.getSelectedRekShortcut ?? '',
+                      produkProv.getSelectedgroupProdukProduk ?? ''),
                   SizedBox(height: 10),
                   buttonCari(),
                 ],
@@ -154,20 +154,20 @@ class _MainTransaksi extends State<MainTransaksi> {
   Widget scrollTag(BuildContext context) {
     return Consumer<ProdukCollectionProvider>(
       builder: (context, produkProvider, _) {
-        if (produkProvider!.produkCollection == null) {
-          produkProvider!.dataProduk(context);
+        if (produkProvider.produkCollection == null) {
+          produkProvider.dataProduk(context);
           return LinearProgressIndicator();
         }
         return Container(
           height: 90,
           margin: EdgeInsets.only(left: 10),
           child: ListView.builder(
-            itemCount: produkProvider!.produkCollection.length,
+            itemCount: produkProvider.produkCollection!.length,
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             controller: produkScrollCOntroller,
             itemBuilder: (BuildContext context, int i) {
-              var dataProduk = produkProvider!.produkCollection[i];
+              var dataProduk = produkProvider.produkCollection![i];
               return SlideListProduk(dataProduk: dataProduk, isKlad: false);
             },
           ),

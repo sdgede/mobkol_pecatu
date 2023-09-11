@@ -34,7 +34,7 @@ class _ExportDatabaseState extends State<ExportDatabase> {
     );
 
     setState(() {
-      _savePath = path!;
+      _savePath = path ?? _savePath;
     });
   }
 

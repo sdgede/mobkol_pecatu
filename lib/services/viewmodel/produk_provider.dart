@@ -21,7 +21,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   GlobalProvider? gobalProv;
   // daftar produk
   List<ProdukCollection>? _produkCollection;
-  List<ProdukCollection> get produkCollection => _produkCollection!;
+  List<ProdukCollection>? get produkCollection => _produkCollection;
   void refreshProdukCollection() {
     _produkCollection = null;
     notifyListeners();
@@ -43,14 +43,14 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   String? _selectedRekCdProduk;
-  String get getSelectedRkCdProduk => _selectedRekCdProduk!;
+  String get getSelectedRkCdProduk => _selectedRekCdProduk ?? '';
   void setSelectedRekCdProduk(String rekCd, {bool listen = true}) {
     _selectedRekCdProduk = rekCd;
     if (listen) notifyListeners();
   }
 
   String? _selectedgroupProdukProduk;
-  String get getSelectedgroupProdukProduk => _selectedgroupProdukProduk!;
+  String get getSelectedgroupProdukProduk => _selectedgroupProdukProduk ?? '';
   void setSelectedgroupProdukProduk(String group, {bool listen = true}) {
     _selectedgroupProdukProduk = group;
     if (listen) notifyListeners();
@@ -62,7 +62,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   String? _selectedProdukName;
-  String get getSelectedProdukName => _selectedProdukName!;
+  String? get getSelectedProdukName => _selectedProdukName;
   void setSelectedProdukName(String name, {bool listen = true}) {
     _selectedProdukName = name;
     if (listen) notifyListeners();
@@ -76,7 +76,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   String? _selectedRekShortcut;
-  String get getSelectedRekShortcut => _selectedRekShortcut!;
+  String? get getSelectedRekShortcut => _selectedRekShortcut;
   void setSelectedRekShortcut(String minSet, {bool listen = true}) {
     _selectedRekShortcut = minSet;
     if (listen) notifyListeners();
@@ -95,9 +95,11 @@ class ProdukCollectionProvider extends ChangeNotifier {
       dataProduk(context!);
       //return EasyLoading.show(status: config.Loading);
     }
-    var _dataProduk = _produkCollection!
-        .where((element) => element.urut_menu.toString() == '1')
-        .first;
+
+    var _dataProduk = _produkCollection!.firstWhere(
+        (element) => element.urut_menu.toString() == '1',
+        orElse: () => ProdukCollection());
+
     _selectedRekCdProduk = _dataProduk.rekCd;
     _selectedgroupProdukProduk = _dataProduk.slug;
     _selectedProdukName = _dataProduk.nama;
@@ -111,8 +113,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   void dataProduk(BuildContext context,
       {isMessage = true, migrasi = false}) async {
     try {
-      print('data produk');
-      var produkCollection = await produkCollectionServices.dataProduk(
+      dynamic produkCollection = await produkCollectionServices.dataProduk(
           context: context, migrasi: migrasi);
       if (produkCollection == null) {
         if (isMessage) DialogUtils.instance.showError(context: context);

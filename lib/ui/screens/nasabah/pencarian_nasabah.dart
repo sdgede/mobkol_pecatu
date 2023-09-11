@@ -120,12 +120,12 @@ class _PencarianNasabah extends State<PencarianNasabah> {
           height: 90,
           margin: EdgeInsets.only(left: 10),
           child: ListView.builder(
-            itemCount: produkProvider.produkCollection.length,
+            itemCount: produkProvider.produkCollection!.length,
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             controller: produkScrollCOntroller,
             itemBuilder: (BuildContext context, int i) {
-              var dataProduk = produkProvider.produkCollection[i];
+              var dataProduk = produkProvider.produkCollection![i];
               return SlideListProduk(dataProduk: dataProduk, isKlad: false);
             },
           ),

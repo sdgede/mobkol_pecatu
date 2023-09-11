@@ -34,13 +34,13 @@ class ProdukCollectionServices extends BaseServices {
     else
       resp = await dbHelper.getIconProdukOffline(dataParse: dataProduk);
 
-    print("response $resp");
+    print("data produk collection  response $resp");
 
     List<ProdukCollection> produkCollection = [];
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      List<ProdukCollection> produkCollection = [];
+      produkCollection = [];
       jsonData.forEach((val) {
         produkCollection.add(ProdukCollection.fromJson(val));
       });

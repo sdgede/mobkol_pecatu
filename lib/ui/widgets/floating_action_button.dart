@@ -66,7 +66,7 @@ Widget floatingActionUploadTrx(BuildContext context) {
           bool _confirm = await DialogUtils.instance.dialogConfirm(
             context,
             "Ingin mengupload seluruh data transaksi " +
-                produkProv.getSelectedProdukName.toLowerCase() +
+                produkProv.getSelectedProdukName!.toLowerCase() +
                 "?",
           );
           if (_confirm) {}

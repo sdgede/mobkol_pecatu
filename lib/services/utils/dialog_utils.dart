@@ -35,8 +35,8 @@ class DialogUtils {
           text: text!,
           clickOKText: clickOKText!,
           onClickOK: onClickOK!,
-          clickCancelText: clickCancelText!,
-          onClickCancel: onClickCancel!,
+          clickCancelText: clickCancelText,
+          onClickCancel: onClickCancel ?? () => {},
           isCancel: isCancel,
         );
       },

@@ -73,8 +73,8 @@ class LocationUtils {
     // var addresses = await Geocoder.local
     //     .findAddressesFromCoordinates(Coordinates(latitude, longitude));
     var addresses = await Geocoder2.getDataFromCoordinates(
-        latitude: latitude!,
-        longitude: longitude!,
+        latitude: latitude ?? 0,
+        longitude: longitude ?? 0,
         googleMapApiKey: (Platform.isAndroid ? apiMapMobile : apiMapIOS));
     return addresses.address;
   }
