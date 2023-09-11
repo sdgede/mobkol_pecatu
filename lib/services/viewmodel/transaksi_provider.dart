@@ -150,7 +150,7 @@ class TransaksiProvider extends ChangeNotifier {
     resetCountUpTrx();
     resetCountProgress();
     produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
-    int _countOffTrx = produkProv!.muatasiProdukCollection
+    int _countOffTrx = produkProv!.muatasiProdukCollection!
         .where((element) => element.isUpload == 'N')
         .length;
     if (_countOffTrx == 0) {
@@ -162,7 +162,7 @@ class TransaksiProvider extends ChangeNotifier {
       setLoadingUpload(true);
       int _lengthStart = 1;
       await Future.forEach<dynamic>(
-        produkProv!.muatasiProdukCollection
+        produkProv!.muatasiProdukCollection!
             .where((element) => element.isUpload == 'N'),
         (val) async {
           _maxProgressUpload = _countOffTrx;

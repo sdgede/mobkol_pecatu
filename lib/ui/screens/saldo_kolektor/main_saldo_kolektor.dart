@@ -32,12 +32,15 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
         Provider.of<ProdukCollectionProvider>(context, listen: false);
     globalProvider = Provider.of<GlobalProvider>(context, listen: false);
     //produkProvider!.refreshSaldoKolektor();
-    produkProvider!.getDataSaldoKolektorMenu(context);
-    print("mock from screen: ${produkProvider!.saldoKolektorMenu}");
+    initData();
+  }
+
+  void initData() async {
+    await produkProvider!.getDataSaldoKolektor(context);
+    await produkProvider!.getDataSaldoKolektorMenu(context);
   }
 
   void _refresh() {
-    print('mock refresh');
     produkProvider!.refreshSaldoKolektor();
     produkProvider!.refreshSaldoKolektorMenu();
   }
@@ -71,7 +74,7 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: <Widget>[
-                  _ticketViewSaldokol(produkProv.saldoKolektorCollection[0]),
+                  _ticketViewSaldokol(produkProv.saldoKolektorCollection![0]),
                   SizedBox(height: 100),
                 ],
               ),

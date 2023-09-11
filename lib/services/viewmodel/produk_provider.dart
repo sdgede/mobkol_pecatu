@@ -246,19 +246,19 @@ class ProdukCollectionProvider extends ChangeNotifier {
   //saldokol
 
   List<SaldoKolektorModel>? _saldoKolektorCollection;
-  List<SaldoKolektorModel> get saldoKolektorCollection =>
-      _saldoKolektorCollection!;
+  List<SaldoKolektorModel>? get saldoKolektorCollection =>
+      _saldoKolektorCollection;
 
   void refreshSaldoKolektor() {
     _saldoKolektorCollection = null;
     notifyListeners();
   }
 
-  void getDataSaldoKolektor(
+  Future getDataSaldoKolektor(
     BuildContext context,
   ) async {
     //try {
-    var listSaldokol = await produkCollectionServices.getDataSaldoKolektor(
+    dynamic listSaldokol = await produkCollectionServices.getDataSaldoKolektor(
       context: context,
       rekCd: _selectedRekCdProduk,
       groupProduk: _selectedgroupProdukProduk,
@@ -281,19 +281,21 @@ class ProdukCollectionProvider extends ChangeNotifier {
 
   //saldokol menu
   List<SaldoKolektor>? _saldoKolektorMenu;
-  List<SaldoKolektor> get saldoKolektorMenu => _saldoKolektorMenu!;
+  List<SaldoKolektor>? get saldoKolektorMenu => _saldoKolektorMenu;
 
   void refreshSaldoKolektorMenu() {
     _saldoKolektorMenu = null;
     notifyListeners();
   }
 
-  void getDataSaldoKolektorMenu(
+  Future getDataSaldoKolektorMenu(
     BuildContext context,
   ) async {
-    var listSaldokol = await produkCollectionServices.getSaldoKolektor(
+    dynamic listSaldokol = await produkCollectionServices.getSaldoKolektor(
       context: context,
     );
+
+    print("mock listSaldokol $listSaldokol");
     if (listSaldokol == null) {
       DialogUtils.instance.showError(context: context);
       return null;
@@ -697,7 +699,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
     String rekCd,
   ) async {
     try {
-      var muatasiProdukCollection =
+      print("mutasi data called");
+      dynamic muatasiProdukCollection =
           await produkCollectionServices.getMutasiProdukByProdukIdDateRage(
         context: context,
         produkId: produkId,
@@ -705,6 +708,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
         tglAwal: _tglAwal.toString(),
         tglAkhir: _tglAkhir.toString(),
       );
+      print("mutasi data response $muatasiProdukCollection");
       if (muatasiProdukCollection == null) {
         DialogUtils.instance.showError(context: context);
         return null;

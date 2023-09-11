@@ -160,11 +160,11 @@ class _MainKlad extends State<MainKlad> {
     int _countSetoran = 0, _countTarikan = 0;
 
     _totSaldo = double.parse(mutasiData![0].totSetoran!) -
-        double.parse(mutasiData![0].totTarikan!);
-    _totalTrx = double.parse(mutasiData![0].totSetoran!) +
+        double.parse(mutasiData[0].totTarikan!);
+    _totalTrx = double.parse(mutasiData[0].totSetoran!) +
         double.parse(mutasiData[0].totTarikan!);
     _countSetoran =
-        mutasiData!.where((element) => element.dbcr == 'CR').length ?? 0;
+        mutasiData.where((element) => element.dbcr == 'CR').length ?? 0;
     _countTarikan =
         mutasiData.where((element) => element.dbcr == 'DB').length ?? 0;
 

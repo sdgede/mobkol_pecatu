@@ -71,10 +71,10 @@ class _MutasiKredit extends State<MutasiKredit>
             );
           }
 
-          if (produkProv.muatasiProdukCollection[0].status == 'Gagal') {
+          if (produkProv.muatasiProdukCollection![0].status == 'Gagal') {
             return Center(
               child: DataNotFound(
-                pesan: produkProv.muatasiProdukCollection[0].pesan,
+                pesan: produkProv.muatasiProdukCollection![0].pesan,
               ),
             );
           }
@@ -97,7 +97,7 @@ class _MutasiKredit extends State<MutasiKredit>
                       DataColumn(label: Text("Bakidebet")),
                       DataColumn(label: Text("Print")),
                     ],
-                    rows: produkProv.muatasiProdukCollection
+                    rows: produkProv.muatasiProdukCollection!
                         .map(
                           ((element) => DataRow(
                                 cells: <DataCell>[

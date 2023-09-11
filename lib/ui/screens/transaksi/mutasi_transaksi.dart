@@ -65,10 +65,10 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
                   );
                 }
 
-                if (produkProv.muatasiProdukCollection[0].status == 'Gagal') {
+                if (produkProv.muatasiProdukCollection![0].status == 'Gagal') {
                   return Center(
                     child: DataNotFound(
-                      pesan: produkProv.muatasiProdukCollection[0].pesan,
+                      pesan: produkProv.muatasiProdukCollection![0].pesan,
                     ),
                   );
                 }
@@ -77,7 +77,7 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
                   physics: BouncingScrollPhysics(),
                   itemCount: produkProv.muatasiProdukCollection == null
                       ? 0
-                      : produkProv.muatasiProdukCollection.length,
+                      : produkProv.muatasiProdukCollection!.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       decoration: BoxDecoration(
@@ -88,16 +88,16 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
                       child: Column(
                         children: [
                           dataNasabah(
-                            produkProv.muatasiProdukCollection[index].kode!,
-                            produkProv.muatasiProdukCollection[index].tgl!,
-                            produkProv.muatasiProdukCollection[index].jumlah!,
-                            produkProv.muatasiProdukCollection[index].saldo!,
-                            produkProv.muatasiProdukCollection[index].remark!,
-                            produkProv.muatasiProdukCollection[index].op!,
+                            produkProv.muatasiProdukCollection![index].kode!,
+                            produkProv.muatasiProdukCollection![index].tgl!,
+                            produkProv.muatasiProdukCollection![index].jumlah!,
+                            produkProv.muatasiProdukCollection![index].saldo!,
+                            produkProv.muatasiProdukCollection![index].remark!,
+                            produkProv.muatasiProdukCollection![index].op!,
                             produkProv
-                                .muatasiProdukCollection[index].saldo_awal!,
-                            produkProv.muatasiProdukCollection[index].dbcr!,
-                            produkProv.muatasiProdukCollection[index],
+                                .muatasiProdukCollection![index].saldo_awal!,
+                            produkProv.muatasiProdukCollection![index].dbcr!,
+                            produkProv.muatasiProdukCollection![index],
                           )
                         ],
                       ),

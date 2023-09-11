@@ -153,7 +153,7 @@ class MerchantSearchBody extends StatelessWidget {
               itemCount: produkProv.mutasiProdukCollectionSearch.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                var dataTrans = produkProv.muatasiProdukCollection[index];
+                var dataTrans = produkProv.muatasiProdukCollection![index];
                 return FieldListKlad(dataTrans: dataTrans);
               },
             );

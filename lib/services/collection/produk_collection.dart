@@ -207,8 +207,6 @@ class ProdukCollectionServices extends BaseServices {
         data: dataProduk,
       );
 
-    print(resp);
-
     List<SaldoKolektorModel> listProdukCollection = [];
 
     if (resp != null) {
