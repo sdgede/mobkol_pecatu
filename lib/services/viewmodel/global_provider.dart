@@ -45,7 +45,7 @@ class GlobalProvider extends ChangeNotifier {
   }
 
   String? _selectedPrinterName;
-  String get getSelectedPrinterName => _selectedPrinterName!;
+  String get getSelectedPrinterName => _selectedPrinterName ?? '';
 
   void setSelectedPrinterName(String printerName) {
     _selectedPrinterName = printerName;

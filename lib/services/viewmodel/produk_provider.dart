@@ -649,7 +649,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
 
   // mutasi produk
   List<MutasiProdukCollection>? _muatasiProdukCollection;
-  List<MutasiProdukCollection> get muatasiProdukCollection =>
+  List<MutasiProdukCollection>? get muatasiProdukCollection =>
       _muatasiProdukCollection!;
 
   void resetMutasiTransaksi({isListen = true}) {

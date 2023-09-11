@@ -70,11 +70,12 @@ class LocationUtils {
   }
 
   Future<String> getAddress() async {
+    return 'cek address';
     // var addresses = await Geocoder.local
     //     .findAddressesFromCoordinates(Coordinates(latitude, longitude));
     var addresses = await Geocoder2.getDataFromCoordinates(
-        latitude: latitude ?? 0,
-        longitude: longitude ?? 0,
+        latitude: latitude!,
+        longitude: longitude!,
         googleMapApiKey: (Platform.isAndroid ? apiMapMobile : apiMapIOS));
     return addresses.address;
   }
