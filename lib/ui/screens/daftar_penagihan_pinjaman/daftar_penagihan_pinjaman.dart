@@ -80,7 +80,7 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
               return SizedBox();
             }
 
-            if (produkProv.getNasabahList[0].status == 'Gagal') {
+            if (produkProv.getNasabahList![0].status == 'Gagal') {
               return SizedBox();
             }
 
@@ -95,7 +95,7 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      "${produkProv.getNasabahList.length.toString()} Data penagihan ditemukan",
+                      "${produkProv.getNasabahList!.length.toString()} Data penagihan ditemukan",
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 15,
@@ -125,7 +125,7 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
               );
             }
 
-            if (produkProv.getNasabahList[0].status == 'Gagal') {
+            if (produkProv.getNasabahList![0].status == 'Gagal') {
               return Center(
                 child: Column(
                   children: [
@@ -140,10 +140,10 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
 
             return ListView.builder(
               shrinkWrap: true,
-              itemCount: produkProv.getNasabahList.length,
+              itemCount: produkProv.getNasabahList!.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                var dataNasabah = produkProv.getNasabahList[index];
+                var dataNasabah = produkProv.getNasabahList![index];
                 return VerticalListNasabah(dataNasabah: dataNasabah);
               },
             );

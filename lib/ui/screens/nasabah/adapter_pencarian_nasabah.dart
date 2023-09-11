@@ -89,7 +89,7 @@ class MerchantSearchBody extends StatelessWidget {
               return SizedBox();
             }
 
-            if (produkProv.getNasabahList[0].status == 'Gagal') {
+            if (produkProv.getNasabahList![0].status == 'Gagal') {
               return SizedBox();
             }
 
@@ -104,7 +104,7 @@ class MerchantSearchBody extends StatelessWidget {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      "${produkProv.getNasabahList.length.toString()} nasabah ditemukan",
+                      "${produkProv.getNasabahList!.length.toString()} nasabah ditemukan",
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 15,
@@ -140,20 +140,20 @@ class MerchantSearchBody extends StatelessWidget {
               );
             }
 
-            if (produkProv.getNasabahList[0].status == 'Gagal') {
+            if (produkProv.getNasabahList![0].status == 'Gagal') {
               return Center(
                 child: DataNotFound(
-                  pesan: produkProv.getNasabahList[0].pesan,
+                  pesan: produkProv.getNasabahList![0].pesan,
                 ),
               );
             }
 
             return ListView.builder(
               shrinkWrap: true,
-              itemCount: produkProv.getNasabahList.length,
+              itemCount: produkProv.getNasabahList!.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                var dataNasabah = produkProv.getNasabahList[index];
+                var dataNasabah = produkProv.getNasabahList![index];
                 return VerticalListNasabah(dataNasabah: dataNasabah);
               },
             );

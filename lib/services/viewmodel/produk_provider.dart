@@ -308,7 +308,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   //pencarian
 
   List<NasabahProdukModel>? _nasabahList;
-  List<NasabahProdukModel> get getNasabahList => _nasabahList!;
+  List<NasabahProdukModel>? get getNasabahList => _nasabahList;
 
   void clearSearchNasabah({isListen = true}) {
     _nasabahList = null;
