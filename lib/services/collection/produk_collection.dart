@@ -143,8 +143,8 @@ class ProdukCollectionServices extends BaseServices {
         McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
     dataProduk["tglAwal"] = McryptUtils.instance.encrypt(startDate!);
     dataProduk["tglAkhir"] = McryptUtils.instance.encrypt(endDate!);
-    dataProduk["lat"] = McryptUtils.instance.encrypt(lat!);
-    dataProduk["longi"] = McryptUtils.instance.encrypt(long!);
+    dataProduk["lat"] = McryptUtils.instance.encrypt(lat ?? '');
+    dataProduk["longi"] = McryptUtils.instance.encrypt(long ?? '');
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
 
     var resp;

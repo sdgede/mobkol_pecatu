@@ -31,7 +31,7 @@ class DialogUtils {
           FadeScaleTransitionConfiguration(barrierDismissible: false),
       builder: (context) {
         return InfoDialog(
-          title: title!,
+          title: title ?? "",
           text: text!,
           clickOKText: clickOKText,
           onClickOK: onClickOK,

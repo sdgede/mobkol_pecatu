@@ -50,7 +50,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   String? _selectedgroupProdukProduk;
-  String get getSelectedgroupProdukProduk => _selectedgroupProdukProduk ?? '';
+  String? get getSelectedgroupProdukProduk => _selectedgroupProdukProduk ?? '';
   void setSelectedgroupProdukProduk(String group, {bool listen = true}) {
     _selectedgroupProdukProduk = group;
     if (listen) notifyListeners();
@@ -189,7 +189,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
     String norek = '0',
   }) async {
     try {
-      var listMutasi = await produkCollectionServices.getDataMutasi(
+      dynamic listMutasi = await produkCollectionServices.getDataMutasi(
         context: context,
         idProduk: idProduk,
         rekCd: _selectedRekCdProduk,
@@ -218,7 +218,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
     // gobalProv = Provider.of<GlobalProvider>(context, listen: false);
     // await gobalProv.loadLocation(context);
     try {
-      var listMutasi = await produkCollectionServices.getDataKlad(
+      print('get data klad');
+      dynamic listMutasi = await produkCollectionServices.getDataKlad(
         context: context,
         rekCd: _selectedRekCdProduk,
         groupProduk: _selectedgroupProdukProduk,
@@ -227,6 +228,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
         startDate: DateFormat("yyyy-MM-dd").format(_tglAwal!),
         endDate: DateFormat("yyyy-MM-dd").format(_tglAkhir!),
       );
+      print('get data klad resp $listMutasi');
       if (listMutasi == null) {
         DialogUtils.instance.showError(context: context);
         return null;

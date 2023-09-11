@@ -108,9 +108,11 @@ class _MainKlad extends State<MainKlad> {
                   scrollTag(context),
                   Divider(),
                   SizedBox(height: 10),
-                  _cardInfoTotalTrans(produkProv),
+                  if (produkProv.getSelectedgroupProdukProduk != null &&
+                      produkProv.muatasiProdukCollection != null)
+                    _cardInfoTotalTrans(produkProv),
                   //SizedBox(height: 10),
-                  //_searchForm(),
+                  // _searchForm(),
                   SizedBox(height: 10),
                   _dataKlad(),
                   SizedBox(height: 90),
@@ -154,8 +156,8 @@ class _MainKlad extends State<MainKlad> {
   }
 
   Widget _cardInfoTotalTrans(ProdukCollectionProvider produkProv) {
-    String tipe = produkProvider!.getSelectedgroupProdukProduk;
-    var mutasiData = produkProvider!.muatasiProdukCollection;
+    String tipe = produkProvider!.getSelectedgroupProdukProduk!;
+    dynamic mutasiData = produkProvider!.muatasiProdukCollection;
     double _totSaldo = 0, _totalTrx = 0;
     int _countSetoran = 0, _countTarikan = 0;
 
@@ -172,8 +174,8 @@ class _MainKlad extends State<MainKlad> {
         ? mutasiData.where((element) => element.status != 'Gagal').length
         : 0;
     return TicketWidget(
-      width: 350, //test
-      height: 500, //test
+      width: MediaQuery.of(context).size.width, //test
+      height: MediaQuery.of(context).size.height * 0.35, //test
       isCornerRounded: false,
       child: Container(
         padding: EdgeInsets.all(10),
@@ -329,6 +331,7 @@ class _MainKlad extends State<MainKlad> {
                           valSummary: _totSaldo.toString(),
                           tittle: 'Saldo',
                           // icon: FlutterIcons.coins_mco,
+                          icon: Iconsax.arrange_circle,
                           iCcolor: primaryColor,
                           isCount: tipe == 'KREDIT' ? true : false,
                           countVal: _countTotal.toString(),
@@ -394,7 +397,7 @@ class _MainKlad extends State<MainKlad> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //Icon(icon, size: 20, color: iCcolor),
+              // Icon(icon, size: 20, color: iCcolor),
               //SizedBox(width: 5),
               Text(
                 tittle!,
@@ -422,7 +425,7 @@ class _MainKlad extends State<MainKlad> {
                       Text(countVal, style: TextStyle(color: Colors.white)),
                 )
               : Container(
-                  height: 25,
+                  height: 0,
                 ),
         ],
       ),
