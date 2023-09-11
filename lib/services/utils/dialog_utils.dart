@@ -33,10 +33,10 @@ class DialogUtils {
         return InfoDialog(
           title: title!,
           text: text!,
-          clickOKText: clickOKText!,
-          onClickOK: onClickOK!,
+          clickOKText: clickOKText,
+          onClickOK: onClickOK,
           clickCancelText: clickCancelText,
-          onClickCancel: onClickCancel ?? () => {},
+          onClickCancel: onClickCancel,
           isCancel: isCancel,
         );
       },

@@ -37,7 +37,7 @@ class GlobalProvider extends ChangeNotifier {
   }
 
   BluetoothDevice? _selectedPrinter;
-  BluetoothDevice get getSelectedPrinter => _selectedPrinter!;
+  BluetoothDevice? get getSelectedPrinter => _selectedPrinter;
 
   void setSelectedPrinter(BluetoothDevice printer) {
     _selectedPrinter = printer;

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../constant/constant.dart';
 
 class DataNotFound extends StatelessWidget {
-  String? pesan, icon, title;
-  double? heightParse, widthParse;
+  final String? pesan, icon, title;
+  final double? heightParse, widthParse;
 
   DataNotFound(
       {this.title, this.pesan, this.icon, this.heightParse, this.widthParse});
@@ -16,7 +16,7 @@ class DataNotFound extends StatelessWidget {
           SizedBox(height: 10),
           Container(
             width: (widthParse == null)
-                ? MediaQuery.of(context).size.width
+                ? MediaQuery.of(context).size.width * 0.6
                 : widthParse,
             height: (heightParse == null) ? 300 : heightParse,
             decoration: BoxDecoration(
@@ -27,7 +27,7 @@ class DataNotFound extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            title!,
+            title ?? '',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
             textAlign: TextAlign.center,
           ),

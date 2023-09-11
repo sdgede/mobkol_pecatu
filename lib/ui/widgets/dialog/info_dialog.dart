@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class InfoDialog extends StatelessWidget {
-  String? title;
-  String text;
-  String? clickOKText;
-  String? clickCancelText;
-  Function onClickOK;
-  Function? onClickCancel;
-  bool? isCancel;
+  final String? title;
+  final String text;
+  final String? clickOKText;
+  final String? clickCancelText;
+  final Function? onClickOK;
+  final Function? onClickCancel;
+  final bool? isCancel;
 
   InfoDialog({
     required this.text,
-    required this.onClickOK,
+    this.onClickOK,
     this.title,
     this.clickOKText,
     this.clickCancelText,
@@ -51,7 +51,7 @@ class InfoDialog extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
-            onClickOK == null ? Navigator.of(context).pop(true) : onClickOK();
+            onClickOK == null ? Navigator.of(context).pop(true) : onClickOK!();
           },
         ),
       ],

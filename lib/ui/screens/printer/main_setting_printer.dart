@@ -362,7 +362,7 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
     );
   }
 
-  void connectToPrinter(BuildContext context, BluetoothDevice blDevice) {
+  void connectToPrinter(BuildContext context, BluetoothDevice? blDevice) {
     if (blDevice == null) {
       alertSnack(context, 'No device selected');
     } else {
