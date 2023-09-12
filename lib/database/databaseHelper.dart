@@ -784,7 +784,7 @@ class DatabaseHelper {
     if (actionDell)
       await Future.forEach(
         jsonData['data_menu_mobkol'],
-        (Map<String, dynamic> val) async {
+        (dynamic val) async {
           dataVal['id_menu'] = val['id_menu'];
           dataVal['group_menu'] = val['group_menu'];
           dataVal['rek_cd'] = val['rek_cd'];
@@ -819,7 +819,7 @@ class DatabaseHelper {
     if (actionDellConf)
       await Future.forEach(
         jsonData['data_config_mobkol'],
-        (Map<String, dynamic> val) async {
+        (dynamic val) async {
           confVal['id_config'] = val['id_config'];
           confVal['base_url'] = val['base_url'];
           confVal['nama_app'] = val['nama_app'];
@@ -841,7 +841,7 @@ class DatabaseHelper {
         },
       );
 
-    return {'row_edit': rowEffectedEdit ?? 0, 'row_add': rowEffectedAdd ?? 0};
+    return {'row_edit': rowEffectedEdit, 'row_add': rowEffectedAdd};
   }
 
   Future lastSync() async {

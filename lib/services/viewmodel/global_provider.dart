@@ -456,9 +456,9 @@ class GlobalProvider extends ChangeNotifier {
   String get address => _address!;
 
   double? _latitude;
-  double get latitude => _latitude!;
+  double get latitude => _latitude ?? 0;
   double? _longitude;
-  double get longitude => _longitude!;
+  double get longitude => _longitude ?? 0;
 
   LocationUtils locationUtils = setup<LocationUtils>();
 

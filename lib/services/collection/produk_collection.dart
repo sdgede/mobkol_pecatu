@@ -551,8 +551,8 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
     dataProduk["kolektor"] =
         McryptUtils.instance.encrypt(config.dataLogin['username']);
-    dataProduk["lat"] = McryptUtils.instance.encrypt(lat!);
-    dataProduk["longi"] = McryptUtils.instance.encrypt(long!);
+    dataProduk["lat"] = McryptUtils.instance.encrypt(lat ?? '');
+    dataProduk["longi"] = McryptUtils.instance.encrypt(long ?? '');
 
     var resp = await request(
       context: context,

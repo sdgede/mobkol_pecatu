@@ -85,18 +85,21 @@ class _MainMigrasiData extends State<MainMigrasiData> {
     }
 
     dataListMigrasi = [...masterDataListMigrasi];
-    for (var product in produkProv!.produkCollectionMigrasi) {
-      dataListMigrasi.add({
-        'title': TextUtils().capitalizeEachWord(product.nama!),
-        'desc': "Migrasi data ${TextUtils().capitalizeEachWord(product.nama!)}",
-        'icon': product.icon,
-        'rekCd': product.rekCd,
-        'groupProduk': product.slug,
-        'color': '0xff1967d2',
-        'color2': '0xff03d0ea',
-        'isDev': false,
-        'isMaster': false
-      });
+    if (produkProv!.produkCollectionMigrasi != null) {
+      for (var product in produkProv!.produkCollectionMigrasi!) {
+        dataListMigrasi.add({
+          'title': TextUtils().capitalizeEachWord(product.nama!),
+          'desc':
+              "Migrasi data ${TextUtils().capitalizeEachWord(product.nama!)}",
+          'icon': product.icon,
+          'rekCd': product.rekCd,
+          'groupProduk': product.slug,
+          'color': '0xff1967d2',
+          'color2': '0xff03d0ea',
+          'isDev': false,
+          'isMaster': false
+        });
+      }
     }
   }
 

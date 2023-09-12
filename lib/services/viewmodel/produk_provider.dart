@@ -28,8 +28,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   List<ProdukCollection>? _produkCollectionMigrasi;
-  List<ProdukCollection> get produkCollectionMigrasi =>
-      _produkCollectionMigrasi!;
+  List<ProdukCollection>? get produkCollectionMigrasi =>
+      _produkCollectionMigrasi;
   void refreshProdukCollectionMigrasi() {
     _produkCollectionMigrasi = null;
     notifyListeners();
@@ -581,7 +581,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
     EasyLoading.show(status: config.Loading);
     final globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     try {
-      var dataMigrasi = await produkCollectionServices.getDataMigrasi(
+      dynamic dataMigrasi = await produkCollectionServices.getDataMigrasi(
         context: context,
         groupProduk: groupProduk,
         rekCd: rekCd,
