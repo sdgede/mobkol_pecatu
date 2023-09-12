@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // import 'package:two_letter_icon/two_letter_icon.dart';
+import 'package:flutter_initicon/flutter_initicon.dart';
 
 import '../../../services/viewmodel/produk_provider.dart';
 import '../../../services/config/router_generator.dart';
@@ -105,6 +106,11 @@ class _VerticalListNasbahState extends State<VerticalListNasabah> {
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(5),
+      ),
+      child: Initicon(
+        text: widget.dataNasabah.nama!,
+        // backgroundColor:
+        //         Colors.primaries[Random().nextInt(Colors.primaries.length)])
       ),
       // child: TwoLetterIcon(widget.dataNasabah.nama!.replaceAll(" ", "")),
     );

@@ -93,11 +93,18 @@ class TextUtils {
   dynamic numberFormat(dynamic number, {isRp = true}) {
     String currencyId = "Rp. ";
     if (!isRp) currencyId = "";
-
-    return NumberFormat.currency(locale: 'id', decimalDigits: 0)
-        .format(double.parse(number))
-        .toString()
-        .replaceAll("IDR", currencyId);
+    try {
+      return NumberFormat.currency(locale: 'id', decimalDigits: 0)
+          .format(double.parse(number ?? '0'))
+          .toString()
+          .replaceAll("IDR", currencyId);
+    } catch (e) {
+      print("error number format with message: $e");
+      return NumberFormat.currency(locale: 'id', decimalDigits: 0)
+          .format(double.parse('0'))
+          .toString()
+          .replaceAll("IDR", currencyId);
+    }
   }
 
   dynamic getProvider(hp) {

@@ -177,8 +177,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   String? _saldoResult;
-  String get saldoResult => _saldoResult!;
-  void setSaldoResult(String saldo, {bool isListen = true}) {
+  String? get saldoResult => _saldoResult;
+  void setSaldoResult(String? saldo, {bool isListen = true}) {
     _saldoResult = saldo;
     if (isListen) notifyListeners();
   }
@@ -446,8 +446,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
 
   // detail produk
   List<DetailProdukCollection>? _detailProdukCollection;
-  List<DetailProdukCollection> get detailProdukCollection =>
-      _detailProdukCollection!;
+  List<DetailProdukCollection>? get detailProdukCollection =>
+      _detailProdukCollection;
   void refreshDetailProdukCollection() {
     _detailProdukCollection = null;
     notifyListeners();
@@ -466,7 +466,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
     String rekCd,
   ) async {
     try {
-      var detailProdukCollection =
+      dynamic detailProdukCollection =
           await produkCollectionServices.getDataDetailProdukByProdukId(
         context: context,
         produkId: produkId,
@@ -525,7 +525,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
     String norek,
   ) async {
     EasyLoading.show(status: config.Loading);
-    final globalProv = Provider.of<GlobalProvider>(context, listen: false);
+    // final globalProv = Provider.of<GlobalProvider>(context, listen: false);
     try {
       var detailProdukCollection =
           await produkCollectionServices.getDataProdukByRek(
@@ -550,12 +550,12 @@ class ProdukCollectionProvider extends ChangeNotifier {
           return false;
         } else {
           var jsonData = json.decode(detailProdukCollection);
-          detailProdukCollection = [];
+          List<DetailProdukCollection> detailProdukCollectionRes = [];
           jsonData.forEach((val) {
             print(val);
-            detailProdukCollection.add(DetailProdukCollection.fromJson(val));
+            detailProdukCollectionRes.add(DetailProdukCollection.fromJson(val));
           });
-          _detailProdukCollection = detailProdukCollection;
+          _detailProdukCollection = detailProdukCollectionRes;
           EasyLoading.dismiss();
           return true;
         }
