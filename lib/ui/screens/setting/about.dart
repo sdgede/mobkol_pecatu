@@ -32,7 +32,7 @@ class _AboutScreenState extends State<AboutScreen> {
               icon: Icon(
                   // FlutterIcons.ios_close_ion,
                   Iconsax.close_circle,
-                  size: 42),
+                  size: 30),
               onPressed: () => Navigator.of(context).pop(),
             )
           ],

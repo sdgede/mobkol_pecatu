@@ -276,6 +276,7 @@ class _MainTransaksi extends State<MainTransaksi> {
               Icon(
                 (_isScan!) ? Iconsax.scan_barcode : Iconsax.search_normal_1,
                 color: Colors.white,
+                size: 20,
               )
             ],
           ),

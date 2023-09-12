@@ -82,6 +82,7 @@ class _PencarianNasabah extends State<PencarianNasabah> {
             // FlutterIcons.account_search_outline_mco,
             Iconsax.user_search,
             color: accentColor,
+            size: 20,
           ),
           Text('Pencarian produk nasabah berdasarkan nama'),
         ],

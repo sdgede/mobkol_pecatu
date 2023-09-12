@@ -101,6 +101,7 @@ class MerchantSearchBody extends StatelessWidget {
                       // FlutterIcons.account_search_outline_mco,
                       Iconsax.user_search,
                       color: primaryColor,
+                      size: 20,
                     ),
                     SizedBox(width: 10),
                     Text(
