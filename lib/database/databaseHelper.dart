@@ -573,7 +573,7 @@ class DatabaseHelper {
     var jsonData = json.decode(dataParse);
     await Future.forEach(
       jsonData,
-      (Map<String, dynamic> val) async {
+      (dynamic val) async {
         isDataExist = await queryRowCountWithClause(
           groupPrdk['tb_nas'],
           groupPrdk['id_tb_nas'],
@@ -616,7 +616,7 @@ class DatabaseHelper {
             groupPrdk['tb_nas'],
             dataVal,
             groupPrdk['id_tb_nas'],
-            val['produkId'],
+            val['produkId'] ?? 0,
           );
         } else {
           actionType = 'INSERT';

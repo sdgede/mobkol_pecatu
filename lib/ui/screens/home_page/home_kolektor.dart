@@ -132,7 +132,6 @@ class HomeKolektorState extends State<HomeKolektor> {
     _checkFirstTime();
   }
 
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       produkProv!.setAllDatafirstSelectedProduct(isListen: false);
