@@ -100,6 +100,8 @@ class RouterGenerator {
       case homeKolektor:
         return MaterialPageRoute(
             builder: (_) => ShowCaseWidget(
+                  enableAutoPlayLock: true,
+                  disableMovingAnimation: false,
                   onFinish: () async {
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
