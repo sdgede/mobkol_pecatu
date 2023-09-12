@@ -675,14 +675,14 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   DateTime? _tglAwal;
-  DateTime get tglAwal => _tglAwal!;
+  DateTime get tglAwal => _tglAwal ?? DateTime.now();
   void setTglAwal(DateTime tglAwal, [bool isNotify = false]) {
     _tglAwal = tglAwal;
     if (isNotify) notifyListeners();
   }
 
   DateTime? _tglAkhir;
-  DateTime get tglAkhir => _tglAkhir!;
+  DateTime get tglAkhir => _tglAkhir ?? DateTime.now();
   void setTglAkhir(DateTime tglAkhir, [bool isNotify = false]) {
     _tglAkhir = tglAkhir;
     if (isNotify) notifyListeners();
