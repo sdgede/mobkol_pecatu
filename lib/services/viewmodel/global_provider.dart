@@ -567,7 +567,8 @@ class GlobalProvider extends ChangeNotifier {
 
       File b = File("${result.path}" + "/sqlite_koperasi.db");
 
-      if (await Permission.storage.request().isGranted &&
+      if ((await Permission.manageExternalStorage.request().isGranted ||
+              await Permission.storage.request().isGranted) &&
           await Permission.accessMediaLocation.request().isGranted) {
         File a = await b.copy(newPath);
         DialogUtils.instance.showInfo(
