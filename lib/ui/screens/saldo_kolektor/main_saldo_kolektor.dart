@@ -74,7 +74,8 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: <Widget>[
-                  _ticketViewSaldokol(produkProv.saldoKolektorCollection![0]),
+                  if (produkProv.saldoKolektorCollection != null)
+                    _ticketViewSaldokol(produkProv.saldoKolektorCollection![0]),
                   SizedBox(height: 100),
                 ],
               ),
