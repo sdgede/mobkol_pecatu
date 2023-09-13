@@ -66,6 +66,7 @@ dependencies:
   encrypt: ^5.0.1
   url_launcher: 6.0.5
   flutter_initicon: ^3.0.0+1
+  geocoding: ^2.1.0
   
   
 

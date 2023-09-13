@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoder2/geocoder2.dart';
+import 'package:geocoding/geocoding.dart' as geo;
 import 'package:location/location.dart';
 
 import '../config/config.dart';
@@ -70,30 +71,52 @@ class LocationUtils {
   }
 
   Future<String> getAddress() async {
-    return 'cek address';
-    // var addresses = await Geocoder.local
-    //     .findAddressesFromCoordinates(Coordinates(latitude, longitude));
+    String finalAddress = 'Alamat tidak ditemukan';
 
-    // var addresses = await Geocoder2.getDataFromCoordinates(
-    //     latitude: latitude!,
-    //     longitude: longitude!,
-    //     googleMapApiKey: (Platform.isAndroid ? apiMapMobile : apiMapIOS));
-    // return addresses.address;
+    try {
+      List<geo.Placemark> placemarks =
+          await geo.placemarkFromCoordinates(latitude!, longitude!);
+
+      if (placemarks.isNotEmpty) {
+        geo.Placemark firstPlacemark = placemarks.first;
+        String address =
+            '${firstPlacemark.subThoroughfare} ${firstPlacemark.thoroughfare}, ${firstPlacemark.subLocality}, ${firstPlacemark.locality}, ${firstPlacemark.country}';
+
+        finalAddress = address;
+      } else {
+        print('Geocoding error: Alamat tidak ditemukan.');
+      }
+    } catch (e) {
+      print('Geocoding error: $e');
+    }
+    print("Geocoding result address: $finalAddress");
+    return finalAddress;
   }
 
   Future<String> getAddressByCoordinates({
     @required double? latitude,
     @required double? longitude,
   }) async {
-    return 'cek address';
-    // var addresses = await Geocoder2.local
-    //     .findAddressesFromCoordinates(Coordinates(latitude, longitude));
+    String finalAddress = 'Alamat tidak ditemukan';
 
-    // var addresses = await Geocoder2.getDataFromCoordinates(
-    //     latitude: latitude!,
-    //     longitude: longitude!,
-    //     googleMapApiKey: (Platform.isAndroid ? apiMapMobile : apiMapIOS));
-    // return addresses.address;
+    try {
+      List<geo.Placemark> placemarks =
+          await geo.placemarkFromCoordinates(latitude!, longitude!);
+
+      if (placemarks.isNotEmpty) {
+        geo.Placemark firstPlacemark = placemarks.first;
+        String address =
+            '${firstPlacemark.subThoroughfare} ${firstPlacemark.thoroughfare}, ${firstPlacemark.subLocality}, ${firstPlacemark.locality}, ${firstPlacemark.country}';
+
+        finalAddress = address;
+      } else {
+        print('Geocoding error: Alamat tidak ditemukan.');
+      }
+    } catch (e) {
+      print('Geocoding error: $e');
+    }
+    print("Geocoding result address: $finalAddress");
+    return finalAddress;
   }
 
   Future<Map<String, dynamic>> getDistanceTime({
