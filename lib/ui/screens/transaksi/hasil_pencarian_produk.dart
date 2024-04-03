@@ -24,9 +24,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
       _formKeyStep1 = GlobalKey<FormState>();
   GlobalProvider? _globalProvider;
   ProdukCollectionProvider? _produkProv;
-  bool _autoValidateStep1 = false,
-      _btnTarikStatus = true,
-      _btnHistoryStatus = true;
+  bool _btnTarikStatus = true, _btnHistoryStatus = true;
   String _produkId = '0';
 
   @override

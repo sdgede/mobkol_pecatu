@@ -21,7 +21,6 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
   ProdukCollectionProvider? produkProvider;
   GlobalProvider? globalProvider;
   var searchController = TextEditingController();
-  double? _width, _primaryPadding = 15;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController? produkScrollCOntroller;
 
@@ -177,7 +176,7 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
     bool isHeader = false,
     String headerTxt = '-',
     String firstField = '-',
-    String secondField = '0',
+    String? secondField = '0',
     bool isCurrency = false,
   }) {
     return Row(
@@ -225,7 +224,7 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
                   child: Text(
                     (isCurrency)
                         ? TextUtils.instance
-                            .numberFormat(secondField.toString() ?? "0")
+                            .numberFormat(secondField?.toString() ?? "0")
                         : secondField.toString(),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.right,

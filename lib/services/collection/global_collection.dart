@@ -70,7 +70,7 @@ class GlobalCollectionServices extends BaseServices {
 
     var resp;
 
-    if (globalProv!.getConnectionMode == offlineMode)
+    if (globalProv.getConnectionMode == offlineMode)
       resp = dbHelper.getLoginOffline(dataLogin);
     else
       resp = await request(
@@ -214,7 +214,7 @@ class GlobalCollectionServices extends BaseServices {
     String? data,
   }) async {
     var decrypt = McryptUtils.instance.decryptMerchant(data!);
-    if (decrypt == null) {
+    if (decrypt == '') {
       var dataReset = Map<String, dynamic>();
       dataReset["req"] = "getReEncryptData";
       dataReset["data"] = data;

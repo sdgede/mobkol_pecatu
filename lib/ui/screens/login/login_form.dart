@@ -19,7 +19,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final dbHelper = DatabaseHelper.instance;
-  bool _autoValidate = false, _isVisible = false;
+  bool _isVisible = false;
   FocusNode? _usernameNode, _passwordNode;
   String? _username, _password, platform;
   GlobalProvider? globalProv;

@@ -5,7 +5,6 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/viewmodel/produk_provider.dart';
-import '../../../ui/screens/nasabah/SearchController.dart';
 import '../../../ui/screens/nasabah/SearchController.dart' as sc;
 import '../../../ui/widgets/text_list/field_list_histori_transaksi.dart';
 import '../../constant/constant.dart';
@@ -89,7 +88,7 @@ class MerchantSearchBody extends StatelessWidget {
               return SizedBox();
             }
 
-            if (produkProv.mutasiProdukCollectionSearch[0].status == 'Gagal') {
+            if (produkProv.mutasiProdukCollectionSearch![0].status == 'Gagal') {
               return SizedBox();
             }
 
@@ -104,7 +103,7 @@ class MerchantSearchBody extends StatelessWidget {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      "${produkProv.mutasiProdukCollectionSearch.length.toString()} nasabah ditemukan",
+                      "${produkProv.mutasiProdukCollectionSearch!.length.toString()} nasabah ditemukan",
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 15,
@@ -140,17 +139,17 @@ class MerchantSearchBody extends StatelessWidget {
               );
             }
 
-            if (produkProv.mutasiProdukCollectionSearch[0].status == 'Gagal') {
+            if (produkProv.mutasiProdukCollectionSearch![0].status == 'Gagal') {
               return Center(
                 child: DataNotFound(
-                  pesan: produkProv.mutasiProdukCollectionSearch[0].pesan,
+                  pesan: produkProv.mutasiProdukCollectionSearch![0].pesan,
                 ),
               );
             }
 
             return ListView.builder(
               shrinkWrap: true,
-              itemCount: produkProv.mutasiProdukCollectionSearch.length,
+              itemCount: produkProv.mutasiProdukCollectionSearch!.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 var dataTrans = produkProv.muatasiProdukCollection![index];

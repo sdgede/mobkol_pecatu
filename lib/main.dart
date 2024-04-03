@@ -216,10 +216,10 @@ class _MyAppState extends State<MyApp> {
       await showDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-          title: receivedNotification.title != null
+          title: receivedNotification.title != ""
               ? Text(receivedNotification.title)
               : null,
-          content: receivedNotification.body != null
+          content: receivedNotification.body != ""
               ? Text(receivedNotification.body)
               : null,
           actions: [

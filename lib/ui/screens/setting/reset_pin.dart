@@ -82,10 +82,9 @@ class _ResetPinState extends State<ResetPin> {
   Future<bool> _onBackPressed() async {
     if (widget.isBuat)
       return (await DialogUtils.instance.onBackPressedBackProses(
-            context: context,
-            navigator: RouterGenerator.pageHomeLogin,
-          )) ??
-          false;
+        context: context,
+        navigator: RouterGenerator.pageHomeLogin,
+      ));
     else
       return true;
   }
@@ -121,7 +120,7 @@ class _ResetPinState extends State<ResetPin> {
                 child: Consumer<ProdukTabunganProvider>(
                   builder: (context, produkTabunganProv, _) {
                     sumberDanaController.text =
-                        produkTabunganProv.pemilikNamaRekSumber ?? "";
+                        produkTabunganProv.pemilikNamaRekSumber;
                     return Form(
                       key: formKey,
                       // autovalidate: autoValidate,

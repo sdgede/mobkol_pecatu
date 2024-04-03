@@ -16,6 +16,7 @@ class PlatformUtils {
         var build = await deviceInfoPlugin.androidInfo;
         deviceData = _readAndroidBuildData(build);
         deviceId = build.id;
+        print("deviceData $deviceData");
       } else if (Platform.isIOS) {
         var build = await deviceInfoPlugin.iosInfo;
         deviceData = _readIosDeviceInfo(build);

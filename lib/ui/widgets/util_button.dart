@@ -16,7 +16,7 @@ Widget btnTxtAndIcon({
         foregroundColor: MaterialStateProperty.resolveWith<Color>(
           (Set<MaterialState> states) => states.contains(MaterialState.disabled)
               ? Colors.grey
-              : null as Color,
+              : Colors.transparent,
         ),
         padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
             (Set<MaterialState> states) => EdgeInsets.all(0))),

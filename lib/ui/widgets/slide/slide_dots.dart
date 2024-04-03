@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SlideDots extends StatelessWidget {
-  bool isActive;
+  final bool isActive;
   SlideDots(this.isActive);
 
   @override
@@ -29,7 +29,7 @@ class SlideDots extends StatelessWidget {
 }
 
 class SlideDotsHomepage extends StatelessWidget {
-  int? dotsActive, dotsLength;
+  final int? dotsActive, dotsLength;
   SlideDotsHomepage({this.dotsActive, this.dotsLength});
 
   @override

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:badges/badges.dart' as badges;
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
@@ -31,7 +30,7 @@ class HomeKolektorState extends State<HomeKolektor> {
   final GlobalKey _setting = GlobalKey();
 
   void logOut() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
     bool res = await DialogUtils.instance.showInfo(
           context: context,
           title: "Pemberitahuan!",
@@ -139,8 +138,7 @@ class HomeKolektorState extends State<HomeKolektor> {
   }
 
   Future<bool> _onBackPressed() async {
-    return (await DialogUtils.instance.onBackPressedHome(context, true)) ??
-        false;
+    return (await DialogUtils.instance.onBackPressedHome(context, true));
   }
 
   Widget build(BuildContext context) {
@@ -349,7 +347,7 @@ class HomeKolektorState extends State<HomeKolektor> {
                                   badgeContent: Text(
                                     config.dataSetting[
                                                 'total_kredit_jatuhtempo']
-                                            .toString() ??
+                                            ?.toString() ??
                                         "0",
                                     style: TextStyle(
                                       color: Colors.white,

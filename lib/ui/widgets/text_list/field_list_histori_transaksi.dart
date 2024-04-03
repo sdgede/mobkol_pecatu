@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 
@@ -16,9 +15,9 @@ import '../../../ui/widgets/util_button.dart';
 import '../../../services/utils/text_utils.dart';
 
 class FieldListKlad extends StatefulWidget {
-  MutasiProdukCollection dataTrans;
-  bool? isKlad = false;
-  FieldListKlad({required this.dataTrans, this.isKlad});
+  final MutasiProdukCollection dataTrans;
+  final bool isKlad;
+  FieldListKlad({required this.dataTrans, this.isKlad = false});
 
   @override
   _FieldListKlad createState() => _FieldListKlad();

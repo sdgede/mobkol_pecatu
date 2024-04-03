@@ -22,7 +22,6 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>(),
       _formKeyStep1 = GlobalKey<FormState>();
-  bool _autoValidateStep1 = false;
   String? _idProduk, _rekCd, _groupProduk;
   ProdukCollectionProvider? produkProvider;
 
@@ -35,6 +34,7 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
     _rekCd = widget.arguments!['rekCd'];
     _groupProduk = widget.arguments!['groupProduk'];
     produkProvider!.resetMutasiTransaksi(isListen: false);
+    print(_rekCd);
   }
 
   @override

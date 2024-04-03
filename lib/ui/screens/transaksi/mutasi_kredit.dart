@@ -19,9 +19,7 @@ class MutasiKredit extends StatefulWidget {
 
 class _MutasiKredit extends State<MutasiKredit>
     with SingleTickerProviderStateMixin {
-  final scaffoldKey = GlobalKey<ScaffoldState>(),
-      _formKeyStep1 = GlobalKey<FormState>();
-  bool _autoValidateStep1 = false;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   String? _idProduk, _rekCd, _groupProduk, _norek;
   ProdukCollectionProvider? produkProvider;
 
@@ -34,6 +32,7 @@ class _MutasiKredit extends State<MutasiKredit>
     _rekCd = widget.arguments!['rekCd'];
     _groupProduk = widget.arguments!['groupProduk'];
     _norek = widget.arguments!['norek'];
+    print(_rekCd);
 
     produkProvider!.resetMutasiTransaksi(isListen: false);
   }
@@ -104,30 +103,30 @@ class _MutasiKredit extends State<MutasiKredit>
                                   DataCell(Text(element.tgl!)),
                                   DataCell(Text(
                                     TextUtils.instance.numberFormat(
-                                      element.pokok.toString() ?? '0',
+                                      element.pokok?.toString() ?? '0',
                                       isRp: false,
                                     ),
                                   )),
                                   DataCell(Text(
                                     TextUtils.instance.numberFormat(
-                                        element.bunga.toString() ?? "0",
+                                        element.bunga?.toString() ?? "0",
                                         isRp: false),
                                   )),
                                   DataCell(Text(
                                     TextUtils.instance.numberFormat(
-                                      element.denda.toString() ?? '0',
+                                      element.denda?.toString() ?? '0',
                                       isRp: false,
                                     ),
                                   )),
                                   DataCell(Text(
                                     TextUtils.instance.numberFormat(
-                                      element.jumlah.toString() ?? '0',
+                                      element.jumlah?.toString() ?? '0',
                                       isRp: false,
                                     ),
                                   )),
                                   DataCell(Text(
                                     TextUtils.instance.numberFormat(
-                                      element.saldo.toString() ?? '0',
+                                      element.saldo?.toString() ?? '0',
                                       isRp: false,
                                     ),
                                   )),

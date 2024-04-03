@@ -75,6 +75,8 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
     _formValue = 'FORM_INPUT';
     if (widget.groupProduk == 'KREDIT') _setFormKredit();
     checkButtonLanjut();
+    print(
+        "$_formValue $_totBayarParse $_lateCharge $_lateCHarge $_pesanStatusTransaksi");
   }
 
   void _setFormKredit() {
@@ -172,9 +174,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
 
   void checkButtonLanjut() {
     if (widget.groupProduk != 'KREDIT') {
-      if (nominalController.text == '0' ||
-          nominalController.text == '' ||
-          nominalController.text == null) {
+      if (nominalController.text == '0' || nominalController.text == '') {
         setState(() {
           btnStatus = false;
         });
@@ -184,12 +184,10 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
         });
       }
     } else {
-      if ((nominalController.text == '0' ||
-              nominalController.text == '' ||
-              nominalController.text == null) &&
-          (dendaController.text != '' || dendaController.text != null) &&
-          (bungaController.text != '' || bungaController.text != null) &&
-          (pokokController.text != '' || pokokController.text != null)) {
+      if ((nominalController.text == '0' || nominalController.text == '') &&
+          (dendaController.text != '') &&
+          (bungaController.text != '') &&
+          (pokokController.text != '')) {
         setState(() {
           btnStatus = false;
         });

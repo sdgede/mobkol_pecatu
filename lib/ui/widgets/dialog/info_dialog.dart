@@ -60,7 +60,7 @@ class InfoDialog extends StatelessWidget {
 }
 
 class ErrorDialog extends StatelessWidget {
-  String? text;
+  final String? text;
   ErrorDialog({this.text});
   @override
   Widget build(BuildContext context) {

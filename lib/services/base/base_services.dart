@@ -70,6 +70,8 @@ class BaseServices {
           response = await _dio.delete(url!,
               data: data != null ? data : null, options: _headersOption);
           break;
+        default:
+          return null;
       }
     } on DioError catch (e) {
       print(e);

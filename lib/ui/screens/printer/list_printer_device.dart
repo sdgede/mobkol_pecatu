@@ -16,9 +16,7 @@ class _ListPrinterDevice extends State<ListPrinterDevice> {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
   GlobalProvider? globalProv;
   List<BluetoothDevice> _devices = [];
-  BluetoothDevice? _device;
-  bool _connected = false;
-  bool _pressed = false;
+
   String? pathImage;
 
   @override

@@ -36,6 +36,8 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
     initPlatformState();
     initSavetoPath();
+
+    print("$_connected $_pressed $_device $_devices");
   }
 
   initSavetoPath() async {
@@ -207,7 +209,7 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
             child: Text(
               globalProv.getSelectedPrinterName == null
                   ? "-"
-                  : globalProv.getSelectedPrinterName,
+                  : globalProv.getSelectedPrinterName!,
               style: TextStyle(fontSize: 12, color: Colors.black),
               textAlign: TextAlign.center,
             ),
@@ -566,39 +568,47 @@ class ThermalPrinterAction {
     bluetooth.printCustom(dataTrx.kode!, 1, 0);
     bluetooth.printCustom("================================", 1, 0);
     bluetooth.printNewLine();
-    bluetooth.printCustom("Tanggal    : " + dataTrx.trxDate! ?? '-', 1, 0);
-    bluetooth.printCustom("No.Slip    : " + dataTrx.noReferensi! ?? '-', 1, 0);
-    bluetooth.printCustom(rekDesc + "     : " + dataTrx.norek! ?? '-', 1, 0);
-    bluetooth.printCustom("Nama       : " + dataTrx.nama! ?? '-', 1, 0);
-    bluetooth.printCustom("No.Telp    : " + dataTrx.hp.toString() ?? '-', 1, 0);
+    bluetooth.printCustom("Tanggal    : " + (dataTrx.trxDate ?? '-'), 1, 0);
+    bluetooth.printCustom("No.Slip    : " + (dataTrx.noReferensi ?? '-'), 1, 0);
+    bluetooth.printCustom(rekDesc + "     : " + (dataTrx.norek ?? '-'), 1, 0);
+    bluetooth.printCustom("Nama       : " + (dataTrx.nama ?? '-'), 1, 0);
+    bluetooth.printCustom(
+        "No.Telp    : " + (dataTrx.hp?.toString() ?? '-'), 1, 0);
     bluetooth.printNewLine();
 
     if (dataTrx.groupProduk != 'KREDIT')
       bluetooth.printCustom(
-          "Saldo Awal : " + _currency(dataTrx.saldo_awal.toString()) ?? '-',
+          "Saldo Awal : " + (_currency(dataTrx.saldo_awal?.toString()) ?? '-'),
           1,
           0);
 
     if (dataTrx.groupProduk == 'KREDIT') {
       bluetooth.printCustom(
-          "Pokok      : " + _currency(dataTrx.pokok.toString()) ?? '0', 1, 0);
+          "Pokok      : " + (_currency(dataTrx.pokok?.toString()) ?? '0'),
+          1,
+          0);
       bluetooth.printCustom(
-          "Bunga      : " + _currency(dataTrx.bunga.toString()) ?? '0', 1, 0);
+          "Bunga      : " + (_currency(dataTrx.bunga?.toString()) ?? '0'),
+          1,
+          0);
       bluetooth.printCustom(
-          "Denda      : " + _currency(dataTrx.denda.toString()) ?? '0', 1, 0);
+          "Denda      : " + (_currency(dataTrx.denda?.toString()) ?? '0'),
+          1,
+          0);
     }
 
     bluetooth.printCustom(
-        "Jumlah     : " + _currency(dataTrx.jumlah.toString()) ?? '-', 1, 0);
+        "Jumlah     : " + (_currency(dataTrx.jumlah?.toString()) ?? '-'), 1, 0);
 
     bluetooth.printCustom("(" + dataTrx.terbilang! + ")", 1, 0);
     bluetooth.printCustom(
-        saldoAkhirDesc + ": " + _currency(dataTrx.saldo_akhir.toString()) ??
-            '-',
+        saldoAkhirDesc +
+            ": " +
+            (_currency(dataTrx.saldo_akhir?.toString()) ?? '-'),
         1,
         0);
     bluetooth.printCustom("--------------------------------", 1, 0);
-    bluetooth.printCustom("Petugas    : " + dataTrx.who! ?? '-', 1, 0);
+    bluetooth.printCustom("Petugas    : " + (dataTrx.who ?? '-'), 1, 0);
     bluetooth.printCustom("================================", 1, 0);
     bluetooth.printCustom("Mohon dicek kembali.Terima kasih", 1, 0);
     bluetooth.printNewLine();
@@ -635,46 +645,46 @@ class ThermalPrinterAction {
     bluetooth.printCustom(kode ?? '-', 1, 1);
     bluetooth.printCustom("================================", 1, 0);
     bluetooth.printNewLine();
-    bluetooth.printCustom("Tanggal    : " + trxDate! ?? ' - ', 1, 0);
-    bluetooth.printCustom("No.Slip    : " + noref! ?? ' - ', 1, 0);
+    bluetooth.printCustom("Tanggal    : " + (trxDate ?? ' - '), 1, 0);
+    bluetooth.printCustom("No.Slip    : " + (noref ?? ' - '), 1, 0);
     if (groupProduk != 'KREDIT')
-      bluetooth.printCustom(rekDesc + "     : " + norek! ?? '-', 1, 0);
+      bluetooth.printCustom(rekDesc + "     : " + (norek ?? '-'), 1, 0);
     else
-      bluetooth.printCustom(rekDesc + "    : " + norek! ?? '-', 1, 0);
-    bluetooth.printCustom("Nama       : " + nama! ?? ' - ', 1, 0);
-    bluetooth.printCustom("No.Telp    : " + hp! ?? ' - ', 1, 0);
+      bluetooth.printCustom(rekDesc + "    : " + (norek ?? '-'), 1, 0);
+    bluetooth.printCustom("Nama       : " + (nama ?? ' - '), 1, 0);
+    bluetooth.printCustom("No.Telp    : " + (hp ?? ' - '), 1, 0);
     bluetooth.printNewLine();
 
     if (groupProduk != 'KREDIT')
       bluetooth.printCustom(
-          "Saldo Awal : " + _currency(saldoAwal.toString()) ?? '-', 1, 0);
+          "Saldo Awal : " + (_currency(saldoAwal?.toString()) ?? '-'), 1, 0);
 
     if (groupProduk == 'KREDIT') {
       bluetooth.printCustom(
-          "Pokok      : " + _currency(pokok.toString()) ?? '0', 1, 0);
+          "Pokok      : " + (_currency(pokok?.toString()) ?? '0'), 1, 0);
       bluetooth.printCustom(
-          "Bunga      : " + _currency(bunga.toString()) ?? '0', 1, 0);
+          "Bunga      : " + (_currency(bunga?.toString()) ?? '0'), 1, 0);
       bluetooth.printCustom(
-          "Denda      : " + _currency(denda.toString()) ?? '0', 1, 0);
+          "Denda      : " + (_currency(denda?.toString()) ?? '0'), 1, 0);
     }
 
     bluetooth.printCustom(
-        "Jumlah      : " + _currency(jumlah.toString()) ?? '-', 1, 0);
+        "Jumlah      : " + (_currency(jumlah?.toString()) ?? '-'), 1, 0);
 
     bluetooth.printCustom("(" + terbilang! + ")", 1, 0);
 
     if (groupProduk != 'KREDIT')
       bluetooth.printCustom(
-          saldoAkhirDesc + ": " + _currency(saldoAkhir.toString()) ?? '-',
+          saldoAkhirDesc + ": " + (_currency(saldoAkhir?.toString()) ?? '-'),
           1,
           0);
     else
       bluetooth.printCustom(
-          saldoAkhirDesc + "   : " + _currency(saldoAkhir.toString()) ?? '-',
+          saldoAkhirDesc + "   : " + (_currency(saldoAkhir?.toString()) ?? '-'),
           1,
           0);
     bluetooth.printCustom("--------------------------------", 1, 0);
-    bluetooth.printCustom("Petugas    : " + who! ?? '-', 1, 0);
+    bluetooth.printCustom("Petugas    : " + (who ?? '-'), 1, 0);
     bluetooth.printCustom("================================", 1, 0);
     bluetooth.printCustom("Mohon dicek kembali.Terima kasih", 1, 0);
     bluetooth.printNewLine();
@@ -682,7 +692,7 @@ class ThermalPrinterAction {
     bluetooth.printNewLine();
   }
 
-  String _currency(String val) {
-    return TextUtils.instance.numberFormat(val ?? '0');
+  String? _currency(String? val) {
+    return val != null ? TextUtils.instance.numberFormat(val) : null;
   }
 }

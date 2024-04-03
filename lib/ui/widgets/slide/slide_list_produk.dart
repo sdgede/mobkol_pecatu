@@ -9,8 +9,8 @@ import '../../../services/viewmodel/produk_provider.dart';
 import '../../constant/constant.dart';
 
 class SlideListProduk extends StatefulWidget {
-  ProdukCollection dataProduk;
-  bool isKlad = false;
+  final ProdukCollection dataProduk;
+  final bool isKlad;
   SlideListProduk({required this.dataProduk, required this.isKlad});
 
   @override

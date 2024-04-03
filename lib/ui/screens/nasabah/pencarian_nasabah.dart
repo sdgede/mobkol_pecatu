@@ -19,7 +19,7 @@ class PencarianNasabah extends StatefulWidget {
 class _PencarianNasabah extends State<PencarianNasabah> {
   ProdukCollectionProvider? produkProvider;
   var searchController = TextEditingController();
-  double? _width, _primaryPadding = 15;
+  double? _width;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   ScrollController? produkScrollCOntroller;
 

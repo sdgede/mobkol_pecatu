@@ -86,17 +86,17 @@ class RouterGenerator {
       // routes main, login, homepage
       case pageSplash:
         return MaterialPageRoute(builder: (_) => SplashPage());
-        break;
+
       case pageUpdate:
         return MaterialPageRoute(
             settings: settings, builder: (_) => UpdatePage());
-        break;
+
       case pageLanding:
         return MaterialPageRoute(builder: (_) => LandingPage());
-        break;
+
       case pageLogin:
         return MaterialPageRoute(builder: (_) => LoginPage());
-        break;
+
       case homeKolektor:
         return MaterialPageRoute(
             builder: (_) => ShowCaseWidget(
@@ -111,7 +111,6 @@ class RouterGenerator {
                     builder: (context) => HomeKolektor(),
                   ),
                 ));
-        break;
 
       //setting
       case resetPassword:
@@ -120,29 +119,27 @@ class RouterGenerator {
             builder: (_) => ResetPassword(
                   isBuat: param['isBuat'] ?? false,
                 ));
-        break;
+
       case resetPin:
         var param = args as Map;
         return MaterialPageRoute(
             builder: (_) => ResetPin(
                   isBuat: param['isBuat'] ?? false,
                 ));
-        break;
+
       case about:
         return MaterialPageRoute(builder: (_) => AboutScreen());
-        break;
 
       //transaksi
       case mainTransaksi:
         return MaterialPageRoute(builder: (_) => MainTransaksi());
-        break;
+
       case hasilPencarianProduk:
         return MaterialPageRoute(
           builder: (_) => HasilPencarianProduk(
             arguments: args as Map<String, dynamic>,
           ),
         );
-        break;
 
       case suksesTransaksi:
         if (args is SuksesTransaksiModel) {
@@ -159,52 +156,51 @@ class RouterGenerator {
             arguments: args as Map<String, dynamic>,
           ),
         );
-        break;
+
       case mutasiKredit:
         return MaterialPageRoute(
           builder: (_) => MutasiKredit(
             arguments: args as Map<String, dynamic>,
           ),
         );
-        break;
+
       //
 
       //klad
       case mainKlad:
         return MaterialPageRoute(builder: (_) => MainKlad());
-        break;
+
       case adapterPencarianKlad:
         return MaterialPageRoute(builder: (_) => AdapterPencarianKlad());
-        break;
+
       //klad
       case saldoKolektor:
         return MaterialPageRoute(builder: (_) => MainSaldoKolektor());
-        break;
+
       //nasabah
       case pencarianNasabah:
         return MaterialPageRoute(builder: (_) => PencarianNasabah());
-        break;
+
       case adapterPencarianNasabah:
         return MaterialPageRoute(builder: (_) => AdapterPencarianNasabah());
-        break;
+
       //printer
       case mainSettingPrinter:
         return MaterialPageRoute(builder: (_) => MainSettingPrinter());
-        break;
+
       case listPrinterDevice:
         return MaterialPageRoute(builder: (_) => ListPrinterDevice());
-        break;
+
       //migrasi data
       case mainMigrasiData:
         return MaterialPageRoute(builder: (_) => MainMigrasiData());
-        break;
+
       case pinjamanJatuhTempo:
         return MaterialPageRoute(builder: (_) => DaftarPenagihanPinjaman());
-        break;
+
       //export database
       case exportDatabase:
         return MaterialPageRoute(builder: (_) => ExportDatabase());
-        break;
     }
     return null;
   }

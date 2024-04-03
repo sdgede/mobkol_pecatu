@@ -11,7 +11,7 @@ import '../../services/utils/mcrypt_utils.dart';
 class TransaksiCollectionServices extends BaseServices {
   final dbHelper = DatabaseHelper.instance;
 
-  Future<SuksesTransaksiModel> prosesTransaksiKolektor({
+  Future<SuksesTransaksiModel?> prosesTransaksiKolektor({
     BuildContext? context,
     String? rekCd,
     String? groupProduk,
@@ -83,7 +83,7 @@ class TransaksiCollectionServices extends BaseServices {
         data: dataTransaksi,
       );
 
-    var responSukses;
+    SuksesTransaksiModel? responSukses;
 
     if (resp != null) {
       var jsonData = json.decode(resp);

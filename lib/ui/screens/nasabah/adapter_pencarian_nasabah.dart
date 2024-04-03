@@ -5,7 +5,6 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/viewmodel/produk_provider.dart';
-import '../../../ui/screens/nasabah/SearchController.dart';
 import '../../../ui/screens/nasabah/SearchController.dart' as sc;
 import '../../../ui/widgets/nasabah/vertical_list_nasabah.dart';
 import '../../constant/constant.dart';

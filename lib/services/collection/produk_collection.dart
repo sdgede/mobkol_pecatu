@@ -13,7 +13,7 @@ class ProdukCollectionServices extends BaseServices {
   GlobalProvider? _globalProv;
   final dbHelper = DatabaseHelper.instance;
 
-  Future<List<ProdukCollection>> dataProduk(
+  Future<List<ProdukCollection>?> dataProduk(
       {BuildContext? context, bool migrasi = false}) async {
     _globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     var dataProduk = Map<String, dynamic>();
@@ -36,13 +36,13 @@ class ProdukCollectionServices extends BaseServices {
 
     print("data produk collection  response $resp");
 
-    List<ProdukCollection> produkCollection = [];
+    List<ProdukCollection>? produkCollection;
 
     if (resp != null) {
       var jsonData = json.decode(resp);
       produkCollection = [];
       jsonData.forEach((val) {
-        produkCollection.add(ProdukCollection.fromJson(val));
+        produkCollection!.add(ProdukCollection.fromJson(val));
       });
     }
     return produkCollection;
@@ -250,7 +250,7 @@ class ProdukCollectionServices extends BaseServices {
     return listProdukCollection;
   }
 
-  Future<List<NasabahProdukModel>> getDataSearchNasabah({
+  Future<List<NasabahProdukModel>?> getDataSearchNasabah({
     BuildContext? context,
     String? keyword,
     String? rekCd,
@@ -290,18 +290,19 @@ class ProdukCollectionServices extends BaseServices {
         data: dataProduk,
       );
 
-    List<NasabahProdukModel> listProdukCollection = [];
+    List<NasabahProdukModel>? listProdukCollection;
 
     if (resp != null) {
       var jsonData = json.decode(resp);
+      listProdukCollection = [];
       jsonData.forEach((val) {
-        listProdukCollection.add(NasabahProdukModel.fromJson(val));
+        listProdukCollection!.add(NasabahProdukModel.fromJson(val));
       });
     }
     return listProdukCollection;
   }
 
-  Future<List<NasabahProdukModel>> getDataPenagihanPinajaman({
+  Future<List<NasabahProdukModel>?> getDataPenagihanPinajaman({
     BuildContext? context,
     String? tglAwal,
     String? tglAkhir,
@@ -320,18 +321,19 @@ class ProdukCollectionServices extends BaseServices {
       data: dataProduk,
     );
 
-    List<NasabahProdukModel> listProdukCollection = [];
+    List<NasabahProdukModel>? listProdukCollection;
 
     if (resp != null) {
       var jsonData = json.decode(resp);
+      listProdukCollection = [];
       jsonData.forEach((val) {
-        listProdukCollection.add(NasabahProdukModel.fromJson(val));
+        listProdukCollection!.add(NasabahProdukModel.fromJson(val));
       });
     }
     return listProdukCollection;
   }
 
-  Future<List<ListProdukCollection>> getDataProdukByUserId({
+  Future<List<ListProdukCollection>?> getDataProdukByUserId({
     BuildContext? context,
     String? idUser,
     String? rekCd,
@@ -358,12 +360,13 @@ class ProdukCollectionServices extends BaseServices {
       data: dataProduk,
     );
 
-    List<ListProdukCollection> listProdukCollection = [];
+    List<ListProdukCollection>? listProdukCollection;
 
     if (resp != null) {
       var jsonData = json.decode(resp);
+      listProdukCollection = [];
       jsonData.forEach((val) {
-        listProdukCollection.add(ListProdukCollection.fromJson(val));
+        listProdukCollection!.add(ListProdukCollection.fromJson(val));
       });
     }
     return listProdukCollection;
@@ -402,7 +405,6 @@ class ProdukCollectionServices extends BaseServices {
 
     if (resp != null) {
       var jsonData = json.decode(resp);
-      List<ListProdukCollection> listProdukCollection = [];
       jsonData.forEach((val) {
         detailProdukCollection.add(DetailProdukCollection.fromJson(val));
       });
@@ -410,7 +412,7 @@ class ProdukCollectionServices extends BaseServices {
     return detailProdukCollection;
   }
 
-  Future<List<DetailProdukCollection>> getDataDetailProdukByNasabahId({
+  Future<List<DetailProdukCollection>?> getDataDetailProdukByNasabahId({
     BuildContext? context,
     String? idUser,
     String? rekCd,
@@ -439,13 +441,14 @@ class ProdukCollectionServices extends BaseServices {
 
     print(resp);
 
-    List<DetailProdukCollection> detailProdukCollection = [];
+    List<DetailProdukCollection>? detailProdukCollection;
 
     if (resp != null) {
       var jsonData = json.decode(resp);
+      detailProdukCollection = [];
       jsonData.forEach((val) {
         print(val);
-        detailProdukCollection.add(DetailProdukCollection.fromJson(val));
+        detailProdukCollection!.add(DetailProdukCollection.fromJson(val));
       });
     }
     return detailProdukCollection;
@@ -606,7 +609,7 @@ class ProdukCollectionServices extends BaseServices {
     return muatasiProdukCollection;
   }
 
-  Future<List<ProdukTabunganUserModel>> spGetTabunganIdUser({
+  Future<List<ProdukTabunganUserModel>?> spGetTabunganIdUser({
     BuildContext? context,
     String? idUser,
   }) async {
@@ -633,12 +636,13 @@ class ProdukCollectionServices extends BaseServices {
       data: dataProduk,
     );
 
-    List<ProdukTabunganUserModel> produkTabunganUser = [];
+    List<ProdukTabunganUserModel>? produkTabunganUser;
 
     if (resp != null) {
       var jsonData = json.decode(resp);
+      produkTabunganUser = [];
       jsonData.forEach((val) {
-        produkTabunganUser.add(ProdukTabunganUserModel.fromJson(val));
+        produkTabunganUser!.add(ProdukTabunganUserModel.fromJson(val));
       });
     }
     return produkTabunganUser;

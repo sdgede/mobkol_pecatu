@@ -318,8 +318,8 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   List<MutasiProdukCollection>? _mutasiProdukCollectionSearch;
-  List<MutasiProdukCollection> get mutasiProdukCollectionSearch =>
-      _mutasiProdukCollectionSearch!;
+  List<MutasiProdukCollection>? get mutasiProdukCollectionSearch =>
+      _mutasiProdukCollectionSearch;
   void refreshMutasiProdukCollectionSearch() {
     _mutasiProdukCollectionSearch = null;
     notifyListeners();

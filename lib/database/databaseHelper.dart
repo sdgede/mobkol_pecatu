@@ -98,7 +98,7 @@ class DatabaseHelper {
   Future<bool> deleteDataGlobalWithCLause(
       String table, String columnId, int id) async {
     Database db = await instance.database;
-    Map<String, dynamic> result;
+    // Map<String, dynamic> result;
     bool isSukses = false;
     //return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
     try {
@@ -185,7 +185,7 @@ class DatabaseHelper {
     if (result['status'] == 'Gagal') {
       resultFinal = {'responLogin': result};
     } else {
-      bool imeiAlvaible = true;
+      // bool imeiAlvaible = true;
 
       resultFinal = {
         "responLogin": row.first,
@@ -391,11 +391,11 @@ class DatabaseHelper {
   }
 
   Future<dynamic> getSaldoKolOffline({
-    Map<String, dynamic>? dataParse,
+    required Map<String, dynamic> dataParse,
   }) async {
     Database db = await instance.database;
-    String groupProduk = _decrypt(dataParse!['groupProduk']);
-    String rekCd = _decrypt(dataParse['rekCd']);
+    // String groupProduk = _decrypt(dataParse!['groupProduk']);
+    // String rekCd = _decrypt(dataParse['rekCd']);
     String trxDate = DateSystem;
     String kolektor = _decrypt(dataParse['user']);
     List<Map<String, Object>> result;
@@ -627,7 +627,7 @@ class DatabaseHelper {
         if (actionQuery && actionType == 'UPDATE') rowEffectedEdit++;
       },
     );
-    return {'row_edit': rowEffectedEdit ?? 0, 'row_add': rowEffectedAdd ?? 0};
+    return {'row_edit': rowEffectedEdit, 'row_add': rowEffectedAdd};
   }
 
   Future manageDataMigrationAccount(
@@ -671,7 +671,7 @@ class DatabaseHelper {
         if (actionQuery && actionType == 'UPDATE') rowEffectedEdit++;
       },
     );
-    return {'row_edit': rowEffectedEdit ?? 0, 'row_add': rowEffectedAdd ?? 0};
+    return {'row_edit': rowEffectedEdit, 'row_add': rowEffectedAdd};
   }
 
   Future manageSyncAccount(dynamic val) async {
@@ -722,7 +722,7 @@ class DatabaseHelper {
 
     if (actionQuery && actionType == 'INSERT') rowEffectedAdd++;
     if (actionQuery && actionType == 'UPDATE') rowEffectedEdit++;
-    return {'row_edit': rowEffectedEdit ?? 0, 'row_add': rowEffectedAdd ?? 0};
+    return {'row_edit': rowEffectedEdit, 'row_add': rowEffectedAdd};
   }
 
   Future manageDataMigrationNasabah(
@@ -770,7 +770,7 @@ class DatabaseHelper {
         if (actionQuery && actionType == 'UPDATE') rowEffectedEdit++;
       },
     );
-    return {'row_edit': rowEffectedEdit ?? 0, 'row_add': rowEffectedAdd ?? 0};
+    return {'row_edit': rowEffectedEdit, 'row_add': rowEffectedAdd};
   }
 
   Future manageDataMigrationConfig(dynamic dataParse) async {
@@ -944,7 +944,7 @@ class DatabaseHelper {
   }
 
   Future<io.File> copyDB() async {
-    final db = await instance.database;
+    // final db = await instance.database;
     final dbPath = await getDatabasesPath();
     var afile = io.File(dbPath);
     return afile;

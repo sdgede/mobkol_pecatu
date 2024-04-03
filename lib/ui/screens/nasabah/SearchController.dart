@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SearchController extends StatefulWidget {
-  Function? onClick;
-  Function(String)? onSubmit;
-  TextEditingController? controller;
-  bool readOnly;
-  bool autoFocus;
-  String? placeHolder;
+  final Function? onClick;
+  final Function(String)? onSubmit;
+  final TextEditingController? controller;
+  final bool readOnly;
+  final bool autoFocus;
+  final String? placeHolder;
 
   SearchController({
     this.onClick,
