@@ -328,6 +328,15 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: config.companyName,
         theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch(
+            accentColor: accentColor,
+            backgroundColor: Colors.white,
+            cardColor: Colors.white,
+          ).copyWith(
+            secondary: accentColor,
+            background: Colors.white,
+            surfaceTint: Colors.white,
+          ),
           primaryColor: primaryColor,
           textTheme: GoogleFonts.ubuntuTextTheme(Theme.of(context).textTheme),
           highlightColor: Colors.transparent,
@@ -344,8 +353,6 @@ class _MyAppState extends State<MyApp> {
               ),
             },
           ),
-          colorScheme:
-              ColorScheme.fromSwatch().copyWith(secondary: accentColor),
         ),
         builder: (BuildContext context, Widget? child) {
           return FlutterEasyLoading(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 import '../../../services/config/config.dart' as config;
 import '../../../services/config/router_generator.dart';
@@ -8,6 +9,8 @@ import '../../../services/viewmodel/global_provider.dart';
 import '../../../services/viewmodel/produk_provider.dart';
 import '../../../database/databaseHelper.dart';
 import '../../constant/constant.dart';
+
+final _shorebirdCodePush = ShorebirdCodePush();
 
 class SplashPage extends StatefulWidget {
   SplashPage({Key? key}) : super(key: key);
@@ -25,22 +28,26 @@ class _SplashPageState extends State<SplashPage>
     Colors.black,
   ];
 
-  ProdukCollectionProvider? produkProv;
-  GlobalProvider? globalProv;
+  late ProdukCollectionProvider produkProv;
+  late GlobalProvider globalProv;
 
   int durationSplashScreen = 5;
 
   startTimeout() async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // bool firstTime = prefs.getBool('first_time') ?? false;
+    bool isOTAUpdateAvailable =
+        await _shorebirdCodePush.isNewPatchAvailableForDownload();
     var _redirectPage;
 
-    await globalProv!.checkUpdate(context);
+    await globalProv.checkUpdate(context);
 
-    if (globalProv!.updateInfo != null) {
-      if (globalProv!.updateInfo!.type == config.MANDATORY_UPDATE ||
-          globalProv!.updateInfo!.type == config.NORMAL_UPDATE ||
-          globalProv!.updateInfo!.type == config.MAINTENANCE) {
+    if (isOTAUpdateAvailable) {
+      _redirectPage = RouterGenerator.otaUpdate;
+    } else if (globalProv.updateInfo != null) {
+      if (globalProv.updateInfo!.type == config.MANDATORY_UPDATE ||
+          globalProv.updateInfo!.type == config.NORMAL_UPDATE ||
+          globalProv.updateInfo!.type == config.MAINTENANCE) {
         _redirectPage = RouterGenerator.pageUpdate;
       } else {
         _redirectPage = RouterGenerator.pageLogin;
@@ -56,15 +63,15 @@ class _SplashPageState extends State<SplashPage>
 
   loadAllData() async {
     // load data config
-    await globalProv!.getLocalConfig();
+    await globalProv.getLocalConfig();
 
     await dbHelper.database;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var nama = prefs.getString('nama');
     if (nama != "" && nama != null) config.PersonName = nama;
 
-    produkProv!.dataProduk(context);
-    produkProv!.dataProdukMigrasi(context);
+    produkProv.dataProduk(context);
+    produkProv.dataProdukMigrasi(context);
   }
 
   @override

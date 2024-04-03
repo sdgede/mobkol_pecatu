@@ -11,6 +11,7 @@ import '../../ui/screens/login/splash_page.dart';
 import '../../ui/screens/login/landing_page.dart';
 import '../../ui/screens/login/login_form.dart';
 import '../../ui/screens/login/update_page.dart';
+import '../../ui/screens/login/ota_update.dart';
 //setting
 import '../../ui/screens/setting/about.dart';
 import '../../ui/screens/setting/reset_password.dart';
@@ -48,6 +49,7 @@ class RouterGenerator {
   static const homeKolektor = "/homeKolektor";
   static const pinLogin = "/pinLogin";
   static const pageUpdate = "/pageUpdate";
+  static const otaUpdate = "/otaUpdate";
 
   //settings
   static const resetPassword = "/settings/resetPassword";
@@ -90,6 +92,10 @@ class RouterGenerator {
       case pageUpdate:
         return MaterialPageRoute(
             settings: settings, builder: (_) => UpdatePage());
+
+      case otaUpdate:
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => OtaUpdatePage());
 
       case pageLanding:
         return MaterialPageRoute(builder: (_) => LandingPage());

@@ -178,7 +178,7 @@ class HomeKolektorState extends State<HomeKolektor> {
                         Container(
                           margin: EdgeInsets.only(left: 15),
                           child: Text(
-                            'Home',
+                            '',
                             maxLines: 1,
                             style: TextStyle(
                               color: Colors.white,

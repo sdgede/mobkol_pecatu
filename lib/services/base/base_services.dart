@@ -74,7 +74,7 @@ class BaseServices {
           return null;
       }
     } on DioError catch (e) {
-      print(e);
+      print("Cannot catch $url with error: $e");
       response = e.response!;
       errorType = e.type;
     }
