@@ -40,12 +40,12 @@ class DatabaseHelper {
 
   //QUERY
 
-  String _decrypt(String val) {
-    return McryptUtils.instance.decrypt(val);
+  String _decrypt(String? val) {
+    return McryptUtils.instance.decrypt(val ?? '');
   }
 
-  String _encrypt(String val) {
-    return McryptUtils.instance.encrypt(val);
+  String _encrypt(String? val) {
+    return McryptUtils.instance.encrypt(val ?? '');
   }
 
   Future getLasIdTbTarns() async {
@@ -267,7 +267,7 @@ class DatabaseHelper {
     String rekCd = _decrypt(dataParse['rekCd']);
     String norek = formatNorekProduk(_decrypt(dataParse['norek']));
     String rekDesc = groupProduk == 'ANGGOTA' ? 'anggota' : 'rekening';
-    List<Map<String, Object>> result;
+    List<Map<String, Object?>> result;
     var row;
     var val = await getDataGroupProduk(groupProduk, rekCd);
 
@@ -305,7 +305,7 @@ class DatabaseHelper {
         }
       ];
     } else {
-      result = row;
+      result = row.toList();
     }
 
     return json.encode(result);
@@ -322,7 +322,7 @@ class DatabaseHelper {
     String tglAwal = _decrypt(dataParse['tglAwal']);
     String tglAkhir = _decrypt(dataParse['tglAkhir']);
     String rekDesc = groupProduk == 'ANGGOTA' ? 'no_anggota' : 'no_rek';
-    List<Map<String, Object>> result;
+    List<Map<String, Object?>> result;
     var val = await getDataGroupProduk(groupProduk, rekCd);
     var row;
 
@@ -384,7 +384,7 @@ class DatabaseHelper {
         {"res_status": "Gagal", "pesan": "Data klad tidak ditemukan"}
       ];
     } else {
-      result = row;
+      result = row.toList();
     }
 
     return json.encode(result);
@@ -398,7 +398,7 @@ class DatabaseHelper {
     // String rekCd = _decrypt(dataParse['rekCd']);
     String trxDate = DateSystem;
     String kolektor = _decrypt(dataParse['user']);
-    List<Map<String, Object>> result;
+    List<Map<String, Object?>> result;
     var row;
 
     row = await db.rawQuery("SELECT xx.*, ifnull( debet_tab, 0 ) AS tot_debet, ifnull( kredit_anggota + kredit_tab + kredit_duo + kredit_lestari + kredit_sihari + kredit_sirena, 0 ) AS tot_kredit, ifnull( kredit_anggota + kredit_tab + kredit_duo + kredit_lestari + kredit_sihari + kredit_sirena, 0 ) AS tot_saldo FROM (SELECT '0' AS debet_tab, ifnull( sum( jumlah ), 0 ) AS kredit_tab, ifnull( sum( jumlah ), 0 ) AS saldo_tab, ifnull(( SELECT sum( jumlah ) FROM t_trans_simpanan WHERE create_who LIKE '%" +
@@ -440,7 +440,7 @@ class DatabaseHelper {
         {"res_status": "Gagal", "pesan": "Data klad tidak ditemukan"}
       ];
     } else {
-      result = row;
+      result = row.toList();
     }
 
     return json.encode(result);
@@ -454,7 +454,7 @@ class DatabaseHelper {
     String rekCd = _decrypt(dataParse['rekCd']);
     String keyword = _decrypt(dataParse['keyword']);
     String norek = groupProduk == 'ANGGOTA' ? 'no_anggota' : 'no_rek';
-    List<Map<String, Object>> result;
+    List<Map<String, Object?>> result;
     var row;
 
     var val = await getDataGroupProduk(groupProduk, rekCd);
@@ -477,7 +477,7 @@ class DatabaseHelper {
         }
       ];
     } else {
-      result = row;
+      result = row.toList();
     }
 
     return json.encode(result);
@@ -489,7 +489,7 @@ class DatabaseHelper {
   ) async {
     Database db = await instance.database;
     Map<String, dynamic> insertVal;
-    List<Map<String, Object>> result;
+    List<Map<String, Object?>> result;
     bool isSukses = false;
     String tipeTrx = _decrypt(dataParse['tipeTrans']);
     String groupProduk = _decrypt(dataParse['groupProduk']);

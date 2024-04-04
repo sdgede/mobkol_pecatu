@@ -136,16 +136,17 @@ class _FieldListKlad extends State<FieldListKlad> {
                                     ),
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 5, vertical: 1),
+                                    child: Text(
+                                        widget.dataTrans.isUpload == 'Y'
+                                            ? 'TERUPLOAD'
+                                            : 'BELUM TERUPLOAD',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                        )),
                                   ),
 
-                                  badgeContent: Text(
-                                      widget.dataTrans.isUpload == 'Y'
-                                          ? 'TERUPLOAD'
-                                          : 'BELUM TERUPLOAD',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                      )),
+                                  showBadge: false,
                                 ),
                             ],
                           ),

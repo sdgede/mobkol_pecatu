@@ -24,8 +24,8 @@ class McryptUtils {
   //   return encrypted!;
   // }
 
-  String encrypt(String value) {
-    if (value == "") return "";
+  String encrypt(String? value) {
+    if (value == null || value == "") return "";
 
     final encrypter = Encrypter(AES(this.secretKey, mode: AESMode.cbc));
     String? encrypted;
@@ -53,16 +53,17 @@ class McryptUtils {
   //   return decrypted!;
   // }
 
-  String decrypt(String encrypted) {
-    if (encrypted == "") return "";
+  String decrypt(String? encrypted) {
+    if (encrypted == null || encrypted == "") return "";
     final encrypter = Encrypter(AES(this.secretKey, mode: AESMode.cbc));
     String? decrypted;
     try {
       decrypted = encrypter.decrypt64(encrypted, iv: this.iv);
     } catch (e) {
       print("Error decrypt $e");
+      return encrypted;
     }
-    return decrypted!;
+    return decrypted;
   }
 
   String encryptMerchant(String value) {
