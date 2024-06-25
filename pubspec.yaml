@@ -69,6 +69,7 @@ dependencies:
   geocoding: ^2.1.0
   shorebird_code_push: ^1.1.3
   restart_app: ^1.2.1
+  flutter_dotenv: ^5.1.0
   
   
 
@@ -107,6 +108,7 @@ flutter:
     - assets/merchant/
     - assets/lottie/
     - assets/database/sqlite_koperasi.db
+    - .env
   fonts:
     - family: CustomIcons
       fonts:      

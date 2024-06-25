@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 // import 'firebase_options.dart';
 import 'services/config/config.dart' as config;
 import 'services/config/router_generator.dart';
@@ -82,6 +83,8 @@ void main() async {
     //   selectNotificationSubject.add(payload);
     // }
   );
+
+  await dotenv.load(fileName: ".env");
 
   setupApp();
   configLoading();

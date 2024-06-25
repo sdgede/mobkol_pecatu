@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 //con mode
 String onlineMode = "ONLINE";
@@ -6,25 +7,25 @@ String offlineMode = "OFFLINE";
 dynamic forbidenOffline = ['KREDIT', 'PINJAMAN'];
 
 // api map
-String apiMapMobile = "AIzaSyDF_bYDSiB2MLpjE0x-wr6NZPEYjP253_k";
-String apiMapIOS = "";
+String apiMapMobile = dotenv.env['API_MAP_ANDROID_KEY'] ?? '';
+String apiMapIOS = dotenv.env['API_MAP_IOS_KEY'] ?? '';
 
 // versi apk
-String versiApkMobile = "1.0.3";
-String versiApkIOS = "1.0.3";
+String versiApkMobile = dotenv.env['VERSION_ANDROID'] ?? '';
+String versiApkIOS = dotenv.env['VERSION_IOS'] ?? '';
 
 //company profile
-String mobileName = "AWBP Mobile Kolektor";
-String companyName = "KOP ARYA WANG BANG PINATIH";
-String companyFullName = "Mobile Kolektor";
-String companySlogan = "AWBP";
-String companyShortName = "AWBP";
-String nomorCompany = "0361751392";
-String nomorWhatsAppCompany = "0361751392";
-String emailCompany = "pusat@mobkol.com";
-String clientType = "LPD"; //KOEPRASI OR LPD
+String mobileName = dotenv.env['MOBILE_NAME'] ?? '';
+String companyName = dotenv.env['COMPANY_NAME'] ?? '';
+String companyFullName = dotenv.env['COMPANY_FULL_NAME'] ?? '';
+String companySlogan = dotenv.env['COMPANY_SLOGAN'] ?? '';
+String companyShortName = dotenv.env['COMPANY_SHORT_NAME'] ?? '';
+String nomorCompany = dotenv.env['COMPANY_NOMOR'] ?? '';
+String nomorWhatsAppCompany = dotenv.env['COMPANY_NOMOR_WA'] ?? '';
+String emailCompany = dotenv.env['COMPANY_EMAIL'] ?? '';
+String clientType = dotenv.env['CLIENT_TYPE'] ?? '';
 
-String imageName = "YOGAARTHA_";
+String imageName = dotenv.env['IMAGE_NAME'] ?? '';
 String jamAwalVC = "09.00";
 String jamAkhirVC = "16.00";
 
@@ -33,8 +34,8 @@ String apiBeritaLink =
     "https://newsapi.org/v2/top-headlines?country=id&category=business&apiKey=";
 
 // api ws link
-String vendorApp = 'Sevanam Enterprise';
-String baseURL = "https://microfis.net/ws_sample/ws_mobile_kolektor/";
+String vendorApp = dotenv.env['VENDOR_APP'] ?? '';
+String baseURL = dotenv.env['BASE_URL'] ?? '';
 String iconLink = "${baseURL}assets/icon/";
 String urlApiLogin = "${baseURL}Login";
 String urlApiNasabah = "${baseURL}Nasabah";
@@ -53,12 +54,12 @@ bool isAlvaibleTfBank = false;
 String urlImg = "${baseURL}assets/foto/";
 
 // mcrypt
-String secretKey = "kkdUIKWkxHCmApwB";
-String iv = "AmvuNe0vAwbPErKI";
-String secretKeyMerchant = "a6DMerCtLink2019";
-String ivMerchant = "MercHantLink2019";
-String clientId = "2021KOLToGHaArta#*";
-String clientSecret = "#*arthAyoGakOl2021";
+String secretKey = dotenv.env['SECRET_KEY'] ?? '';
+String iv = dotenv.env['IV'] ?? '';
+String secretKeyMerchant = dotenv.env['SECRET_KEY_MERCHANT'] ?? '';
+String ivMerchant = dotenv.env['IV_MERCHANT'] ?? '';
+String clientId = dotenv.env['CLIENT_ID'] ?? '';
+String clientSecret = dotenv.env['CLIENT_SECRET'] ?? '';
 
 //custom
 String SKIP = "Selesai";
