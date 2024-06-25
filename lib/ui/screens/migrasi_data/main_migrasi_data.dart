@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:mitraku_kolektor/services/viewmodel/global_provider.dart';
+import 'package:sevanam_mobkol/services/viewmodel/global_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 

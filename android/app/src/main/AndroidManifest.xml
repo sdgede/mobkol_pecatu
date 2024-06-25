@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sevanam.awbp_mobkol">
+    package="sevanam.com.sevanam_mobkol">
     <!-- Izin -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
@@ -22,14 +22,14 @@
     
     <application
         android:name="${applicationName}"
-        android:label="AWBP Mobile Kolektor"
+        android:label="Sevanam Mobile Kolektor"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon"
         android:requestLegacyExternalStorage="true">
 
         <!-- Aktivitas Utama -->
         <activity
-            android:name="com.sevanam.awbp_mobkol.MainActivity"
+            android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -44,7 +44,7 @@
 
         <!-- Receiver untuk Flutter Notification -->
         <receiver
-            android:name="com.sevanam.awbp_mobkol.MyNotificationReceiver"
+            android:name=".MyNotificationReceiver"
             android:exported="false"> <!-- Ubah nilai ini sesuai dengan kebutuhan Anda -->
             <intent-filter>
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />

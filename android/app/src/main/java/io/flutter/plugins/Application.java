@@ -1,4 +1,4 @@
-// package com.sevanam.awbp_mobkol;
+// package com.sevanam.sevanam_mobkol;
 
 // import io.flutter.app.FlutterApplication;
 // import io.flutter.plugin.common.PluginRegistry;

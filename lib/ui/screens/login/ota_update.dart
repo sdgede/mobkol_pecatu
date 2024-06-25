@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mitraku_kolektor/services/config/config.dart';
-import 'package:mitraku_kolektor/ui/constant/constant.dart';
+import 'package:sevanam_mobkol/services/config/config.dart';
+import 'package:sevanam_mobkol/ui/constant/constant.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 
