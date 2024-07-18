@@ -96,6 +96,10 @@ Widget getDatePeriode(BuildContext context, {bool isKlad = false}) {
                       1) {
                     produkProv.setMutasiLoading(true, true);
                     if (isKlad) produkProv.resetMutasiTransaksi();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Periode harus lebih dari 1 hari'),
+                    ));
                   }
                 },
               )),
@@ -120,6 +124,10 @@ Widget getDatePeriode(BuildContext context, {bool isKlad = false}) {
                       0) {
                     produkProv.setMutasiLoading(true, true);
                     if (isKlad) produkProv.resetMutasiTransaksi();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Periode harus lebih dari 1 hari'),
+                    ));
                   }
                 },
               )),
