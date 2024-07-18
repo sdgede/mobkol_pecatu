@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
+import 'package:sevanam_mobkol/services/viewmodel/global_provider.dart';
 
 import '../config/config.dart' as config;
 import '../utils/dialog_utils.dart';
@@ -72,9 +74,9 @@ class ConnectivityUtils {
     bool res = await DialogUtils.instance.showInfo(
           context: context,
           clickCancelText: 'Muat Ulang',
-          clickOKText: 'Keluar',
+          clickOKText: 'Mode Offline',
           text:
-              'Koneksi terputus. Silakan periksa kembali koneksi anda. Jika sedang melakukan transaksi mohon cek mutasi rekening anda.',
+              'Koneksi terputus. Silakan periksa kembali koneksi anda. Jika sedang melakukan transaksi mohon cek mutasi rekening anda. Anda dapat melanjutkan dengan mode Offline.',
           title: 'Opps...',
         ) ??
         false;
@@ -82,7 +84,9 @@ class ConnectivityUtils {
     if (!res) {
       _checkConnectivity(context);
     } else {
-      SystemNavigator.pop();
+      Provider.of<GlobalProvider>(context, listen: false)
+          .setConnectionMode(config.offlineMode);
+      // SystemNavigator.pop();
     }
   }
 }
