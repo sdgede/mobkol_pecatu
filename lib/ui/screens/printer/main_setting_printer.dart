@@ -558,6 +558,12 @@ class ThermalPrinterAction {
     BuildContext? contex,
     SuksesTransaksiModel? dataTrx,
   }) async {
+    bool? isConnected = await bluetooth.isConnected;
+    if (!isConnected!) {
+      alertSnack(contex!, 'Tidak ada printer yang terhubung');
+      return;
+    }
+
     final _globalProv = Provider.of<GlobalProvider>(contex!, listen: false);
     String rekDesc = dataTrx!.groupProduk == 'KREDIT' ? 'No. Krdit' : 'No Rek';
     String saldoAkhirDesc =
@@ -635,6 +641,12 @@ class ThermalPrinterAction {
     String? saldoAkhir,
     String? who,
   }) async {
+    bool? isConnected = await bluetooth.isConnected;
+    if (!isConnected!) {
+      alertSnack(contex!, 'Tidak ada printer yang terhubung');
+      return;
+    }
+
     final _globalProv = Provider.of<GlobalProvider>(contex!, listen: false);
     String rekDesc = groupProduk == 'KREDIT' ? 'No.Krdt' : 'No.Rek';
     String saldoAkhirDesc =
@@ -694,5 +706,19 @@ class ThermalPrinterAction {
 
   String? _currency(String? val) {
     return val != null ? TextUtils.instance.numberFormat(val) : null;
+  }
+
+  void alertSnack(BuildContext ctx, String message) {
+    // _scaffoldKey.currentState!.ShowSnackBar(
+    ScaffoldMessenger.of(ctx).showSnackBar(
+      new SnackBar(
+        content: new Text(
+          message,
+          style: new TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
   }
 }
