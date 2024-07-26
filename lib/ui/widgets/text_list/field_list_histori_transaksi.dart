@@ -53,6 +53,7 @@ class _FieldListKlad extends State<FieldListKlad> {
         produkId: '0',
         action: 'SINGLE_UPLOAD',
         trxOfflineId: dataTrans.trans_id,
+        sendNotifTrx: true,
       );
     } else {
       bool deleteAction = await dbHelper.deleteDataGlobalWithCLause(

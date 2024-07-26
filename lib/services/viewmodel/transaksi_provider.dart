@@ -179,6 +179,7 @@ class TransaksiProvider extends ChangeNotifier {
             trxOfflineId: val.trans_id,
             loadCount: _incraseLen,
             maxProgress: _countOffTrx,
+            sendNotifTrx: true,
           );
           if (res) {
             int _totalCount = _countGagalUpTrx + _countSuksesUpTrx;
@@ -220,6 +221,7 @@ class TransaksiProvider extends ChangeNotifier {
     int? trxOfflineId,
     int? loadCount = 0,
     int maxProgress = 0,
+    bool sendNotifTrx = false,
   }) async {
     gobalProv = Provider.of<GlobalProvider>(context!, listen: false);
     produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
@@ -253,6 +255,13 @@ class TransaksiProvider extends ChangeNotifier {
       bool _isValid = false;
       if (_dataSuksesTransaksi!.status == 'Sukses') {
         _isValid = true;
+        if (sendNotifTrx) {
+          await sendNotifikasiTransaksiWhatsApp(
+            context: context,
+            rekCd: res.rekCd,
+            transId: res.idTrx.toString(),
+          );
+        }
       } else {
         if (action == 'MULTIPLE_UPLOAD') _isValid = true;
       }

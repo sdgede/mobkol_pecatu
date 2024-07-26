@@ -725,16 +725,17 @@ class DatabaseHelper {
     return {'row_edit': rowEffectedEdit, 'row_add': rowEffectedAdd};
   }
 
-  Future manageDataMigrationNasabah(
+  Future<Map<String, int>> manageDataMigrationNasabah(
       dynamic dataParse, groupProduk, rekCd) async {
     int isDataExist = 0, rowEffectedAdd = 0, rowEffectedEdit = 0;
     bool actionQuery = false;
     String actionType = '';
-    var dataVal = Map<String, dynamic>();
-    var jsonData = json.decode(dataParse);
-    await Future.forEach(
-      jsonData,
-      (Map<String, dynamic> val) async {
+    var dataVal = <String, dynamic>{};
+    List<dynamic> jsonData = json.decode(dataParse);
+
+    await Future.forEach<Map<String, dynamic>>(
+      jsonData.cast<Map<String, dynamic>>(),
+      (val) async {
         isDataExist = await queryRowCountWithClause(
           tb_master_nasabah,
           'nasabah_id',
@@ -770,6 +771,7 @@ class DatabaseHelper {
         if (actionQuery && actionType == 'UPDATE') rowEffectedEdit++;
       },
     );
+
     return {'row_edit': rowEffectedEdit, 'row_add': rowEffectedAdd};
   }
 

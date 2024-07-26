@@ -109,6 +109,7 @@ flutter:
     - assets/lottie/
     - assets/database/sqlite_koperasi.db
     - .env
+    - shorebird.yaml
   fonts:
     - family: CustomIcons
       fonts:      

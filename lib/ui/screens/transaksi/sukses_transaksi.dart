@@ -37,11 +37,13 @@ class _SeuksesTransaksiScreenState extends State<SeuksesTransaksiScreen> {
   }
 
   void sendNotifikasiTransaksiWhatsApp() async {
-    transaksiProvider!.sendNotifikasiTransaksiWhatsApp(
-      context: context,
-      rekCd: widget.dataSuksesTransaksi.rekCd,
-      transId: widget.dataSuksesTransaksi.idTrx.toString(),
-    );
+    if (globalProvider!.getConnectionMode == onlineMode) {
+      transaksiProvider!.sendNotifikasiTransaksiWhatsApp(
+        context: context,
+        rekCd: widget.dataSuksesTransaksi.rekCd,
+        transId: widget.dataSuksesTransaksi.idTrx.toString(),
+      );
+    }
   }
 
   Widget build(BuildContext context) {
