@@ -35,18 +35,20 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _produkProv!.setSaldoResult(null, isListen: false);
 
-      if (['ANGGOTA', 'DEPOSITO', 'BERENCANA']
-              .contains(widget.arguments!['tipe']) ||
-          _globalProvider!.getConnectionMode == config.offlineMode) {
-        _btnTarikStatus = false;
-        if (_produkProv!.getSelectedRkCdProduk == 'SIHARI')
+      setState(() {
+        if (['ANGGOTA', 'DEPOSITO', 'BERENCANA']
+                .contains(widget.arguments!['tipe']) ||
+            _globalProvider!.getConnectionMode == config.offlineMode) {
+          _btnTarikStatus = false;
+          if (_produkProv!.getSelectedRkCdProduk == 'SIHARI')
+            _btnTarikStatus = true;
+        } else {
           _btnTarikStatus = true;
-      } else {
-        _btnTarikStatus = true;
-      }
+        }
 
-      if (_globalProvider!.getConnectionMode == config.offlineMode)
-        _btnHistoryStatus = false;
+        if (_globalProvider!.getConnectionMode == config.offlineMode)
+          _btnHistoryStatus = false;
+      });
     });
   }
 

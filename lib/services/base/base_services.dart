@@ -109,13 +109,15 @@ class BaseServices {
     if (typeToken == RequestTypeToken.APK) {
       try {
         String body = response.data;
-        print(body);
         var result;
         if (typeEncrypt == TypeEncrypt.APK) {
           result = McryptUtils.instance.decrypt(body.trim());
         } else {
           result = McryptUtils.instance.decryptMerchant(body.trim());
         }
+
+        String printText = "REQUEST ($url || ${data['req']})::";
+        print('\x1B[33m$printText\x1B[0m \x1B[37m$result\x1B[0m');
         return result;
       } on Exception {
         return null;
