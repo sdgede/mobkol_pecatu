@@ -129,13 +129,16 @@ class TransaksiProvider extends ChangeNotifier {
     BuildContext? context,
     String? rekCd,
     String? transId,
+    bool forceSendNotifTrx = false,
   }) async {
     try {
-      await transaksiCollectionServices.sendNotifikasiTransaksiWhatsApp(
-        context: context,
-        rekCd: rekCd,
-        transId: transId,
-      );
+      if (gobalProv!.getConnectionMode == onlineMode || forceSendNotifTrx) {
+        await transaksiCollectionServices.sendNotifikasiTransaksiWhatsApp(
+          context: context,
+          rekCd: rekCd,
+          transId: transId,
+        );
+      }
     } on Exception {
       return null;
     } catch (e) {
@@ -180,6 +183,7 @@ class TransaksiProvider extends ChangeNotifier {
             loadCount: _incraseLen,
             maxProgress: _countOffTrx,
             sendNotifTrx: true,
+            forceSendNotifTrx: true,
           );
           if (res) {
             int _totalCount = _countGagalUpTrx + _countSuksesUpTrx;
@@ -222,6 +226,7 @@ class TransaksiProvider extends ChangeNotifier {
     int? loadCount = 0,
     int maxProgress = 0,
     bool sendNotifTrx = false,
+    bool forceSendNotifTrx = false,
   }) async {
     gobalProv = Provider.of<GlobalProvider>(context!, listen: false);
     produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
@@ -260,6 +265,7 @@ class TransaksiProvider extends ChangeNotifier {
             context: context,
             rekCd: res.rekCd,
             transId: res.idTrx.toString(),
+            forceSendNotifTrx: forceSendNotifTrx,
           );
         }
       } else {

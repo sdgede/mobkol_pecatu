@@ -244,6 +244,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
         denda: _dendaParse,
         remark: _remark,
         produkId: _produkId,
+        sendNotifTrx: true,
       );
     }
   }
