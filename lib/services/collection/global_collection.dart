@@ -66,19 +66,18 @@ class GlobalCollectionServices extends BaseServices {
         .encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
     dataLogin["reg_firebase_id"] = McryptUtils.instance.encrypt(firebaseId);
 
-    print(dataLogin);
-
     var resp;
 
     if (globalProv.getConnectionMode == offlineMode)
       resp = dbHelper.getLoginOffline(dataLogin);
-    else
+    else {
       resp = await request(
         context: context,
         url: urlApiLogin,
         type: RequestType.POST,
         data: dataLogin,
       );
+    }
 
     return resp;
   }

@@ -80,6 +80,7 @@ class GlobalProvider extends ChangeNotifier {
         username: username,
         password: password,
       );
+
       var result = res;
       if (_connectionMode == config.onlineMode)
         result = res == null ? null : json.decode(res);

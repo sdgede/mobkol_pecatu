@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_bcrypt/flutter_bcrypt.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -151,26 +152,35 @@ class DatabaseHelper {
     return isSukses;
   }
 
+  Future<bool> passwordVerify(String password, Map<String, Object?> user) async {
+    bool validatePassword = await FlutterBcrypt.verify(
+        password: _decrypt(password) + (user['create_date']  as String) + saltHashKey,
+        hash: (user['password']  as String),
+      );
+
+    return validatePassword;
+  }
+
   Future getLoginOffline(Map<String, dynamic> dataParse) async {
     Database db = await instance.database;
     Map<String, dynamic> result, resultFinal;
 
     var row = await db.rawQuery(
-        "SELECT 'Y' as status,username,password,IFNULL(imei,'0') as imei,IFNULL(sn_number,'0') as sn_number,username as nama,kolektor_id as id_user,apk_version FROM s_user_kolektor WHERE username ='" +
+        "SELECT 'Y' as status,username,password,IFNULL(imei,'0') as imei,IFNULL(sn_number,'0') as sn_number,username as nama,kolektor_id as id_user,apk_version, create_date FROM s_user_kolektor WHERE username ='" +
             _decrypt(dataParse['username']) +
             "'");
     if (row.length == 0) {
       result = {"status": "Gagal", "pesan": "Username tidak ditemukan"};
     } else {
-      if (_decrypt(row.first['password'] as String) !=
-          _decrypt(dataParse['pwd'])) {
+      bool isValidPassword = await passwordVerify(dataParse['pwd'], row.first);
+
+      if (isValidPassword) {
         result = {
           "status": "Gagal",
           "pesan": "Username atau password tidak valid"
         };
       } else {
-        if (_decrypt(row.first['imei'] as String) !=
-            _decrypt(dataParse['imei'])) {
+        if (_decrypt(row.first['imei'] as String) != _decrypt(dataParse['imei'])) {
           result = {
             "status": "Gagal",
             "pesan":
@@ -630,8 +640,7 @@ class DatabaseHelper {
     return {'row_edit': rowEffectedEdit, 'row_add': rowEffectedAdd};
   }
 
-  Future manageDataMigrationAccount(
-      dynamic dataParse, groupProduk, rekCd) async {
+  Future manageDataMigrationAccount(dynamic dataParse, groupProduk, rekCd) async {
     int isDataExist = 0, rowEffectedAdd = 0, rowEffectedEdit = 0;
     bool actionQuery = false;
     String actionType = '';
@@ -653,6 +662,7 @@ class DatabaseHelper {
         dataVal['sn_number'] = val['sn_number'];
         dataVal['apk_version'] = val['apk_version'];
         dataVal['status'] = val['status'];
+        dataVal['create_date'] = val['create_date'];
 
         if (isDataExist != 0) {
           actionType = 'UPDATE';
@@ -701,6 +711,7 @@ class DatabaseHelper {
     dataVal['sn_number'] = val['sn_number'];
     dataVal['apk_version'] = val['apk_version'];
     dataVal['status'] = val['status'];
+    dataVal['create_date'] = val['create_date'];
 
     if (isDataExist > 1) {
       await db.rawDelete(

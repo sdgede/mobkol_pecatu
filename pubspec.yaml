@@ -57,6 +57,7 @@ dependencies:
   rxdart: ^0.27.7
   shared_preferences: ^2.2.1
   showcaseview: ^2.0.3
+  flutter_bcrypt: 1.0.8
   sqflite: ^2.3.0
   steel_crypt: ^3.0.0+1
   syncfusion_flutter_datepicker: ^22.2.12

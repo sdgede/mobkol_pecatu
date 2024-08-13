@@ -44,7 +44,9 @@ class BaseServices {
     DioErrorType? errorType;
 
     await _addGlobalvalue(context!, data);
-    print(data);
+    
+    print('\x1B[33m Req::data \x1B[0m \x1B[37m$data\x1B[0m');
+
     if (typeToken == RequestTypeToken.APK) {
       await _getTokenAPK();
     } else if (typeToken == RequestTypeToken.MERCHANT) {
@@ -108,7 +110,8 @@ class BaseServices {
 
     if (typeToken == RequestTypeToken.APK) {
       try {
-        String body = response.data;
+        String body = response.data as String;
+
         var result;
         if (typeEncrypt == TypeEncrypt.APK) {
           result = McryptUtils.instance.decrypt(body.trim());
@@ -118,6 +121,7 @@ class BaseServices {
 
         String printText = "REQUEST ($url || ${data['req']})::";
         print('\x1B[33m$printText\x1B[0m \x1B[37m$result\x1B[0m');
+
         return result;
       } on Exception {
         return null;

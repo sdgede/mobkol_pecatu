@@ -54,6 +54,7 @@ bool isAlvaibleTfBank = false;
 String urlImg = "${baseURL}assets/foto/";
 
 // mcrypt
+String saltHashKey = dotenv.env['SALT_HASH_KEY'] ?? '';
 String secretKey = dotenv.env['SECRET_KEY'] ?? '';
 String iv = dotenv.env['IV'] ?? '';
 String secretKeyMerchant = dotenv.env['SECRET_KEY_MERCHANT'] ?? '';
