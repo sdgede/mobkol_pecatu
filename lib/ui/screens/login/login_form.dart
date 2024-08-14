@@ -3,7 +3,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:sevanam_mobkol/services/utils/mcrypt_utils.dart';
 
 import '../../../database/databaseHelper.dart';
 import '../../../ui/widgets/floating_action_button.dart';

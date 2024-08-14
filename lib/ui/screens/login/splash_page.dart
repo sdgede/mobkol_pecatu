@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,13 +75,33 @@ class _SplashPageState extends State<SplashPage>
     produkProv.dataProdukMigrasi(context);
   }
 
+  Future<bool> checkInternetConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return (result.isNotEmpty && result[0].rawAddress.isNotEmpty);
+    } on SocketException catch (_) {
+      return false;
+    }
+  }
+
+  switchModeBaseOnConnectivity() async {
+    bool isConnected = await checkInternetConnection();
+
+    if (!isConnected) {
+      /**
+       * Switch to offline mode
+       */
+      globalProv.setConnectionMode(config.offlineMode);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
     produkProv = Provider.of<ProdukCollectionProvider>(context, listen: false);
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
-
+    switchModeBaseOnConnectivity();
     loadAllData();
 
     animationController = new AnimationController(
