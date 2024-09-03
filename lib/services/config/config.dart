@@ -99,3 +99,5 @@ const MANDATORY_UPDATE = 'MANDATORY';
 const NORMAL_UPDATE = 'NORMAL_UPDATE';
 const NO_UPDATE = 'NO_UPDATE';
 const MAINTENANCE = 'MAINTENANCE';
+
+bool isPrintDecryptRequest = true;

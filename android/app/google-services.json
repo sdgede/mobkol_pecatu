@@ -1,39 +1,67 @@
 {
-  "project_info": {
-    "project_number": "487768339618",
-    "project_id": "lpd-nyanglan-mobile",
-    "storage_bucket": "lpd-nyanglan-mobile.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:487768339618:android:3111e56e50756ca22c93fb",
-        "android_client_info": {
-          "package_name": "sevanam.com.sevanam_mobkol"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "487768339618-c24epq583oppo4rvi4m9eb6ttmgjfth2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA1UUexzXARl-k2USIGnSeYXDucba_FyZ4"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "487768339618-c24epq583oppo4rvi4m9eb6ttmgjfth2.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
-}
+	"project_info": {
+	  "project_number": "154638389878",
+	  "project_id": "mobile-kolektor-b2089",
+	  "storage_bucket": "mobile-kolektor-b2089.appspot.com"
+	},
+	"client": [
+	  {
+		"client_info": {
+		  "mobilesdk_app_id": "1:154638389878:android:65d976631c78a61913c557",
+		  "android_client_info": {
+			"package_name": "com.sevanam.crea_mobkol"
+		  }
+		},
+		"oauth_client": [],
+		"api_key": [
+		  {
+			"current_key": "AIzaSyBYc6c0i_uSEJrqytj-j6sUTUFLoGYNJWQ"
+		  }
+		],
+		"services": {
+		  "appinvite_service": {
+			"other_platform_oauth_client": []
+		  }
+		}
+	  },
+	  {
+		"client_info": {
+		  "mobilesdk_app_id": "1:154638389878:android:478ae9d8df442b6713c557",
+		  "android_client_info": {
+			"package_name": "com.sevanam.mas_mobkol"
+		  }
+		},
+		"oauth_client": [],
+		"api_key": [
+		  {
+			"current_key": "AIzaSyBYc6c0i_uSEJrqytj-j6sUTUFLoGYNJWQ"
+		  }
+		],
+		"services": {
+		  "appinvite_service": {
+			"other_platform_oauth_client": []
+		  }
+		}
+	  },
+	  {
+		"client_info": {
+		  "mobilesdk_app_id": "1:154638389878:android:4f9f45a2a7fb724e13c557",
+		  "android_client_info": {
+			"package_name": "sevanam.com.sevanam_mobkol"
+		  }
+		},
+		"oauth_client": [],
+		"api_key": [
+		  {
+			"current_key": "AIzaSyBYc6c0i_uSEJrqytj-j6sUTUFLoGYNJWQ"
+		  }
+		],
+		"services": {
+		  "appinvite_service": {
+			"other_platform_oauth_client": []
+		  }
+		}
+	  }
+	],
+	"configuration_version": "1"
+  }

@@ -20,8 +20,7 @@ class SplashPage extends StatefulWidget {
   _SplashPageState createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage>
-    with SingleTickerProviderStateMixin {
+class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
   final dbHelper = DatabaseHelper.instance;
   AnimationController? animationController;
   Animation<double>? animation;
@@ -37,8 +36,7 @@ class _SplashPageState extends State<SplashPage>
   startTimeout() async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // bool firstTime = prefs.getBool('first_time') ?? false;
-    bool isOTAUpdateAvailable =
-        await _shorebirdCodePush.isNewPatchAvailableForDownload();
+    bool isOTAUpdateAvailable = await _shorebirdCodePush.isNewPatchAvailableForDownload();
     var _redirectPage;
 
     await globalProv.checkUpdate(context);
@@ -46,9 +44,7 @@ class _SplashPageState extends State<SplashPage>
     if (isOTAUpdateAvailable) {
       _redirectPage = RouterGenerator.otaUpdate;
     } else if (globalProv.updateInfo != null) {
-      if (globalProv.updateInfo!.type == config.MANDATORY_UPDATE ||
-          globalProv.updateInfo!.type == config.NORMAL_UPDATE ||
-          globalProv.updateInfo!.type == config.MAINTENANCE) {
+      if (globalProv.updateInfo!.type == config.MANDATORY_UPDATE || globalProv.updateInfo!.type == config.NORMAL_UPDATE || globalProv.updateInfo!.type == config.MAINTENANCE) {
         _redirectPage = RouterGenerator.pageUpdate;
       } else {
         _redirectPage = RouterGenerator.pageLogin;
@@ -57,13 +53,13 @@ class _SplashPageState extends State<SplashPage>
       _redirectPage = RouterGenerator.pageLogin;
     }
     Future.delayed(Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, _redirectPage,
-          arguments: {'route': RouterGenerator.pageLogin});
+      Navigator.pushReplacementNamed(context, _redirectPage, arguments: {'route': RouterGenerator.pageLogin});
     });
   }
 
   loadAllData() async {
     // load data config
+    globalProv.setBaseURL();
     await globalProv.getLocalConfig();
 
     await dbHelper.database;

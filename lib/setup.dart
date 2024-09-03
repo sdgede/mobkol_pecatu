@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sevanam_mobkol/services/collection/firestore_collection.dart';
 
 import 'services/utils/location_utils.dart';
 import 'services/collection/global_collection.dart';
@@ -12,4 +13,5 @@ void setupApp() async {
   setup.registerSingleton(GlobalCollectionServices());
   setup.registerSingleton(ProdukCollectionServices());
   setup.registerSingleton(TransaksiCollectionServices());
+  setup.registerSingleton(FirestoreCollectionServices());
 }

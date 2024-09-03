@@ -29,12 +29,9 @@ import 'setup.dart';
 import 'ui/constant/constant.dart';
 import 'services/utils/firebase_utils.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
-    BehaviorSubject<ReceivedNotification>();
-final BehaviorSubject<String> selectNotificationSubject =
-    BehaviorSubject<String>();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject = BehaviorSubject<ReceivedNotification>();
+final BehaviorSubject<String> selectNotificationSubject = BehaviorSubject<String>();
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
@@ -60,8 +57,7 @@ void main() async {
       // options: DefaultFirebaseOptions.currentPlatform,
       );
 
-  notificationAppLaunchDetails =
-      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  notificationAppLaunchDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
   var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
   // IOSInitializationSettings
@@ -69,13 +65,10 @@ void main() async {
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
-      onDidReceiveLocalNotification:
-          (int id, String? title, String? body, String? payload) async {
-        didReceiveLocalNotificationSubject.add(ReceivedNotification(
-            id: id, title: title!, body: body!, payload: payload!));
+      onDidReceiveLocalNotification: (int id, String? title, String? body, String? payload) async {
+        didReceiveLocalNotificationSubject.add(ReceivedNotification(id: id, title: title!, body: body!, payload: payload!));
       });
-  var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  var initializationSettings = InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
     //     onSelectNotification: (String? payload) async {
@@ -114,8 +107,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
-  final MethodChannel platform =
-      MethodChannel('crossingthestreams.io/resourceResolver');
+  final MethodChannel platform = MethodChannel('crossingthestreams.io/resourceResolver');
   bool _initialized = false;
   bool _modalOpened = false;
 
@@ -128,8 +120,7 @@ class _MyAppState extends State<MyApp> {
     _configureDidReceiveLocalNotificationSubject();
     _configureSelectNotificationSubject();
     Future.delayed(Duration.zero, () {
-      ConnectivityUtils.distance
-          .onCheckConnectivity(navigatorKey.currentState!.overlay!.context);
+      ConnectivityUtils.distance.onCheckConnectivity(navigatorKey.currentState!.overlay!.context);
     });
   }
 
@@ -137,10 +128,11 @@ class _MyAppState extends State<MyApp> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? firebaseId = prefs.getString("firebase_id");
 
-    if (firebaseId == '') {
+    if (firebaseId != '' || firebaseId != null) {
       firebaseId = await _firebaseMessaging.getToken();
       prefs.setString('firebase_id', firebaseId!);
     }
+
     print('MY FCM : ' + (firebaseId ?? ''));
     config.firebaseId = (firebaseId ?? '');
     config.platform = await PlatformUtils.distance.initPlatformState();
@@ -163,23 +155,16 @@ class _MyAppState extends State<MyApp> {
       // var platformChannelSpecifics = NotificationDetails({
       //     android: androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics
       // });
-      var platformChannelSpecifics = NotificationDetails(
-          android: androidPlatformChannelSpecifics,
-          iOS: iOSPlatformChannelSpecifics);
+      var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
       await flutterLocalNotificationsPlugin.show(
         0,
-        Platform.isIOS
-            ? message['aps']['alert']['title']
-            : message['notification']['title'],
-        Platform.isIOS
-            ? message['aps']['alert']['body']
-            : message['notification']['body'],
+        Platform.isIOS ? message['aps']['alert']['title'] : message['notification']['title'],
+        Platform.isIOS ? message['aps']['alert']['body'] : message['notification']['body'],
         platformChannelSpecifics,
         payload: 'Default_Sound',
       );
 
-      FirebaseUtils.instance.setDataFirebase(
-          navigatorKey.currentState!.overlay!.context, message);
+      FirebaseUtils.instance.setDataFirebase(navigatorKey.currentState!.overlay!.context, message);
     }
     return null;
   }
@@ -202,10 +187,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _requestIOSPermissions() {
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
+    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
           alert: true,
           badge: true,
           sound: true,
@@ -213,18 +195,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _configureDidReceiveLocalNotificationSubject() {
-    didReceiveLocalNotificationSubject.stream
-        .listen((ReceivedNotification receivedNotification) async {
+    didReceiveLocalNotificationSubject.stream.listen((ReceivedNotification receivedNotification) async {
       print(receivedNotification);
       await showDialog(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
-          title: receivedNotification.title != ""
-              ? Text(receivedNotification.title)
-              : null,
-          content: receivedNotification.body != ""
-              ? Text(receivedNotification.body)
-              : null,
+          title: receivedNotification.title != "" ? Text(receivedNotification.title) : null,
+          content: receivedNotification.body != "" ? Text(receivedNotification.body) : null,
           actions: [
             CupertinoDialogAction(
               isDefaultAction: true,
@@ -263,18 +240,14 @@ class _MyAppState extends State<MyApp> {
       _modalOpened = true;
       return showModal(
         context: navigatorKey.currentState!.overlay!.context,
-        configuration:
-            FadeScaleTransitionConfiguration(barrierDismissible: false),
+        configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
         builder: (context) {
           return InfoDialog(
             title: "Opps...",
-            text:
-                "Pastikan Anda mengizinkan $mobileName untuk mengakses lokasi Anda.",
+            text: "Pastikan Anda mengizinkan $mobileName untuk mengakses lokasi Anda.",
             clickOKText: "OK",
             onClickOK: () async {
-              Navigator.of(navigatorKey.currentState!.overlay!.context,
-                      rootNavigator: true)
-                  .pop();
+              Navigator.of(navigatorKey.currentState!.overlay!.context, rootNavigator: true).pop();
               location = await LocationUtils.instance.getLocationOnly();
               if (!location) AppSettings.openLocationSettings();
               // if (!location)
@@ -299,8 +272,7 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness:
-          Platform.isAndroid ? Brightness.dark : Brightness.light,
+      statusBarBrightness: Platform.isAndroid ? Brightness.dark : Brightness.light,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.grey,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -366,9 +338,7 @@ class _MyAppState extends State<MyApp> {
                   currentFocus.unfocus();
                 }
               },
-              child: Listener(
-                  onPointerUp: (PointerEvent details) => _checkLocation(),
-                  child: child),
+              child: Listener(onPointerUp: (PointerEvent details) => _checkLocation(), child: child),
             ),
           );
         },

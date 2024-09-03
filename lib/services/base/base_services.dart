@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +35,31 @@ class BaseServices {
     _headersOption = ConfigServices.getHeadersMerchant(token: _token);
   }
 
+  _printDecryptData(String title, dynamic data) {
+    if (data == null) {
+      log('\x1B[33m$title ${(isPrintDecryptRequest ? 'DECRYPTED ' : '')}:\x1B[0m \x1B[37mNULL_DATA_REQUEST\x1B[0m');
+      return null;
+    }
+
+    if (isPrintDecryptRequest) {
+      var decryptData = Map<String, dynamic>();
+
+      data.forEach((k, v) {
+        dynamic decrypted;
+        try {
+          decrypted = McryptUtils.instance.decrypt(v);
+        } catch (e) {}
+
+        if (decrypted == null) decrypted = v.toString();
+        
+        decryptData[k.toString()] = decrypted;
+      });
+      log('\x1B[33m$title DECRYPTED :\x1B[0m \x1B[37m${jsonEncode(decryptData)}\x1B[0m');
+    } else {
+      log('\x1B[33m$title :\x1B[0m \x1B[37m${jsonEncode(data)}\x1B[0m');
+    }
+  }
+
   Future<dynamic> request({
     String? url,
     RequestType? type,
@@ -44,8 +72,7 @@ class BaseServices {
     DioErrorType? errorType;
 
     await _addGlobalvalue(context!, data);
-    
-    print('\x1B[33m Req::data \x1B[0m \x1B[37m$data\x1B[0m');
+    _printDecryptData('REQUEST', data);
 
     if (typeToken == RequestTypeToken.APK) {
       await _getTokenAPK();
