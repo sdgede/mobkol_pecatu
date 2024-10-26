@@ -18,18 +18,15 @@ class MutasiTransaksi extends StatefulWidget {
   _MutasiTransaksi createState() => _MutasiTransaksi();
 }
 
-class _MutasiTransaksi extends State<MutasiTransaksi>
-    with SingleTickerProviderStateMixin {
-  final scaffoldKey = GlobalKey<ScaffoldState>(),
-      _formKeyStep1 = GlobalKey<FormState>();
+class _MutasiTransaksi extends State<MutasiTransaksi> with SingleTickerProviderStateMixin {
+  final scaffoldKey = GlobalKey<ScaffoldState>(), _formKeyStep1 = GlobalKey<FormState>();
   String? _idProduk, _rekCd, _groupProduk;
   ProdukCollectionProvider? produkProvider;
 
   @override
   void initState() {
     super.initState();
-    produkProvider =
-        Provider.of<ProdukCollectionProvider>(context, listen: false);
+    produkProvider = Provider.of<ProdukCollectionProvider>(context, listen: false);
     _idProduk = widget.arguments!['idProduk'];
     _rekCd = widget.arguments!['rekCd'];
     _groupProduk = widget.arguments!['groupProduk'];
@@ -41,9 +38,7 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: DefaultAppBar(context, widget.arguments!['title'],
-          isRefresh: true,
-          onRefresh: () => produkProvider!.resetMutasiTransaksi()),
+      appBar: DefaultAppBar(context, widget.arguments!['title'], isRefresh: true, onRefresh: () => produkProvider!.resetMutasiTransaksi()),
       key: scaffoldKey,
       body: SafeArea(
         child: Container(
@@ -75,9 +70,7 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
                 return ListView.builder(
                   //shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: produkProv.muatasiProdukCollection == null
-                      ? 0
-                      : produkProv.muatasiProdukCollection!.length,
+                  itemCount: produkProv.muatasiProdukCollection == null ? 0 : produkProv.muatasiProdukCollection!.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       decoration: BoxDecoration(
@@ -94,8 +87,7 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
                             produkProv.muatasiProdukCollection![index].saldo!,
                             produkProv.muatasiProdukCollection![index].remark!,
                             produkProv.muatasiProdukCollection![index].op!,
-                            produkProv
-                                .muatasiProdukCollection![index].saldo_awal!,
+                            produkProv.muatasiProdukCollection![index].saldo_awal!,
                             produkProv.muatasiProdukCollection![index].dbcr!,
                             produkProv.muatasiProdukCollection![index],
                           )
@@ -246,9 +238,7 @@ class _MutasiTransaksi extends State<MutasiTransaksi>
           ),
           Expanded(
             child: Text(
-              isNumber
-                  ? TextUtils.instance.numberFormat(value ?? "0")
-                  : (value ?? ""),
+              isNumber ? TextUtils.instance.numberFormat(value ?? "0") : (value ?? ""),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: isValueBold ? FontWeight.w600 : FontWeight.normal,

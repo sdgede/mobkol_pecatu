@@ -10,8 +10,7 @@ class ProdukDialog extends StatelessWidget {
   ProdukDialog({this.isSetDefault = false});
   @override
   Widget build(BuildContext context) {
-    var nasabahTabunganProvider =
-        Provider.of<ProdukTabunganProvider>(context, listen: false);
+    var nasabahTabunganProvider = Provider.of<ProdukTabunganProvider>(context, listen: false);
     return StreamBuilder(
       initialData: nasabahTabunganProvider.produkTabunganUser,
       stream: null,
@@ -91,8 +90,7 @@ class ProdukDialog extends StatelessWidget {
           onTap: () {
             Navigator.of(context).pop();
             if (isSetDefault) {
-              produkTabunganProvider.setDefaultRekSumber(
-                  data.no_rek, data.nama, data.saldo);
+              produkTabunganProvider.setDefaultRekSumber(data.no_rek, data.nama, data.saldo);
             } else {
               produkTabunganProvider.setRekSumber(noRek: data.no_rek);
             }
@@ -182,8 +180,7 @@ class ProdukDialog extends StatelessWidget {
 class ProdukMutasiDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var produkCollectionProvider =
-        Provider.of<ProdukCollectionProvider>(context, listen: false);
+    var produkCollectionProvider = Provider.of<ProdukCollectionProvider>(context, listen: false);
     return StreamBuilder(
       stream: null,
       initialData: produkCollectionProvider.listProdukCollection,
@@ -264,8 +261,7 @@ class ProdukMutasiDialog extends StatelessWidget {
             Navigator.of(context).pop();
             produkCollectionProvider.setIdProduk(data.produk_id, true);
             produkCollectionProvider.setMutasiLoading(true, true);
-            produkCollectionProvider.getMutasiProdukByProdukIdDateRage(
-                context, data.produk_id, data.jenis_produk);
+            produkCollectionProvider.getMutasiProdukByProdukIdDateRage(context, data.produk_id, data.jenis_produk);
           },
           child: Card(
             margin: EdgeInsets.only(top: 15, right: 10, left: 10),

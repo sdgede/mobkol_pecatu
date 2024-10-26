@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../../../services/viewmodel/produk_provider.dart';
 import '../../../services/utils/text_utils.dart';
-import '../../../services/config/config.dart';
 import '../../../services/viewmodel/global_provider.dart';
 import '../../../ui/widgets/loader/lottie_loader.dart';
 import '../../widgets/floating_action_button.dart';
@@ -27,8 +26,7 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
   @override
   void initState() {
     super.initState();
-    produkProvider =
-        Provider.of<ProdukCollectionProvider>(context, listen: false);
+    produkProvider = Provider.of<ProdukCollectionProvider>(context, listen: false);
     globalProvider = Provider.of<GlobalProvider>(context, listen: false);
     //produkProvider!.refreshSaldoKolektor();
     initData();
@@ -59,10 +57,8 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
       body: Consumer<ProdukCollectionProvider>(
         builder: (contex, produkProv, _) {
           if (produkProv.saldoKolektorMenu == null) {
-            if (produkProv.saldoKolektorCollection == null)
-              produkProv.getDataSaldoKolektor(context);
-            if (produkProv.saldoKolektorMenu == null)
-              produkProv.getDataSaldoKolektorMenu(context);
+            if (produkProv.saldoKolektorCollection == null) produkProv.getDataSaldoKolektor(context);
+            if (produkProv.saldoKolektorMenu == null) produkProv.getDataSaldoKolektorMenu(context);
             return LottiePrimaryLoader();
           }
           return Container(
@@ -73,8 +69,7 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: <Widget>[
-                  if (produkProv.saldoKolektorCollection != null)
-                    _ticketViewSaldokol(produkProv.saldoKolektorCollection![0]),
+                  if (produkProv.saldoKolektorCollection != null) _ticketViewSaldokol(produkProv.saldoKolektorCollection![0]),
                   SizedBox(height: 100),
                 ],
               ),
@@ -98,7 +93,7 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
         children: [
           TicketWidget(
             width: 350, //test
-            height: 500, //test
+            height: 850, //test
             isCornerRounded: true,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -108,15 +103,11 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
                     padding: const EdgeInsets.only(top: 20.0, left: 12.0),
                     child: Row(
                       children: [
-                        Image.asset('assets/icon/rp.png',
-                            width: 40, height: 40),
+                        Image.asset('assets/icon/rp.png', width: 40, height: 40),
                         SizedBox(width: 10),
                         Text(
                           'Saldo Kolektor',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -127,9 +118,8 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
                       children: <Widget>[
                         Column(
                           children: [
-                            if (globalProvider!.getConnectionMode == onlineMode)
-                              _dynamicData(
-                                  data: produkProvider!.saldoKolektorMenu),
+                            // if (globalProvider!.getConnectionMode == onlineMode) _dynamicData(data: produkProvider!.saldoKolektorMenu),
+                            _dynamicData(data: produkProvider!.saldoKolektorMenu),
                             SizedBox(height: 20),
                           ],
                         ),
@@ -222,10 +212,7 @@ class _MainSaldoKolektor extends State<MainSaldoKolektor> {
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: Text(
-                    (isCurrency)
-                        ? TextUtils.instance
-                            .numberFormat(secondField?.toString() ?? "0")
-                        : secondField.toString(),
+                    (isCurrency) ? TextUtils.instance.numberFormat(secondField?.toString() ?? "0") : secondField.toString(),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.right,
                     style: TextStyle(

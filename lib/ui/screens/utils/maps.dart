@@ -42,8 +42,7 @@ class _MapsScreenState extends State<MapsScreen> {
     double middleX = screenWidth / 2;
     double middleY = screenHeight / 2;
 
-    ScreenCoordinate screenCoordinate =
-        ScreenCoordinate(x: middleX.round(), y: middleY.round());
+    ScreenCoordinate screenCoordinate = ScreenCoordinate(x: middleX.round(), y: middleY.round());
 
     LatLng location = await controller.getLatLng(screenCoordinate);
 

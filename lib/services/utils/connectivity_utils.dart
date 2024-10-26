@@ -18,9 +18,7 @@ class ConnectivityUtils {
   var timer = 30;
 
   onCheckConnectivity(context) {
-    Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult connresult) {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult connresult) {
       if (connresult == ConnectivityResult.none) {
         // no internet
         EasyLoading.show(status: config.Reconnect);
@@ -75,8 +73,7 @@ class ConnectivityUtils {
           context: context,
           clickCancelText: 'Muat Ulang',
           clickOKText: 'Mode Offline',
-          text:
-              'Koneksi terputus. Silakan periksa kembali koneksi anda. Jika sedang melakukan transaksi mohon cek mutasi rekening anda. Anda dapat melanjutkan dengan mode Offline.',
+          text: 'Koneksi terputus. Silakan periksa kembali koneksi anda. Jika sedang melakukan transaksi mohon cek mutasi rekening anda. Anda dapat melanjutkan dengan mode Offline.',
           title: 'Opps...',
         ) ??
         false;
@@ -84,8 +81,7 @@ class ConnectivityUtils {
     if (!res) {
       _checkConnectivity(context);
     } else {
-      Provider.of<GlobalProvider>(context, listen: false)
-          .setConnectionMode(config.offlineMode);
+      Provider.of<GlobalProvider>(context, listen: false).setConnectionMode(config.offlineMode);
       // SystemNavigator.pop();
     }
   }

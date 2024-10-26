@@ -13,15 +13,12 @@ class ProdukCollectionServices extends BaseServices {
   GlobalProvider? _globalProv;
   final dbHelper = DatabaseHelper.instance;
 
-  Future<List<ProdukCollection>?> dataProduk(
-      {BuildContext? context, bool migrasi = false}) async {
+  Future<List<ProdukCollection>?> dataProduk({BuildContext? context, bool migrasi = false}) async {
     _globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     var dataProduk = Map<String, dynamic>();
     dataProduk["req"] = "getIconProdukApp";
-    dataProduk["context"] =
-        migrasi ? McryptUtils.instance.encrypt("migrasi") : "";
-    dataProduk["id_user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['ID_USER'] ?? "");
+    dataProduk["context"] = migrasi ? McryptUtils.instance.encrypt("migrasi") : "";
+    dataProduk["id_user"] = McryptUtils.instance.encrypt(config.dataLogin['ID_USER'] ?? "");
     var resp;
 
     if (_globalProv!.getConnectionMode == config.onlineMode)
@@ -32,9 +29,7 @@ class ProdukCollectionServices extends BaseServices {
         data: dataProduk,
       );
     else
-      resp = await dbHelper.getIconProdukOffline(dataParse: dataProduk);
-
-    print("data produk collection  response $resp");
+      resp = await dbHelper.getIconProdukOffline(dataParse: dataProduk, isMigration: true);
 
     List<ProdukCollection>? produkCollection;
 
@@ -76,14 +71,11 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
     dataProduk["norek"] = McryptUtils.instance.encrypt(norek ?? '0');
 
-    dataProduk["user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["user"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
-    dataProduk["activity"] =
-        McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
-    dataProduk["remark"] =
-        McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
+    dataProduk["activity"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
+    dataProduk["remark"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
     dataProduk["lat"] = McryptUtils.instance.encrypt("0");
     dataProduk["longi"] = McryptUtils.instance.encrypt("0");
 
@@ -93,9 +85,7 @@ class ProdukCollectionServices extends BaseServices {
       type: RequestType.POST,
       data: dataProduk,
     );
-
     List<MutasiProdukCollection> listProdukCollection = [];
-
     if (resp != null) {
       var jsonData = json.decode(resp);
       jsonData.forEach((val) {
@@ -133,14 +123,11 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
     dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
 
-    dataProduk["user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["user"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
-    dataProduk["activity"] =
-        McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
-    dataProduk["remark"] =
-        McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
+    dataProduk["activity"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
+    dataProduk["remark"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
     dataProduk["tglAwal"] = McryptUtils.instance.encrypt(startDate!);
     dataProduk["tglAkhir"] = McryptUtils.instance.encrypt(endDate!);
     dataProduk["lat"] = McryptUtils.instance.encrypt(lat ?? '');
@@ -157,8 +144,6 @@ class ProdukCollectionServices extends BaseServices {
         type: RequestType.POST,
         data: dataProduk,
       );
-
-    print(resp);
 
     List<MutasiProdukCollection> listProdukCollection = [];
 
@@ -184,14 +169,11 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
     dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
 
-    dataProduk["user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["user"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
-    dataProduk["activity"] =
-        McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
-    dataProduk["remark"] =
-        McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
+    dataProduk["activity"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
+    dataProduk["remark"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
     dataProduk["lat"] = McryptUtils.instance.encrypt("0");
     dataProduk["longi"] = McryptUtils.instance.encrypt("0");
 
@@ -232,11 +214,7 @@ class ProdukCollectionServices extends BaseServices {
     if (_globalProv!.getConnectionMode == config.offlineMode)
       resp = await dbHelper.getSaldoKolOffline(dataParse: dataProduk);
     else {
-      resp = await request(
-          context: context,
-          url: urlWs,
-          type: RequestType.POST,
-          data: dataProduk);
+      resp = await request(context: context, url: urlWs, type: RequestType.POST, data: dataProduk);
     }
 
     List<SaldoKolektor> listProdukCollection = [];
@@ -276,8 +254,7 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["keyword"] = McryptUtils.instance.encrypt(keyword!);
     dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
     dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
-    dataProduk["user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["user"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
 
     var resp;
     if (_globalProv!.getConnectionMode == config.offlineMode)
@@ -342,14 +319,11 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["req"] = "spGetProdukByProdukIdUser";
     dataProduk["id"] = McryptUtils.instance.encrypt(idUser!);
     dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd!);
-    dataProduk["user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["user"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
-    dataProduk["activity"] =
-        McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
-    dataProduk["remark"] =
-        McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
+    dataProduk["activity"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
+    dataProduk["remark"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
     dataProduk["lat"] = McryptUtils.instance.encrypt("0");
     dataProduk["longi"] = McryptUtils.instance.encrypt("0");
 
@@ -381,18 +355,13 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["req"] = "spGetDetailProdukByProdukId";
     dataProduk["id"] = McryptUtils.instance.encrypt(produkId!);
     dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd!);
-    dataProduk["user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["user"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
-    dataProduk["activity"] =
-        McryptUtils.instance.encrypt("GET_DETAIL_PRODUK_" + rekCd);
-    dataProduk["remark"] =
-        McryptUtils.instance.encrypt("GET_DETAIL_PRODUK_" + rekCd);
+    dataProduk["activity"] = McryptUtils.instance.encrypt("GET_DETAIL_PRODUK_" + rekCd);
+    dataProduk["remark"] = McryptUtils.instance.encrypt("GET_DETAIL_PRODUK_" + rekCd);
     dataProduk["lat"] = McryptUtils.instance.encrypt("0");
     dataProduk["longi"] = McryptUtils.instance.encrypt("0");
-
-    print(dataProduk);
 
     var resp = await request(
       context: context,
@@ -421,17 +390,13 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["req"] = "getDataDetailProdukByNasabahId";
     dataProduk["id"] = McryptUtils.instance.encrypt(idUser!);
     dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd!);
-    dataProduk["user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["user"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
-    dataProduk["activity"] =
-        McryptUtils.instance.encrypt("GET_DETAIL_PRODUK_" + rekCd);
-    dataProduk["remark"] =
-        McryptUtils.instance.encrypt("GET_DETAIL_PRODUK_" + rekCd);
+    dataProduk["activity"] = McryptUtils.instance.encrypt("GET_DETAIL_PRODUK_" + rekCd);
+    dataProduk["remark"] = McryptUtils.instance.encrypt("GET_DETAIL_PRODUK_" + rekCd);
     dataProduk["lat"] = McryptUtils.instance.encrypt("0");
     dataProduk["longi"] = McryptUtils.instance.encrypt("0");
-    print(dataProduk);
     var resp = await request(
       context: context,
       url: config.urlApiNasabah,
@@ -439,15 +404,12 @@ class ProdukCollectionServices extends BaseServices {
       data: dataProduk,
     );
 
-    print(resp);
-
     List<DetailProdukCollection>? detailProdukCollection;
 
     if (resp != null) {
       var jsonData = json.decode(resp);
       detailProdukCollection = [];
       jsonData.forEach((val) {
-        print(val);
         detailProdukCollection!.add(DetailProdukCollection.fromJson(val));
       });
     }
@@ -477,17 +439,15 @@ class ProdukCollectionServices extends BaseServices {
       dataProduk["req"] = "getRincianKreditByRek";
       urlWs = config.urlApiNasabahKredit;
     }
+
     dataProduk["norek"] = McryptUtils.instance.encrypt(norek!);
     dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
     dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
-    dataProduk["kolektor"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["kolektor"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["lat"] = McryptUtils.instance.encrypt(lat ?? "");
     dataProduk["longi"] = McryptUtils.instance.encrypt(long ?? "");
 
-    //getDataProdukByRek
     var resp;
-
     if (_globalProv!.getConnectionMode == config.offlineMode)
       resp = await dbHelper.getDataProduk(dataParse: dataProduk);
     else
@@ -497,23 +457,6 @@ class ProdukCollectionServices extends BaseServices {
         type: RequestType.POST,
         data: dataProduk,
       );
-
-    print(resp);
-
-    //var detailProdukCollection;
-
-    // if (resp != null) {
-    //   var jsonData = json.decode(resp);
-    //   if (jsonData[0]['res_status'] == 'Gagal') {
-    //     detailProdukCollection = 'gagal';
-    //   } else {
-    //     detailProdukCollection = new List<DetailProdukCollection>();
-    //     jsonData.forEach((val) {
-    //       print(val);
-    //       detailProdukCollection.add(DetailProdukCollection.fromJson(val));
-    //     });
-    //   }
-    // }
     return resp;
   }
 
@@ -552,8 +495,7 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["tglAkhir"] = McryptUtils.instance.encrypt(tglAkhir!);
     dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
     dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
-    dataProduk["kolektor"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["kolektor"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["lat"] = McryptUtils.instance.encrypt(lat ?? '');
     dataProduk["longi"] = McryptUtils.instance.encrypt(long ?? '');
 
@@ -580,14 +522,11 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["produk"] = McryptUtils.instance.encrypt(rekCd!);
     dataProduk["tgl_awal"] = McryptUtils.instance.encrypt(tglAwal!);
     dataProduk["tgl_akhir"] = McryptUtils.instance.encrypt(tglAkhir!);
-    dataProduk["user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["user"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
-    dataProduk["activity"] =
-        McryptUtils.instance.encrypt("GET_MUTASI_PRODUK_" + rekCd);
-    dataProduk["remark"] =
-        McryptUtils.instance.encrypt("GET_MUTASI_PRODUK_" + rekCd);
+    dataProduk["activity"] = McryptUtils.instance.encrypt("GET_MUTASI_PRODUK_" + rekCd);
+    dataProduk["remark"] = McryptUtils.instance.encrypt("GET_MUTASI_PRODUK_" + rekCd);
     dataProduk["lat"] = McryptUtils.instance.encrypt("0");
     dataProduk["longi"] = McryptUtils.instance.encrypt("0");
 
@@ -616,18 +555,13 @@ class ProdukCollectionServices extends BaseServices {
     var dataProduk = Map<String, dynamic>();
     dataProduk["req"] = "spGetTabunganIdUser";
     dataProduk["id"] = McryptUtils.instance.encrypt(idUser!);
-    dataProduk["user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['username']);
+    dataProduk["user"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
-    dataProduk["activity"] =
-        McryptUtils.instance.encrypt("GET_ALL_PRODUK_TABRELA_USER");
-    dataProduk["remark"] =
-        McryptUtils.instance.encrypt("GET_ALL_PRODUK_TABRELA_USER");
+    dataProduk["activity"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_TABRELA_USER");
+    dataProduk["remark"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_TABRELA_USER");
     dataProduk["lat"] = McryptUtils.instance.encrypt("0");
     dataProduk["longi"] = McryptUtils.instance.encrypt("0");
-
-    print(dataProduk);
 
     var resp = await request(
       context: context,

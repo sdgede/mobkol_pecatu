@@ -10,28 +10,24 @@ class QRUtils {
   static QRUtils instance = QRUtils();
 
   dynamic qrScanner(BuildContext context) async {
-    bool permisionCamera =
-        await PermissionUtils.instance.getPermission('camera');
+    bool permisionCamera = await PermissionUtils.instance.getPermission('camera');
 
     if (permisionCamera) {
       try {
         var barcode = await BarcodeScanner.scan();
-        return barcode;
+        return barcode.rawContent;
       } on PlatformException catch (error) {
         if (error.code == BarcodeScanner.cameraAccessDenied) {
           DialogUtils.instance.showError(
             context: context,
-            text: "Silakan izikan " +
-                config.companyName +
-                " untuk mengakses kamera anda.",
+            text: "Silakan izikan " + config.companyName + " untuk mengakses kamera anda.",
           );
         } else {
           DialogUtils.instance.showError(context: context);
           return null;
         }
       } on FormatException {
-        print(
-            'null (User returned using the "back"-button before scanning anything. Result)');
+        print('null (User returned using the "back"-button before scanning anything. Result)');
         return null;
       } catch (e) {
         DialogUtils.instance.showError(
@@ -43,9 +39,7 @@ class QRUtils {
     } else {
       DialogUtils.instance.showError(
         context: context,
-        text: "Silakan izikan " +
-            config.companyName +
-            " untuk mengakses kamera anda.",
+        text: "Silakan izikan " + config.companyName + " untuk mengakses kamera anda.",
       );
       return null;
     }

@@ -24,14 +24,12 @@ class _MapsItemState extends State<MapsItem> {
   Set<Marker> createMarker() {
     return <Marker>[
       Marker(
-        markerId: MarkerId(widget.myLocation.toString() +
-            DateTime.now().millisecondsSinceEpoch.toString()),
+        markerId: MarkerId(widget.myLocation.toString() + DateTime.now().millisecondsSinceEpoch.toString()),
         position: widget.myLocation!,
         icon: iconMyLocation!,
       ),
       Marker(
-        markerId: MarkerId(widget.merchantLocation.toString() +
-            DateTime.now().millisecondsSinceEpoch.toString()),
+        markerId: MarkerId(widget.merchantLocation.toString() + DateTime.now().millisecondsSinceEpoch.toString()),
         position: widget.merchantLocation!,
         icon: iconMerchantLocation!,
       ),
@@ -39,10 +37,8 @@ class _MapsItemState extends State<MapsItem> {
   }
 
   void setIconMarker() async {
-    var iconMyLocation1 = await ImageUtils.instance
-        .getBytesFromAsset('assets/icon/marker_get_location.png', 70);
-    var iconMerchantLocation1 = await ImageUtils.instance
-        .getBytesFromAsset('assets/merchant/marker_merchant.png', 70);
+    var iconMyLocation1 = await ImageUtils.instance.getBytesFromAsset('assets/icon/marker_get_location.png', 70);
+    var iconMerchantLocation1 = await ImageUtils.instance.getBytesFromAsset('assets/merchant/marker_merchant.png', 70);
     setState(() {
       iconMyLocation = BitmapDescriptor.fromBytes(iconMyLocation1);
       iconMerchantLocation = BitmapDescriptor.fromBytes(iconMerchantLocation1);

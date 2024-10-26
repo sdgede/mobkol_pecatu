@@ -26,10 +26,8 @@ class _PencarianNasabah extends State<PencarianNasabah> {
   @override
   void initState() {
     super.initState();
-    produkProvider =
-        Provider.of<ProdukCollectionProvider>(context, listen: false);
-    produkProvider!
-        .setAllDatafirstSelectedProduct(context: context, isListen: false);
+    produkProvider = Provider.of<ProdukCollectionProvider>(context, listen: false);
+    produkProvider!.setAllDatafirstSelectedProduct(context: context, isListen: false);
   }
 
   @override
@@ -45,8 +43,7 @@ class _PencarianNasabah extends State<PencarianNasabah> {
           floatingActionButton: floatingActionSwitchMode(context),
           appBar: DefaultAppBar(
             context,
-            "Pencarian nasabah " +
-                (produkProv.getSelectedProdukName ?? ' - ').toLowerCase(),
+            "Pencarian nasabah " + (produkProv.getSelectedProdukName ?? ' - ').toLowerCase(),
             isCenter: true,
             isRefresh: true,
             onRefresh: () => produkProvider!.refreshAllMenuKlad(),

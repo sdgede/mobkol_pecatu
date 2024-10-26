@@ -50,17 +50,12 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
   }
 
   void generateOTP() async {
-    bool cekRequestOTP =
-        await transaksiProvider!.checkRequestOTP(context: context) ?? false;
+    bool cekRequestOTP = await transaksiProvider!.checkRequestOTP(context: context) ?? false;
     if (cekRequestOTP) {
       bool res = await DialogUtils.instance.showInfo(
             context: context,
             title: "Pemberitahuan!",
-            text: dataSetting['otp_wa'] == "false"
-                ? "Apakah Anda yakin meminta OTP? Rekening Sumber Dana Anda akan dipotong " +
-                    dataSetting['biaya_sms'] +
-                    " untuk biaya pengiriman SMS. Kode OTP akan dikirimkan ke nomor Handphone yang telah Anda daftarkan."
-                : "Apakah Anda yakin meminta OTP? Kode OTP akan dikirimkan ke nomor WhatsApp yang telah Anda daftarkan.",
+            text: dataSetting['otp_wa'] == "false" ? "Apakah Anda yakin meminta OTP? Rekening Sumber Dana Anda akan dipotong " + dataSetting['biaya_sms'] + " untuk biaya pengiriman SMS. Kode OTP akan dikirimkan ke nomor Handphone yang telah Anda daftarkan." : "Apakah Anda yakin meminta OTP? Kode OTP akan dikirimkan ke nomor WhatsApp yang telah Anda daftarkan.",
           ) ??
           false;
       if (res) {
@@ -73,8 +68,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
 
         String nomor = tipe == "SMS" ? dataLogin['hp'] : dataLogin['no_wa'];
         String jenis = tipe == "SMS" ? "Handphone" : "WhatsApp";
-        String textError =
-            "Nomor $jenis tidak valid. Silakan datang ke kantor $companyFullName untuk melakukan pemutakhiran data.";
+        String textError = "Nomor $jenis tidak valid. Silakan datang ke kantor $companyFullName untuk melakukan pemutakhiran data.";
         if (nomor == "" || nomor.length > 14) {
           DialogUtils.instance.showError(context: context, text: textError);
           return;
@@ -116,8 +110,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
         context: context,
         text: "Maaf, Kode OTP Anda sudah EXPIRED.",
       );
-    } else if (transaksiProvider!.dataOTP.serverId != serverID ||
-        transaksiProvider!.dataOTP.kodeOtp != boxOTP) {
+    } else if (transaksiProvider!.dataOTP.serverId != serverID || transaksiProvider!.dataOTP.kodeOtp != boxOTP) {
       DialogUtils.instance.showError(
         context: context,
         text: "Maaf, Kode OTP yang Anda masukkan tidak valid.",
@@ -137,11 +130,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
         lengX = lengX + "X";
       }
       hpwa = lengX + "" + noHpWa.substring(noHpWa.length - 4);
-      textSendOTP = "Kami baru saja mengirim " +
-          tipe +
-          " 6 digit Kode OTP ke " +
-          hpwa +
-          " dengan SERVER ID : ";
+      textSendOTP = "Kami baru saja mengirim " + tipe + " 6 digit Kode OTP ke " + hpwa + " dengan SERVER ID : ";
     });
   }
 
@@ -156,14 +145,12 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
             timerString = "EXPIRED";
             serverID = "-";
           } else {
-            timerString =
-                '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+            timerString = '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
           }
         });
       });
 
-    controller!
-        .reverse(from: controller!.value == 0.0 ? 1.0 : controller!.value);
+    controller!.reverse(from: controller!.value == 0.0 ? 1.0 : controller!.value);
   }
 
   @override
@@ -282,8 +269,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
               children: [
                 TextSpan(
                   text: "Kirim Ulang",
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () => generateOTP(),
+                  recognizer: TapGestureRecognizer()..onTap = () => generateOTP(),
                   style: TextStyle(
                     color: accentColor,
                     fontWeight: FontWeight.bold,

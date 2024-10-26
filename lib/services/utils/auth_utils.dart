@@ -8,8 +8,7 @@ class AuthUtils {
 
   Future getTokenAPK() async {
     McryptUtils encrypt = McryptUtils.instance;
-    return base64Encode(utf8.encode(
-        '${encrypt.encrypt(clientId)}:${encrypt.encrypt(clientSecret)}'));
+    return base64Encode(utf8.encode('${encrypt.encrypt(clientId)}:${encrypt.encrypt(clientSecret)}'));
   }
 
   Future getTokenBerita() async {

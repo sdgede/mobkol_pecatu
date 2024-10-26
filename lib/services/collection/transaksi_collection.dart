@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import '../config/config.dart';
 import '../../database/databaseHelper.dart';
@@ -16,6 +17,7 @@ class TransaksiCollectionServices extends BaseServices {
     String? rekCd,
     String? groupProduk,
     String? tipeTrans,
+    String? kodeVa,
     String? norek,
     String? jumlah,
     String? pokok,
@@ -49,20 +51,18 @@ class TransaksiCollectionServices extends BaseServices {
     dataTransaksi["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
     dataTransaksi["produkId"] = McryptUtils.instance.encrypt(produkId!);
     dataTransaksi["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
-    dataTransaksi["wilayahCd"] =
-        McryptUtils.instance.encrypt(dataLogin['wilayah_cd'] ?? '01');
+    dataTransaksi["wilayahCd"] = McryptUtils.instance.encrypt(dataLogin['wilayah_cd'] ?? '01');
     dataTransaksi["tipeTrans"] = McryptUtils.instance.encrypt(tipeTrans!);
     dataTransaksi["norek"] = McryptUtils.instance.encrypt(norek!);
     dataTransaksi["jumlah"] = McryptUtils.instance.encrypt(jumlah!);
     dataTransaksi["pokok"] = McryptUtils.instance.encrypt(pokok ?? "0");
     dataTransaksi["bunga"] = McryptUtils.instance.encrypt(bunga ?? "0");
     dataTransaksi["denda"] = McryptUtils.instance.encrypt(denda ?? "0");
-    dataTransaksi["lateCharge"] =
-        McryptUtils.instance.encrypt(lateCharge ?? "0");
+    dataTransaksi["lateCharge"] = McryptUtils.instance.encrypt(lateCharge ?? "0");
     dataTransaksi["trx_remark"] = McryptUtils.instance.encrypt(remark ?? "");
-    dataTransaksi["kolektor"] =
-        McryptUtils.instance.encrypt(dataLogin['username']);
+    dataTransaksi["kolektor"] = McryptUtils.instance.encrypt(dataLogin['username']);
     dataTransaksi["pwd"] = McryptUtils.instance.encrypt(dataLogin['password']);
+    dataTransaksi["unique_id"] = McryptUtils.instance.encrypt(Uuid().v7());
 
     //data log
     dataTransaksi["lat"] = McryptUtils.instance.encrypt(lat!);
@@ -71,10 +71,8 @@ class TransaksiCollectionServices extends BaseServices {
 
     var resp;
 
-    if (connMode == offlineMode &&
-        !["SINGLE_UPLOAD", "MULTIPLE_UPLOAD"].contains(action))
-      resp = await dbHelper.insertTransaksiOffline(
-          dataTransaksi, tbConf.tbTrxGlobal);
+    if (connMode == offlineMode && !["SINGLE_UPLOAD", "MULTIPLE_UPLOAD"].contains(action))
+      resp = await dbHelper.insertTransaksiOffline(dataTransaksi, tbConf.tbTrxGlobal);
     else
       resp = await request(
         context: context,

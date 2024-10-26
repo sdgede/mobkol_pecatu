@@ -51,8 +51,7 @@ class _AdapterPencarianKlad extends State<AdapterPencarianKlad> {
               controller: searchController,
               placeHolder: 'Cari Norek..',
               autoFocus: true,
-              onSubmit: (value) => produkProv.getDataSearchMutasi(
-                  context: context, keyword: value),
+              onSubmit: (value) => produkProv.getDataSearchMutasi(context: context, keyword: value),
             );
           },
         );
@@ -125,8 +124,7 @@ class MerchantSearchBody extends StatelessWidget {
       builder: (context) {
         return Consumer<ProdukCollectionProvider>(
           builder: (context, produkProv, _) {
-            if (produkProv.mutasiProdukCollectionSearch == null &&
-                produkProv.onSearch == false) {
+            if (produkProv.mutasiProdukCollectionSearch == null && produkProv.onSearch == false) {
               return Center(
                 child: Text("Lakukan pencarian berdasarkan nama nasabah"),
               );
@@ -134,8 +132,7 @@ class MerchantSearchBody extends StatelessWidget {
 
             if (produkProv.onSearch) {
               return Center(
-                child:
-                    LottieBuilder.asset("assets/lottie/shimmer_list_user.json"),
+                child: LottieBuilder.asset("assets/lottie/shimmer_list_user.json"),
               );
             }
 

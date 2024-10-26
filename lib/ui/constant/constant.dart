@@ -10,8 +10,7 @@ double deviceHeight(BuildContext context) {
 }
 
 double deviceHeightWithoutAppBar(BuildContext context, {double height = 25}) {
-  return MediaQuery.of(context).size.height -
-      (AppBar().preferredSize.height + height);
+  return MediaQuery.of(context).size.height - (AppBar().preferredSize.height + height);
 }
 
 //colors

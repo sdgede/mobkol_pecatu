@@ -30,8 +30,7 @@ String jamAwalVC = "09.00";
 String jamAkhirVC = "16.00";
 
 // api berita link
-String apiBeritaLink =
-    "https://newsapi.org/v2/top-headlines?country=id&category=business&apiKey=";
+String apiBeritaLink = "https://newsapi.org/v2/top-headlines?country=id&category=business&apiKey=";
 
 // api ws link
 String vendorApp = dotenv.env['VENDOR_APP'] ?? '';
@@ -72,13 +71,7 @@ String ForgetPassword = "Lupa username/password ?";
 String PersonName = "User";
 String DateSystem = DateFormat("yyyy-MM-dd").format(new DateTime.now());
 String Date = DateFormat("dd-MM-yyyy").format(new DateTime.now());
-String Greeting = ((DateTime.now().hour >= 0 && DateTime.now().hour < 11)
-    ? "Selamat Pagi"
-    : ((DateTime.now().hour >= 11 && DateTime.now().hour < 15)
-        ? "Selamat Siang"
-        : ((DateTime.now().hour >= 15 && DateTime.now().hour < 18)
-            ? "Selamat Sore"
-            : "Selamat Malam")));
+String Greeting = ((DateTime.now().hour >= 0 && DateTime.now().hour < 11) ? "Selamat Pagi" : ((DateTime.now().hour >= 11 && DateTime.now().hour < 15) ? "Selamat Siang" : ((DateTime.now().hour >= 15 && DateTime.now().hour < 18) ? "Selamat Sore" : "Selamat Malam")));
 String firebaseId = "0";
 String? platform;
 String RelateApp = "Aplikasi Terbaru";
@@ -90,8 +83,7 @@ List<dynamic>? dataProvider, plnWarning;
 String tabName = "TABUNGAN";
 String defaultRekSumber = "";
 String defaultNamaRekSumber = "";
-String defaultPemilikNamaRekSumber =
-    defaultRekSumber + " - " + defaultNamaRekSumber;
+String defaultPemilikNamaRekSumber = defaultRekSumber + " - " + defaultNamaRekSumber;
 String currentRoutes = "/";
 
 // updates

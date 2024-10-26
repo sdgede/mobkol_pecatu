@@ -51,8 +51,7 @@ class _AdapterPencarianNasabah extends State<AdapterPencarianNasabah> {
               controller: searchController,
               placeHolder: 'Cari Nasabah..',
               autoFocus: true,
-              onSubmit: (value) =>
-                  produkProv.getDataSerachNasbah(value, context),
+              onSubmit: (value) => produkProv.getDataSerachNasbah(value, context),
             );
           },
         );
@@ -126,8 +125,7 @@ class MerchantSearchBody extends StatelessWidget {
       builder: (context) {
         return Consumer<ProdukCollectionProvider>(
           builder: (context, produkProv, _) {
-            if (produkProv.getNasabahList == null &&
-                produkProv.onSearch == false) {
+            if (produkProv.getNasabahList == null && produkProv.onSearch == false) {
               return Center(
                 child: Text("Lakukan pencarian berdasarkan nama nasabah"),
               );
@@ -135,8 +133,7 @@ class MerchantSearchBody extends StatelessWidget {
 
             if (produkProv.onSearch) {
               return Center(
-                child:
-                    LottieBuilder.asset("assets/lottie/shimmer_list_user.json"),
+                child: LottieBuilder.asset("assets/lottie/shimmer_list_user.json"),
               );
             }
 

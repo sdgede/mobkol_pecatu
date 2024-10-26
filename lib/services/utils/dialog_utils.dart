@@ -27,8 +27,7 @@ class DialogUtils {
   }) {
     return showModal(
       context: context!,
-      configuration:
-          FadeScaleTransitionConfiguration(barrierDismissible: false),
+      configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
       builder: (context) {
         return InfoDialog(
           title: title ?? "",
@@ -46,8 +45,7 @@ class DialogUtils {
   dynamic showError({BuildContext? context, String? text}) {
     return showModal(
       context: context!,
-      configuration:
-          FadeScaleTransitionConfiguration(barrierDismissible: false),
+      configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
       builder: (context) {
         return ErrorDialog(
           text: text ?? '',
@@ -61,8 +59,7 @@ class DialogUtils {
     dataLogin["req"] = "getSMSOTP";
     dataLogin["id_user"] = McryptUtils.instance.encrypt("0");
     dataLogin["nasabah_id"] = McryptUtils.instance.encrypt("0");
-    dataLogin["remark"] =
-        McryptUtils.instance.encrypt("REQUEST_OTP_VALIDATE_PHONE_NUMBER");
+    dataLogin["remark"] = McryptUtils.instance.encrypt("REQUEST_OTP_VALIDATE_PHONE_NUMBER");
     dataLogin["phone"] = McryptUtils.instance.encrypt(nomor);
     dataLogin["mode_req_token"] = McryptUtils.instance.encrypt(tipe);
 
@@ -90,10 +87,8 @@ class DialogUtils {
   dynamic getOTPSMSWABerbayar(context, tipe, nomor, remark) async {
     var dataLogin = Map<String, dynamic>();
     dataLogin["req"] = "getSMSOTP";
-    dataLogin["id_user"] =
-        McryptUtils.instance.encrypt(config.dataLogin['ID_USER']);
-    dataLogin["nasabah_id"] =
-        McryptUtils.instance.encrypt(config.dataLogin['nasabah_id']);
+    dataLogin["id_user"] = McryptUtils.instance.encrypt(config.dataLogin['ID_USER']);
+    dataLogin["nasabah_id"] = McryptUtils.instance.encrypt(config.dataLogin['nasabah_id']);
     dataLogin["remark"] = McryptUtils.instance.encrypt(remark);
     dataLogin["phone"] = McryptUtils.instance.encrypt(nomor);
     dataLogin["mode_req_token"] = McryptUtils.instance.encrypt(tipe);
@@ -123,16 +118,12 @@ class DialogUtils {
   dynamic dialogDaftarOnline(BuildContext context, [isSave = false]) async {
     bool res = await showInfo(
           context: context,
-          text:
-              "Anda yakin ingin membatalkan proses ini? Data yang anda input" +
-                  (isSave ? "" : " tidak") +
-                  " akan disimpan",
+          text: "Anda yakin ingin membatalkan proses ini? Data yang anda input" + (isSave ? "" : " tidak") + " akan disimpan",
         ) ??
         false;
 
     if (res) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          RouterGenerator.pageHomeLogin, (Route<dynamic> route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(RouterGenerator.pageHomeLogin, (Route<dynamic> route) => false);
     }
   }
 
@@ -184,8 +175,7 @@ class DialogUtils {
     return res;
   }
 
-  Future<bool> onBackPressedDaftarOnline(BuildContext context,
-      [isSave = false]) async {
+  Future<bool> onBackPressedDaftarOnline(BuildContext context, [isSave = false]) async {
     return (await dialogDaftarOnline(context, isSave)) ?? false;
   }
 
@@ -200,16 +190,12 @@ class DialogUtils {
   }) async {
     bool res = await showInfo(
           context: context,
-          text:
-              "Anda yakin ingin membatalkan proses ini? Data yang anda input" +
-                  (isSave ? "" : " tidak") +
-                  " akan disimpan",
+          text: "Anda yakin ingin membatalkan proses ini? Data yang anda input" + (isSave ? "" : " tidak") + " akan disimpan",
         ) ??
         false;
 
     if (res) {
-      Navigator.of(context!)
-          .pushNamedAndRemoveUntil(navigator!, (Route<dynamic> route) => false);
+      Navigator.of(context!).pushNamedAndRemoveUntil(navigator!, (Route<dynamic> route) => false);
     }
   }
 
@@ -218,19 +204,15 @@ class DialogUtils {
     bool isSave = false,
     String? navigator,
   }) async {
-    return (await dialogBackProses(
-            context: context, isSave: isSave, navigator: navigator)) ??
-        false;
+    return (await dialogBackProses(context: context, isSave: isSave, navigator: navigator)) ?? false;
   }
 
   Future validateSaldoTransaksi(
     BuildContext context, {
     String? price,
   }) async {
-    ProdukTabunganProvider tabProvider =
-        Provider.of<ProdukTabunganProvider>(context, listen: false);
-    if (int.parse(price!) >
-        int.parse(double.parse(tabProvider.saldoSumber).toStringAsFixed(0))) {
+    ProdukTabunganProvider tabProvider = Provider.of<ProdukTabunganProvider>(context, listen: false);
+    if (int.parse(price!) > int.parse(double.parse(tabProvider.saldoSumber).toStringAsFixed(0))) {
       DialogUtils.instance.showError(
         context: context,
         text: "Transaksi melebihi saldo rekening!",
@@ -238,13 +220,10 @@ class DialogUtils {
       return;
     }
 
-    if (int.parse(double.parse(tabProvider.saldoSumber).toStringAsFixed(0)) -
-            int.parse(price) <=
-        int.parse(config.dataSetting['min_saldo'] ?? "0")) {
+    if (int.parse(double.parse(tabProvider.saldoSumber).toStringAsFixed(0)) - int.parse(price) <= int.parse(config.dataSetting['min_saldo'] ?? "0")) {
       DialogUtils.instance.showError(
         context: context,
-        text:
-            "Saldo pengendapan minimal adalah ${TextUtils.instance.numberFormat(config.dataSetting['min_saldo'] ?? '0')}!",
+        text: "Saldo pengendapan minimal adalah ${TextUtils.instance.numberFormat(config.dataSetting['min_saldo'] ?? '0')}!",
       );
       return;
     }

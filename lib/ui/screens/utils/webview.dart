@@ -14,8 +14,7 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class _WebViewScreenState extends State<WebViewScreen> {
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
   bool _isLoadingPage = true;
 
   late WebViewController controller;
@@ -81,10 +80,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget webViewNavigation(_webViewControllerFuture) {
     return FutureBuilder<WebViewController>(
       future: _webViewControllerFuture,
-      builder:
-          (BuildContext context, AsyncSnapshot<WebViewController> snapshot) {
-        final bool webViewReady =
-            snapshot.connectionState == ConnectionState.done;
+      builder: (BuildContext context, AsyncSnapshot<WebViewController> snapshot) {
+        final bool webViewReady = snapshot.connectionState == ConnectionState.done;
         final WebViewController controller = snapshot.data!;
         return Row(
           children: <Widget>[

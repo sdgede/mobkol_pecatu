@@ -14,12 +14,9 @@ Widget btnTxtAndIcon({
     // padding: EdgeInsets.all(0),
     style: ButtonStyle(
         foregroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) => states.contains(MaterialState.disabled)
-              ? Colors.grey
-              : Colors.transparent,
+          (Set<MaterialState> states) => states.contains(MaterialState.disabled) ? Colors.grey : Colors.transparent,
         ),
-        padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
-            (Set<MaterialState> states) => EdgeInsets.all(0))),
+        padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>((Set<MaterialState> states) => EdgeInsets.all(0))),
     onPressed: () => isEnable == true ? onTap!() : null,
     icon: Icon(
       icon,

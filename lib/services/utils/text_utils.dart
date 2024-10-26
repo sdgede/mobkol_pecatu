@@ -74,16 +74,10 @@ class TextUtils {
     String currencyId = "Rp. ";
     if (!isRp) currencyId = "";
     try {
-      return NumberFormat.currency(locale: 'id', decimalDigits: 0)
-          .format(double.parse(number ?? '0'))
-          .toString()
-          .replaceAll("IDR", currencyId);
+      return NumberFormat.currency(locale: 'id', decimalDigits: 0).format(double.parse(number ?? '0')).toString().replaceAll("IDR", currencyId);
     } catch (e) {
       print("error number format with message: $e");
-      return NumberFormat.currency(locale: 'id', decimalDigits: 0)
-          .format(double.parse('0'))
-          .toString()
-          .replaceAll("IDR", currencyId);
+      return NumberFormat.currency(locale: 'id', decimalDigits: 0).format(double.parse('0')).toString().replaceAll("IDR", currencyId);
     }
   }
 
@@ -101,8 +95,7 @@ class TextUtils {
   dynamic getMinutesFromIntervalTwoDate(firstDate, lastDate) {
     DateTime dateTimefirstDate = DateTime.parse(firstDate);
     DateTime dateTimelastDate = DateTime.parse(lastDate);
-    final differenceInMinutes =
-        dateTimefirstDate.difference(dateTimelastDate).inSeconds;
+    final differenceInMinutes = dateTimefirstDate.difference(dateTimelastDate).inSeconds;
     return differenceInMinutes;
   }
 
@@ -138,9 +131,14 @@ class TextUtils {
 
   String getRandomString({int length = 64}) {
     Random _rnd = Random();
-    const _chars =
-        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    return String.fromCharCodes(Iterable.generate(
-        length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+    const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    return String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  }
+
+  String? allToString(dynamic input) {
+    if (input == null) return '';
+    if (input is int || input is double) return '$input';
+    if (input is String) return input;
+    return null;
   }
 }

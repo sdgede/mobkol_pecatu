@@ -26,16 +26,13 @@ Widget floatingActionSwitchMode(BuildContext context, {isKlad = false}) {
           else
             _mode = config.onlineMode;
 
-          if (config.forbidenOffline
-              .contains(produkProv.getSelectedgroupProdukProduk)) {
+          if (config.forbidenOffline.contains(produkProv.getSelectedgroupProdukProduk)) {
             DialogUtils.instance.showError(
               context: context,
-              text:
-                  "Tidak dapat menggunakan mode offline pada jenis transaksi ini",
+              text: "Tidak dapat menggunakan mode offline pada jenis transaksi ini",
             );
           } else {
-            bool confirm = await DialogUtils.instance
-                .dialogChangeMode(context, _mode, isKlad: isKlad);
+            bool confirm = await DialogUtils.instance.dialogChangeMode(context, _mode, isKlad: isKlad);
             if (confirm) {
               globalProvider.setConnectionMode(_mode);
               if (isKlad) produkProv.resetMutasiTransaksi();
@@ -43,14 +40,10 @@ Widget floatingActionSwitchMode(BuildContext context, {isKlad = false}) {
           }
         },
         icon: Icon(
-          globalProvider.getConnectionMode == config.onlineMode
-              ? Icons.wifi
-              : Icons.wifi_off,
+          globalProvider.getConnectionMode == config.onlineMode ? Icons.wifi : Icons.wifi_off,
           color: Colors.white,
         ),
-        backgroundColor: globalProvider.getConnectionMode == config.onlineMode
-            ? Colors.green
-            : Colors.grey,
+        backgroundColor: globalProvider.getConnectionMode == config.onlineMode ? Colors.green : Colors.grey,
         heroTag: null,
       );
     },
@@ -65,9 +58,7 @@ Widget floatingActionUploadTrx(BuildContext context) {
         onPressed: () async {
           bool _confirm = await DialogUtils.instance.dialogConfirm(
             context,
-            "Ingin mengupload seluruh data transaksi " +
-                produkProv.getSelectedProdukName!.toLowerCase() +
-                "?",
+            "Ingin mengupload seluruh data transaksi " + produkProv.getSelectedProdukName!.toLowerCase() + "?",
           );
           if (_confirm) {}
         },

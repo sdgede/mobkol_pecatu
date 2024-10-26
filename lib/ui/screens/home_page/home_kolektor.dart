@@ -40,8 +40,7 @@ class HomeKolektorState extends State<HomeKolektor> {
 
     if (res) {
       produkProv!.resetSelectedgroupProdukProduk();
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          RouterGenerator.pageLogin, (Route<dynamic> route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(RouterGenerator.pageLogin, (Route<dynamic> route) => false);
     }
   }
 
@@ -69,14 +68,12 @@ class HomeKolektorState extends State<HomeKolektor> {
           context: context,
           isCancel: true,
           title: 'Sinkronasi data',
-          text:
-              'Perbaharui migrasi data untuk menyimpan perubahan sebelumnya. Proses ini memerlukan beberapa waktu.',
+          text: 'Perbaharui migrasi data untuk menyimpan perubahan sebelumnya. Proses ini memerlukan beberapa waktu.',
           clickCancelText: "Nanti",
           clickOKText: "Perbaharui",
           onClickOK: () async {
             Navigator.of(context).pop();
-            await globalProv!
-                .syncData(context, produkProv!.produkCollectionMigrasi);
+            await globalProv!.syncData(context, produkProv!.produkCollectionMigrasi);
           });
     }
     return;
@@ -92,9 +89,7 @@ class HomeKolektorState extends State<HomeKolektor> {
 
   _checkFirstTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool firstTime = prefs.getBool('first_time') == null
-        ? true
-        : prefs.getBool('first_time')!;
+    bool firstTime = prefs.getBool('first_time') == null ? true : prefs.getBool('first_time')!;
 
     // cek migrasi
     if (globalProv!.getConnectionMode == config.onlineMode && !firstTime) {
@@ -158,16 +153,14 @@ class HomeKolektorState extends State<HomeKolektor> {
         body: DefaultTabController(
           length: 2,
           child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
                   expandedHeight: deviceHeight(context) * 0.34,
                   floating: false,
                   pinned: true,
                   titleSpacing: 0,
-                  backgroundColor:
-                      innerBoxIsScrolled ? primaryColor : accentColor,
+                  backgroundColor: innerBoxIsScrolled ? primaryColor : accentColor,
                   actionsIconTheme: IconThemeData(opacity: 0.0),
                   title: Container(
                     height: 60,
@@ -200,9 +193,7 @@ class HomeKolektorState extends State<HomeKolektor> {
                               gradient: LinearGradient(
                                 colors: [accentColor, primaryColor],
                               ),
-                              borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(20.0),
-                                  bottomLeft: Radius.circular(20.0)),
+                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
                             ),
                           ),
                           ListView(
@@ -228,8 +219,7 @@ class HomeKolektorState extends State<HomeKolektor> {
                                     SizedBox(height: 5),
                                     Text(
                                       'KOLEKTOR',
-                                      style: TextStyle(
-                                          color: Colors.grey.shade700),
+                                      style: TextStyle(color: Colors.grey.shade700),
                                     ),
                                   ],
                                 ),
@@ -249,10 +239,7 @@ class HomeKolektorState extends State<HomeKolektor> {
                       unselectedLabelColor: Colors.black87,
                       tabs: [
                         Tab(text: 'Home'),
-                        Showcase(
-                            key: _setting,
-                            description: "Klik untuk ke menu setting",
-                            child: Tab(text: 'Setting')),
+                        Showcase(key: _setting, description: "Klik untuk ke menu setting", child: Tab(text: 'Setting')),
                       ],
                     ),
                   ),
@@ -324,8 +311,7 @@ class HomeKolektorState extends State<HomeKolektor> {
                                       borderRadius: BorderRadius.circular(6.0),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.grey.shade400
-                                              .withOpacity(.3),
+                                          color: Colors.grey.shade400.withOpacity(.3),
                                           offset: Offset(0.0, 3.0),
                                           blurRadius: 8.0,
                                         )
@@ -339,16 +325,9 @@ class HomeKolektorState extends State<HomeKolektor> {
                                     ),
                                   ),
                                   // toAnimate: true,
-                                  showBadge: globalProv!.getConnectionMode ==
-                                              config.onlineMode &&
-                                          list[index].type == "DATA_PENAGIHAN"
-                                      ? true
-                                      : false,
+                                  showBadge: globalProv!.getConnectionMode == config.onlineMode && list[index].type == "DATA_PENAGIHAN" ? true : false,
                                   badgeContent: Text(
-                                    config.dataSetting[
-                                                'total_kredit_jatuhtempo']
-                                            ?.toString() ??
-                                        "0",
+                                    config.dataSetting['total_kredit_jatuhtempo']?.toString() ?? "0",
                                     style: TextStyle(
                                       color: Colors.white,
                                     ),
@@ -415,8 +394,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => _tabBar.preferredSize.height;
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       child: Container(
         margin: EdgeInsets.only(left: 16, right: 16),

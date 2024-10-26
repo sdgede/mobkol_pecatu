@@ -18,10 +18,8 @@ class HasilPencarianProduk extends StatefulWidget {
   _HasilPencarianProduk createState() => _HasilPencarianProduk();
 }
 
-class _HasilPencarianProduk extends State<HasilPencarianProduk>
-    with SingleTickerProviderStateMixin {
-  final scaffoldKey = GlobalKey<ScaffoldState>(),
-      _formKeyStep1 = GlobalKey<FormState>();
+class _HasilPencarianProduk extends State<HasilPencarianProduk> with SingleTickerProviderStateMixin {
+  final scaffoldKey = GlobalKey<ScaffoldState>(), _formKeyStep1 = GlobalKey<FormState>();
   GlobalProvider? _globalProvider;
   ProdukCollectionProvider? _produkProv;
   bool _btnTarikStatus = true, _btnHistoryStatus = true;
@@ -36,18 +34,14 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
       _produkProv!.setSaldoResult(null, isListen: false);
 
       setState(() {
-        if (['ANGGOTA', 'DEPOSITO', 'BERENCANA']
-                .contains(widget.arguments!['tipe']) ||
-            _globalProvider!.getConnectionMode == config.offlineMode) {
+        if (['ANGGOTA', 'DEPOSITO', 'BERENCANA'].contains(widget.arguments!['tipe']) || _globalProvider!.getConnectionMode == config.offlineMode) {
           _btnTarikStatus = false;
-          if (_produkProv!.getSelectedRkCdProduk == 'SIHARI')
-            _btnTarikStatus = true;
+          if (_produkProv!.getSelectedRkCdProduk == 'SIHARI') _btnTarikStatus = true;
         } else {
           _btnTarikStatus = true;
         }
 
-        if (_globalProvider!.getConnectionMode == config.offlineMode)
-          _btnHistoryStatus = false;
+        if (_globalProvider!.getConnectionMode == config.offlineMode) _btnHistoryStatus = false;
       });
     });
   }
@@ -111,8 +105,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                          'assets/icon/' + widget.arguments!['icon']),
+                      image: AssetImage('assets/icon/' + widget.arguments!['icon']),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -141,9 +134,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                           ),
                           SizedBox(height: 5),
                           Text(
-                            produkProv.detailProdukCollection == null
-                                ? ""
-                                : produkProv.detailProdukCollection![0].nama,
+                            produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].nama,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -181,23 +172,17 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
           // ),
           textTagihan(
             text: _getNoRekDesc(),
-            value: produkProv.detailProdukCollection == null
-                ? ""
-                : produkProv.detailProdukCollection![0].no_rek,
+            value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].no_rek,
             isNumber: false,
           ),
           textTagihan(
             text: "Status Produk",
-            value: produkProv.detailProdukCollection == null
-                ? ""
-                : produkProv.detailProdukCollection![0].status,
+            value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].status,
             isNumber: false,
           ),
           textTagihan(
             text: "Wilayah",
-            value: produkProv.detailProdukCollection == null
-                ? ""
-                : produkProv.detailProdukCollection![0].wilayah,
+            value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].wilayah,
             isNumber: false,
           ),
           // textTagihan(
@@ -240,58 +225,42 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                   // ),
                   textTagihan(
                     text: "Metode Angsuran",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].metode_angsuran,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].metode_angsuran,
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Sistem Bunga",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].sistem_bunga,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].sistem_bunga,
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Suku Bunga",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].sb,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].sb,
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Jangka Waktu",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].jangka_waktu,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].jangka_waktu,
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Tgl Realisasi",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].tgl_daftar,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].tgl_daftar,
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Tgl Jatuh tempo",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].tgl_jatem,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].tgl_jatem,
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Tgl Bayar",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].tgl_bayar,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].tgl_bayar,
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Kolektibilitas",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].kolektibilitas,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].kolektibilitas,
                     isNumber: false,
                   ),
                   Text(
@@ -305,9 +274,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                   SizedBox(height: 10),
                   textTagihan(
                     text: "Plafon",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].plafon,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].plafon,
                   ),
                   textTagihan(
                     text: "Baki Debet",
@@ -318,49 +285,29 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                         : produkProv.saldoResult,
                   ),
                   textTagihan(
-                    text:
-                        produkProv.detailProdukCollection![0].metode_angsuran ==
-                                'Harian'
-                            ? 'Pokok Hari ini'
-                            : "Pokok Bulan ini",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].pokok_bln_ini,
+                    text: produkProv.detailProdukCollection![0].metode_angsuran == 'Harian' ? 'Pokok Hari ini' : "Pokok Bulan ini",
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].pokok_bln_ini,
                   ),
                   textTagihan(
                     text: "Tunggakan Pokok",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].tg_pokok,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].tg_pokok,
                   ),
                   textTagihan(
-                    text:
-                        produkProv.detailProdukCollection![0].metode_angsuran ==
-                                'Harian'
-                            ? 'Bunga Hari ini'
-                            : "Bunga Bulan ini",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].bnga_bln_ini,
+                    text: produkProv.detailProdukCollection![0].metode_angsuran == 'Harian' ? 'Bunga Hari ini' : "Bunga Bulan ini",
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].bnga_bln_ini,
                   ),
                   textTagihan(
                     text: "Tunggakan Bunga",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].tunggakan_bunga,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].tunggakan_bunga,
                   ),
                   textTagihan(
                     text: "Denda",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].denda,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].denda,
                   ),
 
                   textTagihan(
                     text: "Total Tagihan",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].total_bayar,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].total_bayar,
                   ),
                 ],
               ),
@@ -369,54 +316,35 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                 children: [
                   textTagihan(
                     text: "Jangka Waktu",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].jangka_waktu,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].jangka_waktu,
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Tgl Mulai",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].tgl_daftar,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].tgl_daftar,
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Tgl Akhir",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].tgl_jatem,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].tgl_jatem,
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Setoran Per Bulan",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv
-                            .detailProdukCollection![0].setoran_per_bulan
-                            .toString(),
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].setoran_per_bulan.toString(),
                   ),
                   textTagihan(
                     text: "Setoran Awal",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].setoran_awal
-                            .toString(),
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].setoran_awal.toString(),
                   ),
                   textTagihan(
                     text: "Suku Bunga",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].sb.toString() +
-                            ' %',
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].sb.toString() + ' %',
                     isNumber: false,
                   ),
                   textTagihan(
                     text: "Jumlah Diterima",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].jumlah_diterima
-                            .toString(),
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].jumlah_diterima.toString(),
                   ),
                   textTagihan(
                     text: "Saldo",
@@ -428,16 +356,11 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                   ),
                   textTagihan(
                     text: "Nominal Tunggakan",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv
-                            .detailProdukCollection![0].nominal_tunggakan,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].nominal_tunggakan,
                   ),
                   textTagihan(
                     text: "Kali Nunggak",
-                    value: produkProv.detailProdukCollection == null
-                        ? ""
-                        : produkProv.detailProdukCollection![0].kali_nunggak,
+                    value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].kali_nunggak,
                     isNumber: false,
                   ),
                 ],
@@ -458,17 +381,11 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                       children: [
                         textTagihan(
                           text: "Saldo diblokir",
-                          value: produkProv.detailProdukCollection == null
-                              ? ""
-                              : produkProv
-                                  .detailProdukCollection![0].saldoblokir,
+                          value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].saldoblokir,
                         ),
                         textTagihan(
                           text: "Keterangan blokir",
-                          value: produkProv.detailProdukCollection == null
-                              ? ""
-                              : produkProv
-                                  .detailProdukCollection![0].remarkBlokir!,
+                          value: produkProv.detailProdukCollection == null ? "" : produkProv.detailProdukCollection![0].remarkBlokir!,
                           isNumber: false,
                         ),
                       ],
@@ -513,9 +430,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
             ),
           ),
           Text(
-            isNumber
-                ? TextUtils.instance.numberFormat(value ?? "0")
-                : (value ?? ""),
+            isNumber ? TextUtils.instance.numberFormat(value ?? "0") : (value ?? ""),
             style: TextStyle(
               fontSize: 14,
               fontWeight: isValueBold ? FontWeight.w600 : FontWeight.normal,
@@ -555,9 +470,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                             groupProduk: widget.arguments!['tipe'],
                             rekCd: widget.arguments!['rekCd'],
                             norek: widget.arguments!['norek'],
-                            tipeTrans: widget.arguments!['tipe'] == 'KREDIT'
-                                ? 'ANGSURAN'
-                                : 'SETOR',
+                            tipeTrans: widget.arguments!['tipe'] == 'KREDIT' ? 'ANGSURAN' : 'SETOR',
                             produkModel: produkProv.detailProdukCollection![0],
                             produkId: _produkId,
                           );
@@ -566,9 +479,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                     },
                     child: Center(
                       child: Text(
-                        widget.arguments!['tipe'] == 'KREDIT'
-                            ? "ANGSURAN"
-                            : "SETOR",
+                        widget.arguments!['tipe'] == 'KREDIT' ? "ANGSURAN" : "SETOR",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -585,8 +496,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                 height: 40,
                 width: deviceWidth(context) / 2.3,
                 decoration: BoxDecoration(
-                  color:
-                      (_btnTarikStatus) ? Colors.orange : Colors.grey.shade400,
+                  color: (_btnTarikStatus) ? Colors.orange : Colors.grey.shade400,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Material(
@@ -602,11 +512,8 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                               groupProduk: widget.arguments!['tipe'],
                               rekCd: widget.arguments!['rekCd'],
                               norek: widget.arguments!['norek'],
-                              tipeTrans: widget.arguments!['tipe'] == 'KREDIT'
-                                  ? 'PELUNASAN'
-                                  : 'TARIK',
-                              produkModel:
-                                  produkProv.detailProdukCollection![0],
+                              tipeTrans: widget.arguments!['tipe'] == 'KREDIT' ? 'PELUNASAN' : 'TARIK',
+                              produkModel: produkProv.detailProdukCollection![0],
                               produkId: _produkId,
                             );
                           },
@@ -614,9 +521,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk>
                     },
                     child: Center(
                       child: Text(
-                        widget.arguments!['tipe'] == 'KREDIT'
-                            ? "PELUNASAN"
-                            : "TARIK",
+                        widget.arguments!['tipe'] == 'KREDIT' ? "PELUNASAN" : "TARIK",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,

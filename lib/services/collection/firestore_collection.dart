@@ -11,7 +11,7 @@ class FirestoreCollectionServices {
     String clientPackageName = packageInfo.packageName;
 
     String baseURL = config.baseURL;
-    final docRef = db.collection("mobkol_template").doc(clientPackageName);
+    final docRef = db.collection("mobkol_base_url").doc(clientPackageName);
     const source = Source.server;
 
     await docRef.get(const GetOptions(source: source)).then(
@@ -21,7 +21,8 @@ class FirestoreCollectionServices {
         if (data == null) return false;
         if (data['base_url'] == null || data['base_url'] == '') return false;
 
-        baseURL = McryptUtils.instance.decrypt(data['base_url']);
+        String tmpBaseURL = McryptUtils.instance.decrypt(data['base_url']);
+        if (data['base_url'] != tmpBaseURL) baseURL = tmpBaseURL;
         return true;
       },
       onError: (e) => print("Firestore: Error completing $e"),

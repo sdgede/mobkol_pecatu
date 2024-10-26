@@ -38,6 +38,8 @@ lib/generated_plugin_registrant.dart
 
 
 .env
+managed_context/
+test_suite_analysis/
 
 # FVM Version Cache
 .fvm/

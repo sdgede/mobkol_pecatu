@@ -82,19 +82,14 @@ class _AkunScreenState extends State<AkunScreen> {
 
   void logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool res = await DialogUtils.instance.showInfo(
-            context: context,
-            title: "Pemberitahuan!",
-            text: "Apa Anda yakin ingin logout dari akun ini?") ??
-        false;
+    bool res = await DialogUtils.instance.showInfo(context: context, title: "Pemberitahuan!", text: "Apa Anda yakin ingin logout dari akun ini?") ?? false;
 
     if (res) {
       prefs.setBool('first_time_login', true);
       prefs.setString('nama', '');
       PersonName = 'User';
 
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          RouterGenerator.pageHomeLogin, (Route<dynamic> route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(RouterGenerator.pageHomeLogin, (Route<dynamic> route) => false);
     }
   }
 

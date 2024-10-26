@@ -48,35 +48,29 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
   ProdukCollectionProvider? produkProvider;
   TransaksiProvider? transaksiPorvider;
   GlobalProvider? globalProv;
-  MoneyMaskedTextController nominalController = MoneyMaskedTextController(
-      decimalSeparator: '', thousandSeparator: '.', precision: 0);
-  MoneyMaskedTextController bungaController = MoneyMaskedTextController(
-      decimalSeparator: '', thousandSeparator: '.', precision: 0);
+  MoneyMaskedTextController nominalController = MoneyMaskedTextController(decimalSeparator: '', thousandSeparator: '.', precision: 0);
+  MoneyMaskedTextController bungaController = MoneyMaskedTextController(decimalSeparator: '', thousandSeparator: '.', precision: 0);
   MoneyMaskedTextController dendaController = MoneyMaskedTextController(
     decimalSeparator: '',
     thousandSeparator: '.',
     precision: 0,
     initialValue: 0,
   );
-  MoneyMaskedTextController lateChargeController = MoneyMaskedTextController(
-      decimalSeparator: '', thousandSeparator: '.', precision: 0);
-  MoneyMaskedTextController pokokController = MoneyMaskedTextController(
-      decimalSeparator: '', thousandSeparator: '.', precision: 0);
+  MoneyMaskedTextController lateChargeController = MoneyMaskedTextController(decimalSeparator: '', thousandSeparator: '.', precision: 0);
+  MoneyMaskedTextController pokokController = MoneyMaskedTextController(decimalSeparator: '', thousandSeparator: '.', precision: 0);
   TextEditingController keteranganController = new TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    produkProvider =
-        Provider.of<ProdukCollectionProvider>(context, listen: false);
+    produkProvider = Provider.of<ProdukCollectionProvider>(context, listen: false);
     transaksiPorvider = Provider.of<TransaksiProvider>(context, listen: false);
     globalProv = Provider.of<GlobalProvider>(context, listen: false);
     globalProv!.loadLocation(context);
     _formValue = 'FORM_INPUT';
     if (widget.groupProduk == 'KREDIT') _setFormKredit();
     checkButtonLanjut();
-    print(
-        "$_formValue $_totBayarParse $_lateCharge $_lateCHarge $_pesanStatusTransaksi");
+    print("$_formValue $_totBayarParse $_lateCharge $_lateCHarge $_pesanStatusTransaksi");
   }
 
   void _setFormKredit() {
@@ -184,10 +178,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
         });
       }
     } else {
-      if ((nominalController.text == '0' || nominalController.text == '') &&
-          (dendaController.text != '') &&
-          (bungaController.text != '') &&
-          (pokokController.text != '')) {
+      if ((nominalController.text == '0' || nominalController.text == '') && (dendaController.text != '') && (bungaController.text != '') && (pokokController.text != '')) {
         setState(() {
           btnStatus = false;
         });
@@ -203,22 +194,14 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
     // String _minSetoran = widget.groupProduk == 'BERENCANA'
     //     ? widget.produkModel.min_setoran
     //     : produkProvider.getSelectedMinSetoran;
-    if (widget.groupProduk == 'KREDIT')
-      _hitungPembayaranKredit(
-          int.parse(nominalController.text.replaceAll(".", "")));
+    if (widget.groupProduk == 'KREDIT') _hitungPembayaranKredit(int.parse(nominalController.text.replaceAll(".", "")));
 
     String _minSetoran = produkProvider!.getSelectedMinSetoran;
 
-    if (int.parse(nominalController.text.replaceAll('.', '')) <
-            int.parse(_minSetoran) &&
-        widget.groupProduk != 'KREDIT') {
+    if (int.parse(nominalController.text.replaceAll('.', '')) < int.parse(_minSetoran) && widget.groupProduk != 'KREDIT') {
       DialogUtils.instance.showError(
         context: context,
-        text: widget.tipeTrans == 'SETOR'
-            ? 'Transaksi gagal, setoran minimal ' +
-                TextUtils.instance.numberFormat(_minSetoran)
-            : 'Transaksi gagal, tarikan minimal ' +
-                TextUtils.instance.numberFormat(_minSetoran),
+        text: widget.tipeTrans == 'SETOR' ? 'Transaksi gagal, setoran minimal ' + TextUtils.instance.numberFormat(_minSetoran) : 'Transaksi gagal, tarikan minimal ' + TextUtils.instance.numberFormat(_minSetoran),
       );
     } else {
       _rekCd = widget.rekCd!;
@@ -267,22 +250,11 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
     return Stack(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(
-              left: padding,
-              top: avatarRadius + padding,
-              right: padding,
-              bottom: padding),
+          padding: EdgeInsets.only(left: padding, top: avatarRadius + padding, right: padding, bottom: padding),
           margin: EdgeInsets.only(top: avatarRadius),
-          decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(padding),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.10),
-                    offset: Offset(0, 10),
-                    blurRadius: 10),
-              ]),
+          decoration: BoxDecoration(shape: BoxShape.rectangle, color: Colors.white, borderRadius: BorderRadius.circular(padding), boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(0.10), offset: Offset(0, 10), blurRadius: 10),
+          ]),
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
@@ -335,9 +307,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
             ? Column(
                 children: [
                   textFieldNominal(
-                    widget.tipeTrans == 'SETOR'
-                        ? 'Jumlah Setoran'
-                        : 'Jumlah Tarikan',
+                    widget.tipeTrans == 'SETOR' ? 'Jumlah Setoran' : 'Jumlah Tarikan',
                     nominalController,
                   ),
                   SizedBox(height: 20),
@@ -402,8 +372,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
           child: Column(
             children: [
               Center(
-                child: Text(
-                    transProvider.dataSuksesTransaksi.pesan ?? '404 Not found'),
+                child: Text(transProvider.dataSuksesTransaksi.pesan ?? '404 Not found'),
               ),
             ],
           ),
@@ -455,8 +424,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            _hitungPembayaranKredit(
-                int.parse(nominalController.text.replaceAll(".", "")));
+            _hitungPembayaranKredit(int.parse(nominalController.text.replaceAll(".", "")));
           },
           child: Center(
             child: Text(
@@ -503,8 +471,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
     );
   }
 
-  Widget textFieldNominal(String tittle, TextEditingController controller,
-      {bool isNumber = true, bool isEnable = true}) {
+  Widget textFieldNominal(String tittle, TextEditingController controller, {bool isNumber = true, bool isEnable = true}) {
     return Stack(
       children: <Widget>[
         Text(

@@ -24,14 +24,8 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
-  bool autoValidate = false,
-      isVisible = false,
-      isVisible1 = false,
-      isVisible2 = false;
-  TextEditingController passwordLamaController = new TextEditingController(),
-      passwordController = new TextEditingController(),
-      rePasswordController = new TextEditingController(),
-      sumberDanaController = new TextEditingController();
+  bool autoValidate = false, isVisible = false, isVisible1 = false, isVisible2 = false;
+  TextEditingController passwordLamaController = new TextEditingController(), passwordController = new TextEditingController(), rePasswordController = new TextEditingController(), sumberDanaController = new TextEditingController();
   GlobalProvider? globalProv;
   TransaksiProvider? transaksiProvider;
 
@@ -40,8 +34,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     if (form!.validate()) {
       form.save();
       bool isReset = true;
-      if (passwordLamaController.text !=
-          McryptUtils.instance.decrypt(dataLogin['password'])) {
+      if (passwordLamaController.text != McryptUtils.instance.decrypt(dataLogin['password'])) {
         isReset = false;
         DialogUtils.instance.showError(
           context: context,
@@ -50,11 +43,9 @@ class _ResetPasswordState extends State<ResetPassword> {
       }
       if (isReset) {
         if (widget.isBuat) {
-          bool res = await globalProv!
-              .resetPassword(context, passwordController.text, widget.isBuat);
+          bool res = await globalProv!.resetPassword(context, passwordController.text, widget.isBuat);
           if (widget.isBuat && res) {
-            Navigator.of(context).pushReplacementNamed(RouterGenerator.resetPin,
-                arguments: {'isBuat': widget.isBuat});
+            Navigator.of(context).pushReplacementNamed(RouterGenerator.resetPin, arguments: {'isBuat': widget.isBuat});
           }
         } else {
           // Navigator.of(context).pushNamed(
@@ -118,8 +109,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 height: deviceHeightWithoutAppBar(context),
                 child: Consumer<ProdukTabunganProvider>(
                   builder: (context, produkTabunganProv, _) {
-                    sumberDanaController.text =
-                        produkTabunganProv.pemilikNamaRekSumber;
+                    sumberDanaController.text = produkTabunganProv.pemilikNamaRekSumber;
                     return Form(
                       key: formKey,
                       // autovalidate: autoValidate,
@@ -144,9 +134,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   isOldPassword: true,
                                   onVisible: () {
                                     setState(() {
-                                      isVisible
-                                          ? isVisible = false
-                                          : isVisible = true;
+                                      isVisible ? isVisible = false : isVisible = true;
                                     });
                                   },
                                 ),
@@ -159,9 +147,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   isVisible: isVisible1,
                                   onVisible: () {
                                     setState(() {
-                                      isVisible1
-                                          ? isVisible1 = false
-                                          : isVisible1 = true;
+                                      isVisible1 ? isVisible1 = false : isVisible1 = true;
                                     });
                                   },
                                 ),
@@ -175,9 +161,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   isVisible: isVisible2,
                                   onVisible: () {
                                     setState(() {
-                                      isVisible2
-                                          ? isVisible2 = false
-                                          : isVisible2 = true;
+                                      isVisible2 ? isVisible2 = false : isVisible2 = true;
                                     });
                                   },
                                 ),
@@ -214,16 +198,9 @@ class _ResetPasswordState extends State<ResetPassword> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Column(
             children: [
-              textKetentuanPassword(
-                  text:
-                      "Password bersifat rahasia dan jangan diberikan kepada siapa pun dengan alasan apapun termasuk pihak " +
-                          companyFullName +
-                          "."),
-              textKetentuanPassword(
-                  text:
-                      "Password wajib berawalan dengan huruf kapital dan mengandung angka."),
-              textKetentuanPassword(
-                  text: "Panjang minimal password adalah 8 digit."),
+              textKetentuanPassword(text: "Password bersifat rahasia dan jangan diberikan kepada siapa pun dengan alasan apapun termasuk pihak " + companyFullName + "."),
+              textKetentuanPassword(text: "Password wajib berawalan dengan huruf kapital dan mengandung angka."),
+              textKetentuanPassword(text: "Panjang minimal password adalah 8 digit."),
             ],
           ),
         ),

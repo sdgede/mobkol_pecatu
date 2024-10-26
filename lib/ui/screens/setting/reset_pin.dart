@@ -24,14 +24,8 @@ class ResetPin extends StatefulWidget {
 class _ResetPinState extends State<ResetPin> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
-  bool autoValidate = false,
-      isVisible = false,
-      isVisible1 = false,
-      isVisible2 = false;
-  TextEditingController pinLamaController = new TextEditingController(),
-      pinController = new TextEditingController(),
-      rePinController = new TextEditingController(),
-      sumberDanaController = new TextEditingController();
+  bool autoValidate = false, isVisible = false, isVisible1 = false, isVisible2 = false;
+  TextEditingController pinLamaController = new TextEditingController(), pinController = new TextEditingController(), rePinController = new TextEditingController(), sumberDanaController = new TextEditingController();
   GlobalProvider? globalProv;
   TransaksiProvider? transaksiProvider;
 
@@ -40,8 +34,7 @@ class _ResetPinState extends State<ResetPin> {
     if (form!.validate()) {
       form.save();
       bool isReset = true;
-      if (pinLamaController.text !=
-          McryptUtils.instance.decrypt(dataLogin['pin'])) {
+      if (pinLamaController.text != McryptUtils.instance.decrypt(dataLogin['pin'])) {
         isReset = false;
         DialogUtils.instance.showError(
           context: context,
@@ -50,11 +43,9 @@ class _ResetPinState extends State<ResetPin> {
       }
       if (isReset) {
         if (widget.isBuat) {
-          bool res = await globalProv!
-              .resetPin(context, pinController.text, widget.isBuat);
+          bool res = await globalProv!.resetPin(context, pinController.text, widget.isBuat);
           if (widget.isBuat && res) {
-            Navigator.of(context)
-                .pushReplacementNamed(RouterGenerator.pageHomeLogin);
+            Navigator.of(context).pushReplacementNamed(RouterGenerator.pageHomeLogin);
           }
         } else {
           // Navigator.of(context).pushNamed(
@@ -119,8 +110,7 @@ class _ResetPinState extends State<ResetPin> {
                 height: deviceHeightWithoutAppBar(context),
                 child: Consumer<ProdukTabunganProvider>(
                   builder: (context, produkTabunganProv, _) {
-                    sumberDanaController.text =
-                        produkTabunganProv.pemilikNamaRekSumber;
+                    sumberDanaController.text = produkTabunganProv.pemilikNamaRekSumber;
                     return Form(
                       key: formKey,
                       // autovalidate: autoValidate,
@@ -144,9 +134,7 @@ class _ResetPinState extends State<ResetPin> {
                                   isVisible: isVisible,
                                   onVisible: () {
                                     setState(() {
-                                      isVisible
-                                          ? isVisible = false
-                                          : isVisible = true;
+                                      isVisible ? isVisible = false : isVisible = true;
                                     });
                                   },
                                 ),
@@ -159,9 +147,7 @@ class _ResetPinState extends State<ResetPin> {
                                   isVisible: isVisible1,
                                   onVisible: () {
                                     setState(() {
-                                      isVisible1
-                                          ? isVisible1 = false
-                                          : isVisible1 = true;
+                                      isVisible1 ? isVisible1 = false : isVisible1 = true;
                                     });
                                   },
                                 ),
@@ -175,9 +161,7 @@ class _ResetPinState extends State<ResetPin> {
                                   isVisible: isVisible2,
                                   onVisible: () {
                                     setState(() {
-                                      isVisible2
-                                          ? isVisible2 = false
-                                          : isVisible2 = true;
+                                      isVisible2 ? isVisible2 = false : isVisible2 = true;
                                     });
                                   },
                                 ),
@@ -214,11 +198,7 @@ class _ResetPinState extends State<ResetPin> {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Column(
             children: [
-              textKetentuanPin(
-                  text:
-                      "Pin bersifat rahasia dan jangan diberikan kepada siapa pun dengan alasan apapun termasuk pihak " +
-                          companyFullName +
-                          "."),
+              textKetentuanPin(text: "Pin bersifat rahasia dan jangan diberikan kepada siapa pun dengan alasan apapun termasuk pihak " + companyFullName + "."),
               textKetentuanPin(text: "Panjang pin adalah 6 digit."),
             ],
           ),
@@ -308,8 +288,7 @@ class _ResetPinState extends State<ResetPin> {
                     style: TextStyle(fontSize: 14, color: Colors.black),
                   ),
                   IconButton(
-                    icon:
-                        isVisible ? Icon(Iconsax.eye) : Icon(Iconsax.eye_slash),
+                    icon: isVisible ? Icon(Iconsax.eye) : Icon(Iconsax.eye_slash),
                     onPressed: () => onVisible!(),
                   ),
                 ],

@@ -25,8 +25,7 @@ class _VerticalListNasbahState extends State<VerticalListNasabah> {
   @override
   void initState() {
     super.initState();
-    _produkProvider =
-        Provider.of<ProdukCollectionProvider>(context, listen: false);
+    _produkProvider = Provider.of<ProdukCollectionProvider>(context, listen: false);
   }
 
   void onLongPress() {
@@ -51,9 +50,7 @@ class _VerticalListNasbahState extends State<VerticalListNasabah> {
     var _rekCd = _produkProvider!.getSelectedRkCdProduk;
     var _produkIc = _produkProvider!.getSelectedProdukIcon;
 
-    bool res =
-        await _produkProvider!.getDataProdukByRek(context, _norekResult!) ??
-            false;
+    bool res = await _produkProvider!.getDataProdukByRek(context, _norekResult!) ?? false;
     if (res) {
       Navigator.pushNamed(
         context,

@@ -193,14 +193,7 @@ class ListModelKol {
   bool? isDev;
   GlobalKey? key;
 
-  ListModelKol(
-      {this.type,
-      this.title,
-      this.navigator,
-      this.icon,
-      this.isDev = false,
-      this.key,
-      this.description});
+  ListModelKol({this.type, this.title, this.navigator, this.icon, this.isDev = false, this.key, this.description});
 }
 
 class UpdateInfo {
@@ -211,8 +204,7 @@ class UpdateInfo {
   String? img;
   String? url;
 
-  UpdateInfo(
-      {this.version, this.title, this.desc, this.type, this.img, this.url});
+  UpdateInfo({this.version, this.title, this.desc, this.type, this.img, this.url});
 
   factory UpdateInfo.fromJson(Map<String, dynamic> json) {
     return UpdateInfo(

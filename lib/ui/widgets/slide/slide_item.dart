@@ -86,8 +86,7 @@ class SlideItemDaftarOnline extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                SliderUtils
-                    .instance.sliderArrayListDaftarOnline[index].sliderHeading,
+                SliderUtils.instance.sliderArrayListDaftarOnline[index].sliderHeading,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
@@ -103,8 +102,7 @@ class SlideItemDaftarOnline extends StatelessWidget {
               image: DecorationImage(
                 fit: BoxFit.fitHeight,
                 image: AssetImage(
-                  SliderUtils.instance.sliderArrayListDaftarOnline[index]
-                      .sliderImageUrl,
+                  SliderUtils.instance.sliderArrayListDaftarOnline[index].sliderImageUrl,
                 ),
               ),
             ),
@@ -114,8 +112,7 @@ class SlideItemDaftarOnline extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Center(
                 child: Text(
-                  SliderUtils.instance.sliderArrayListDaftarOnline[index]
-                      .sliderSubHeading,
+                  SliderUtils.instance.sliderArrayListDaftarOnline[index].sliderSubHeading,
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.5,
@@ -162,8 +159,7 @@ class SlideItemPengajuanPinjaman extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                SliderUtils.instance.sliderArrayListPengajuanPinjaman[index]
-                    .sliderHeading,
+                SliderUtils.instance.sliderArrayListPengajuanPinjaman[index].sliderHeading,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
@@ -179,8 +175,7 @@ class SlideItemPengajuanPinjaman extends StatelessWidget {
               image: DecorationImage(
                 fit: BoxFit.fitHeight,
                 image: AssetImage(
-                  SliderUtils.instance.sliderArrayListPengajuanPinjaman[index]
-                      .sliderImageUrl,
+                  SliderUtils.instance.sliderArrayListPengajuanPinjaman[index].sliderImageUrl,
                 ),
               ),
             ),
@@ -190,8 +185,7 @@ class SlideItemPengajuanPinjaman extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Center(
                 child: Text(
-                  SliderUtils.instance.sliderArrayListPengajuanPinjaman[index]
-                      .sliderSubHeading,
+                  SliderUtils.instance.sliderArrayListPengajuanPinjaman[index].sliderSubHeading,
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.5,

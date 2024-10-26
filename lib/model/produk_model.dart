@@ -1,3 +1,10 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:sevanam_mobkol/model/model-produk/_base_helper_produk.dart';
+import 'package:sevanam_mobkol/model/model-produk/nasabah_anggota_model.dart';
+import 'package:sevanam_mobkol/model/model-produk/nasabah_sirena_model.dart';
+import 'package:sevanam_mobkol/model/model-produk/nasabah_tab_model.dart';
+
 class ProdukCollection {
   String? nama, icon, slug, rekCd, min_setoran, min_tarikan, rek_shortcut;
   bool? isSelected;
@@ -78,6 +85,7 @@ class DetailProdukCollection {
   dynamic status, pesan, status_produk, nama_produk, jenis_produk, bnga_bln_ini;
   dynamic angsuranBulanan, angsuranBulan, kolektibilitas, tgl_bayar;
   dynamic jenis_siber, min_setoran;
+  dynamic kodeVa, hp, jenisVa, tunggakan, tagihan, remark, vaVendor;
   String? remarkBlokir;
 
   DetailProdukCollection({
@@ -139,6 +147,13 @@ class DetailProdukCollection {
     this.tgl_bayar,
     this.jenis_siber,
     this.min_setoran,
+    this.kodeVa,
+    this.hp,
+    this.jenisVa,
+    this.tunggakan,
+    this.tagihan,
+    this.remark,
+    this.vaVendor,
   });
 
   factory DetailProdukCollection.fromJson(Map<String, dynamic> json) {
@@ -201,6 +216,13 @@ class DetailProdukCollection {
       tgl_bayar: json["tglBayar"] ?? "",
       jenis_siber: json["jenis_siber"] ?? "",
       min_setoran: json["min_setoran"] ?? "",
+      kodeVa: json["kode_va"] ?? "",
+      hp: json["hp"] ?? "",
+      jenisVa: json["jenis_va"] ?? "",
+      tunggakan: json["tunggakan"] ?? "",
+      tagihan: json["tagihan"] ?? "",
+      remark: json["remark"] ?? "",
+      vaVendor: json["va_vendor"] ?? "",
     );
   }
 }
@@ -210,6 +232,7 @@ class MutasiProdukCollection {
   String? nama, bukti, kode, op, saldo_awal, status, pesan, norek;
   String? pokok, bunga, denda, hp, terbilang, isUpload, groupProduk, rekCd, adm;
   String? totSetoran, totTarikan, totPokok, totBunga, totDenda, debet, kredit;
+  String? kodeVa;
   dynamic trans_id;
 
   MutasiProdukCollection({
@@ -246,6 +269,7 @@ class MutasiProdukCollection {
     this.totPokok,
     this.totBunga,
     this.totDenda,
+    this.kodeVa,
   });
 
   factory MutasiProdukCollection.fromJson(Map<String, dynamic> json) {
@@ -283,6 +307,7 @@ class MutasiProdukCollection {
       totPokok: json["totPokok"] ?? "0",
       totBunga: json["totBunga"] ?? "0",
       totDenda: json["totDenda"] ?? "0",
+      kodeVa: json["kode_va"] ?? "0",
       //totSetoran: if ( ?? "0",
     );
   }
@@ -504,13 +529,7 @@ class ProdukTabunganUserModel {
 }
 
 class DataMigrasiCollection {
-  String? produkId,
-      nasabahId,
-      noMaster,
-      wilayahCd,
-      groupProduk,
-      norek,
-      setoranAwal;
+  String? produkId, nasabahId, noMaster, wilayahCd, groupProduk, norek, setoranAwal;
   String? status, tglDaftar, tglTutup, alasanTutup, potongan, remark, createWho;
   String? createDate, changeWho, changeDate;
 
@@ -568,5 +587,83 @@ class SaldoKolektor {
       title: json["title"] ?? "",
       data: json["data"] ?? [],
     );
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+class ProdukModel {
+  List<String> products = [
+    'TABUNGAN',
+    'ANGGOTA',
+    'BERENCANA',
+  ];
+  String? stringClass;
+
+  ProdukModel({this.stringClass});
+
+  String getNorekField(String groupMenu, String? mode) {
+    mode = mode ?? "group_menu";
+
+    dynamic productModel = getProductModel(mode: mode, productClass: groupMenu);
+    if (productModel != null) return productModel.dbNorekField as String;
+
+    return "no_rek";
+  }
+
+  String getQueryNama(
+    String groupMenu, {
+    required String dbTable,
+    required String dbNasId,
+    String? mode,
+  }) {
+    mode = mode ?? "group_menu";
+
+    String query = "(SELECT ${BaseHelperProduk().getQuerySelectNamaNasabah('x', 'nama')} FROM m_nasabah x WHERE x.nasabah_id = $dbTable.$dbNasId)";
+
+    var productClass = getProductModel();
+    if (productClass == null) return "";
+
+    return query;
+  }
+
+  dynamic getProductModel({dynamic json, String? mode, String? productClass}) {
+    mode = mode ?? "group_menu";
+    productClass = productClass ?? stringClass;
+
+    if ((mode == "group_menu" && productClass == "BERENCANA") || (mode == "rek_cd" && productClass == "SIRENA")) {
+      return json == null ? NasabahSirenaModel() : NasabahSirenaModel.fromJson(json);
+    } else if ((mode == "group_menu" && productClass == "ANGGOTA") || (mode == "rek_cd" && productClass == "SIMP_ANGGOTA")) {
+      return json == null ? NasabahAnggotaModel() : NasabahAnggotaModel.fromJson(json);
+    } else if ((mode == "group_menu" && productClass == "TABUNGAN") || (mode == "rek_cd" && productClass == "TABRELA")) {
+      return json == null ? NasabahTabModel() : NasabahTabModel.fromJson(json);
+    } else {
+      return null;
+    }
+  }
+}
+
+abstract class BaseProdukModelInterface {
+  BaseProdukModelInterface();
+  BaseProdukModelInterface.fromJson(Map<String, dynamic> json);
+
+  Map<String, String>? prepareRow() {
+    return null;
+  }
+
+  String getPrimaryKeyValue() {
+    return "";
+  }
+
+  Future<dynamic>? searchByName(String keyword, String? rekCd) {
+    return null;
+  }
+
+  Future<dynamic>? searchByNorek(String norek, String? rekCd) {
+    return null;
+  }
+
+  Future<Map<String, int>?> upsertMigration() async {
+    return null;
   }
 }

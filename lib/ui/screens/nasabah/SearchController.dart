@@ -55,8 +55,7 @@ class _SearchCOntrollerState extends State<SearchController> {
                   color: Colors.black54,
                   fontWeight: FontWeight.w300,
                 ),
-                onSubmitted: (value) =>
-                    widget.onSubmit != null ? widget.onSubmit!(value) : {},
+                onSubmitted: (value) => widget.onSubmit != null ? widget.onSubmit!(value) : {},
                 decoration: InputDecoration(
                   hintText: widget.placeHolder ?? "Cari Nasabah",
                   border: InputBorder.none,

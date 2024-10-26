@@ -69,8 +69,7 @@ class McryptUtils {
   String encryptMerchant(String value) {
     if (value == "") return "";
     // var aesEncrypter = AesCrypt(this.secretKeyMerchant, 'cbc', 'pkcs7');
-    var aesEncrypter =
-        AesCrypt(key: this.secretKeyMerchant, padding: PaddingAES.pkcs7);
+    var aesEncrypter = AesCrypt(key: this.secretKeyMerchant, padding: PaddingAES.pkcs7);
     String? encrypted;
     try {
       encrypted = aesEncrypter.gcm.encrypt(inp: value, iv: this.ivMerchant);
@@ -84,8 +83,7 @@ class McryptUtils {
 
   String decryptMerchant(String encrypted) {
     if (encrypted == "") return "";
-    var aesEncrypter =
-        AesCrypt(key: this.secretKeyMerchant, padding: PaddingAES.pkcs7);
+    var aesEncrypter = AesCrypt(key: this.secretKeyMerchant, padding: PaddingAES.pkcs7);
     String? decrypted;
     try {
       decrypted = aesEncrypter.gcm.decrypt(enc: encrypted, iv: this.ivMerchant);

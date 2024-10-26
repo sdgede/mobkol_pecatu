@@ -58,12 +58,10 @@ class GlobalCollectionServices extends BaseServices {
     dataLogin["req"] = "getLogin";
     dataLogin["username"] = McryptUtils.instance.encrypt(username!);
     dataLogin["pwd"] = McryptUtils.instance.encrypt(password!);
-    dataLogin["platform"] =
-        McryptUtils.instance.encrypt(Platform.isAndroid ? "ANDROID" : "IOS");
+    dataLogin["platform"] = McryptUtils.instance.encrypt(Platform.isAndroid ? "ANDROID" : "IOS");
     dataLogin["imei"] = McryptUtils.instance.encrypt(platform!);
     dataLogin["sn"] = McryptUtils.instance.encrypt(platform!);
-    dataLogin["versi"] = McryptUtils.instance
-        .encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
+    dataLogin["versi"] = McryptUtils.instance.encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
     dataLogin["reg_firebase_id"] = McryptUtils.instance.encrypt(firebaseId);
 
     var resp;
@@ -91,16 +89,13 @@ class GlobalCollectionServices extends BaseServices {
     var actionMigrate;
 
     if (groupProduk == 'DATA_AKUN') {
-      actionMigrate = await dbHelper.manageDataMigrationAccount(
-          dataMigrasi, groupProduk, rekCd);
+      actionMigrate = await dbHelper.manageDataMigrationAccount(dataMigrasi, groupProduk, rekCd);
     } else if (groupProduk == 'MASTER_NASABAH') {
-      actionMigrate = await dbHelper.manageDataMigrationNasabah(
-          dataMigrasi, groupProduk, rekCd);
+      actionMigrate = await dbHelper.manageDataMigrationNasabah(dataMigrasi, groupProduk, rekCd);
     } else if (groupProduk == 'CONFIG') {
       actionMigrate = await dbHelper.manageDataMigrationConfig(dataMigrasi);
     } else {
-      actionMigrate = await dbHelper.manageDataMigrationProduct(
-          dataMigrasi, groupProduk, rekCd);
+      actionMigrate = await dbHelper.manageDataMigrationProduct(dataMigrasi, groupProduk, rekCd);
     }
 
     return actionMigrate;
@@ -109,9 +104,7 @@ class GlobalCollectionServices extends BaseServices {
   dynamic lastSync() async {
     var lastSync = await dbHelper.lastSync();
 
-    lastSync = lastSync == null
-        ? DateTime.now().subtract(Duration(days: 1))
-        : new DateFormat("yyyy-MM-dd").parse(lastSync);
+    lastSync = lastSync == null ? DateTime.now().subtract(Duration(days: 1)) : new DateFormat("yyyy-MM-dd").parse(lastSync);
     return lastSync;
   }
 
@@ -132,9 +125,7 @@ class GlobalCollectionServices extends BaseServices {
     // jika masih hari ini
     DateTime lastSyncDate = new DateFormat("yyyy-MM-dd").parse(lastSync);
     DateTime current = new DateTime.now();
-    if (lastSyncDate.year == current.year &&
-        lastSyncDate.month == current.month &&
-        lastSyncDate.day == current.day) {
+    if (lastSyncDate.year == current.year && lastSyncDate.month == current.month && lastSyncDate.day == current.day) {
       return false;
     }
 
@@ -150,12 +141,10 @@ class GlobalCollectionServices extends BaseServices {
     dataLogin["req"] = "getLoginPin";
     dataLogin["username"] = McryptUtils.instance.encrypt(username!);
     dataLogin["pin"] = McryptUtils.instance.encrypt(pin!);
-    dataLogin["platform"] =
-        McryptUtils.instance.encrypt(Platform.isAndroid ? "ANDROID" : "IOS");
+    dataLogin["platform"] = McryptUtils.instance.encrypt(Platform.isAndroid ? "ANDROID" : "IOS");
     dataLogin["imei"] = McryptUtils.instance.encrypt(platform!);
     dataLogin["sn"] = McryptUtils.instance.encrypt(platform!);
-    dataLogin["versi"] = McryptUtils.instance
-        .encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
+    dataLogin["versi"] = McryptUtils.instance.encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
     dataLogin["reg_firebase_id"] = McryptUtils.instance.encrypt(firebaseId);
 
     var resp = await request(
@@ -277,8 +266,7 @@ class GlobalCollectionServices extends BaseServices {
   Future<UpdateInfo?> checkUpdate({BuildContext? context}) async {
     var dataLogin = Map<String, dynamic>();
     dataLogin["req"] = "checkUpdate";
-    dataLogin["versi"] = McryptUtils.instance
-        .encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
+    dataLogin["versi"] = McryptUtils.instance.encrypt(Platform.isAndroid ? versiApkMobile : versiApkIOS);
 
     var resp = await request(
       context: context,

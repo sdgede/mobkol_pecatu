@@ -62,14 +62,10 @@ class _LottieUploadLoaderState extends State<LottieUploadLoader> {
               SizedBox(
                 width: 400,
                 height: 400,
-                child:
-                    LottieBuilder.asset("assets/lottie/uploading_cloud.json"),
+                child: LottieBuilder.asset("assets/lottie/uploading_cloud.json"),
               ),
               Text(
-                trxProv.countProgress.toString() +
-                    " of " +
-                    trxProv.maxProgressUpload.toString() +
-                    " Uploaded",
+                trxProv.countProgress.toString() + " of " + trxProv.maxProgressUpload.toString() + " Uploaded",
                 style: TextStyle(fontSize: 17),
               )
             ],

@@ -17,8 +17,7 @@ class MutasiKredit extends StatefulWidget {
   _MutasiKredit createState() => _MutasiKredit();
 }
 
-class _MutasiKredit extends State<MutasiKredit>
-    with SingleTickerProviderStateMixin {
+class _MutasiKredit extends State<MutasiKredit> with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String? _idProduk, _rekCd, _groupProduk, _norek;
   ProdukCollectionProvider? produkProvider;
@@ -26,8 +25,7 @@ class _MutasiKredit extends State<MutasiKredit>
   @override
   void initState() {
     super.initState();
-    produkProvider =
-        Provider.of<ProdukCollectionProvider>(context, listen: false);
+    produkProvider = Provider.of<ProdukCollectionProvider>(context, listen: false);
     _idProduk = widget.arguments!['idProduk'];
     _rekCd = widget.arguments!['rekCd'];
     _groupProduk = widget.arguments!['groupProduk'];
@@ -53,9 +51,7 @@ class _MutasiKredit extends State<MutasiKredit>
     ]);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: DefaultAppBar(context, 'Mutasi Kredit',
-          isRefresh: true,
-          onRefresh: () => produkProvider!.resetMutasiTransaksi()),
+      appBar: DefaultAppBar(context, 'Mutasi Kredit', isRefresh: true, onRefresh: () => produkProvider!.resetMutasiTransaksi()),
       key: scaffoldKey,
       body: Consumer<ProdukCollectionProvider>(
         builder: (context, produkProv, _) {
@@ -108,9 +104,7 @@ class _MutasiKredit extends State<MutasiKredit>
                                     ),
                                   )),
                                   DataCell(Text(
-                                    TextUtils.instance.numberFormat(
-                                        element.bunga?.toString() ?? "0",
-                                        isRp: false),
+                                    TextUtils.instance.numberFormat(element.bunga?.toString() ?? "0", isRp: false),
                                   )),
                                   DataCell(Text(
                                     TextUtils.instance.numberFormat(
@@ -132,8 +126,7 @@ class _MutasiKredit extends State<MutasiKredit>
                                   )),
                                   DataCell(GestureDetector(
                                     onTap: () {
-                                      ThermalPrinterAction.instance
-                                          .printActionV2(
+                                      ThermalPrinterAction.instance.printActionV2(
                                         contex: context,
                                         groupProduk: _groupProduk,
                                         kode: element.kode,

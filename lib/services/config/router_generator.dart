@@ -90,12 +90,10 @@ class RouterGenerator {
         return MaterialPageRoute(builder: (_) => SplashPage());
 
       case pageUpdate:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => UpdatePage());
+        return MaterialPageRoute(settings: settings, builder: (_) => UpdatePage());
 
       case otaUpdate:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => OtaUpdatePage());
+        return MaterialPageRoute(settings: settings, builder: (_) => OtaUpdatePage());
 
       case pageLanding:
         return MaterialPageRoute(builder: (_) => LandingPage());
@@ -109,8 +107,7 @@ class RouterGenerator {
                   enableAutoPlayLock: true,
                   disableMovingAnimation: false,
                   onFinish: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.setBool('first_time', false);
                   },
                   builder: Builder(

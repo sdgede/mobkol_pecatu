@@ -61,11 +61,7 @@ class HistoryEformModel {
   String? tipe, produkCd, nomorMohon, rekSumber, nominal, trxDate, keterangan;
   String? statusProduk, statusProdukStr, jw, jaminan, dataLain, status, pesan;
   String? scoreUsia, scorePendidikan, scoreUsaha, scoreIstri, scoreSendiri;
-  String? scoreBersih,
-      scoreJaminan,
-      scorePekerjaan,
-      scoreTmptTinggal,
-      sukuBunga;
+  String? scoreBersih, scoreJaminan, scorePekerjaan, scoreTmptTinggal, sukuBunga;
 
   HistoryEformModel({
     this.tipe,
@@ -140,12 +136,10 @@ class SimulasiModel {
   factory SimulasiModel.fromJson(Map<String, dynamic> json) {
     return SimulasiModel(
       bulanKe: json["BulanKe"] ?? "",
-      setoran: double.parse(json["Pokok"] ?? json["Setoran"] ?? "0")
-          .toStringAsFixed(0),
+      setoran: double.parse(json["Pokok"] ?? json["Setoran"] ?? "0").toStringAsFixed(0),
       bunga: double.parse(json["Bunga"] ?? "0").toStringAsFixed(0),
       jumlah: double.parse(json["Jumlah"] ?? "0").toStringAsFixed(0),
-      saldo: double.parse(json["Bakidebet"] ?? json["Saldo"] ?? "0")
-          .toStringAsFixed(0),
+      saldo: double.parse(json["Bakidebet"] ?? json["Saldo"] ?? "0").toStringAsFixed(0),
       status: json["status"] ?? "",
       pesan: json["pesan"] ?? "",
     );

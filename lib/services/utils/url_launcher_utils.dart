@@ -43,10 +43,7 @@ class UrlLauncherUtils {
   }
 
   void launchMaps({String? myAddress, String? destAddress}) async {
-    String googleMapslocationUrl = "https://www.google.co.id/maps/dir/" +
-        myAddress!.replaceAll(' ', '+') +
-        "/" +
-        destAddress!.replaceAll(' ', '+');
+    String googleMapslocationUrl = "https://www.google.co.id/maps/dir/" + myAddress!.replaceAll(' ', '+') + "/" + destAddress!.replaceAll(' ', '+');
 
     final String encodedURl = Uri.encodeFull(googleMapslocationUrl);
 

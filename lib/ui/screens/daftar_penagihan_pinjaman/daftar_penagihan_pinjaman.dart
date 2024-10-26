@@ -26,14 +26,11 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
   @override
   void initState() {
     super.initState();
-    produkProvider =
-        Provider.of<ProdukCollectionProvider>(context, listen: false);
+    produkProvider = Provider.of<ProdukCollectionProvider>(context, listen: false);
     produkProvider!.clearSearchNasabah(isListen: false);
     produkProvider!.setTglAwal(_tglAwal);
     produkProvider!.setTglAkhir(_tglAkhir);
-    produkProvider!.setSelectedProdukName(
-        clientType == "KOPERASI" ? "Pinjaman" : "Kredit",
-        listen: false);
+    produkProvider!.setSelectedProdukName(clientType == "KOPERASI" ? "Pinjaman" : "Kredit", listen: false);
     produkProvider!.setSelectedgroupProdukProduk("KREDIT", listen: false);
     produkProvider!.setSelectedRekCdProduk("KREDIT", listen: false);
     produkProvider!.setSelectedProdukIcon("kredit.png", listen: false);
@@ -120,8 +117,7 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
             if (produkProv.getNasabahList == null) {
               produkProv.getDataPenagihanPinajaman(context);
               return Center(
-                child:
-                    LottieBuilder.asset("assets/lottie/shimmer_list_user.json"),
+                child: LottieBuilder.asset("assets/lottie/shimmer_list_user.json"),
               );
             }
 

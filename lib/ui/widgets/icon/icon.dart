@@ -43,10 +43,7 @@ class SocialIcon extends StatelessWidget {
       child: Container(
         width: 45.0,
         height: 45.0,
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient:
-                LinearGradient(colors: colors!, tileMode: TileMode.clamp)),
+        decoration: BoxDecoration(shape: BoxShape.circle, gradient: LinearGradient(colors: colors!, tileMode: TileMode.clamp)),
         child: RawMaterialButton(
           shape: CircleBorder(),
           onPressed: onPressed != null ? () => onPressed!() : null,

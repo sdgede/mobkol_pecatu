@@ -63,13 +63,7 @@ class _ExportDatabaseState extends State<ExportDatabase> {
                   Consumer<GlobalProvider>(
                     builder: (contex, globalProv, _) {
                       return Column(
-                        children: <Widget>[
-                          SizedBox(height: 20),
-                          _headerInfo(globalProv),
-                          SizedBox(height: 10),
-                          _selectFolderBtn(),
-                          _exportBtn(context)
-                        ],
+                        children: <Widget>[SizedBox(height: 20), _headerInfo(globalProv), SizedBox(height: 10), _selectFolderBtn(), _exportBtn(context)],
                       );
                     },
                   ),
@@ -129,10 +123,7 @@ class _ExportDatabaseState extends State<ExportDatabase> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Text(
               _savePath,
-              style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ),

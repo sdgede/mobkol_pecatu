@@ -8,12 +8,10 @@ class ColorLoader extends StatefulWidget {
   ColorLoader({this.colors, this.duration});
 
   @override
-  _ColorLoaderState createState() =>
-      _ColorLoaderState(this.colors!, this.duration!);
+  _ColorLoaderState createState() => _ColorLoaderState(this.colors!, this.duration!);
 }
 
-class _ColorLoaderState extends State<ColorLoader>
-    with SingleTickerProviderStateMixin {
+class _ColorLoaderState extends State<ColorLoader> with SingleTickerProviderStateMixin {
   final List<Color> colors;
   final Duration duration;
   late Timer timer;
@@ -41,19 +39,14 @@ class _ColorLoaderState extends State<ColorLoader>
       tweenAnimations.add(ColorTween(begin: colors[i], end: colors[i + 1]));
     }
 
-    tweenAnimations
-        .add(ColorTween(begin: colors[colors.length - 1], end: colors[0]));
+    tweenAnimations.add(ColorTween(begin: colors[colors.length - 1], end: colors[0]));
 
     for (int i = 0; i < colors.length; i++) {
-      Animation<Color?> animation = tweenAnimations[i].animate(CurvedAnimation(
-          parent: controller,
-          curve: Interval((1 / colors.length) * (i + 1) - 0.05,
-              (1 / colors.length) * (i + 1),
-              curve: Curves.linear)));
+      Animation<Color?> animation = tweenAnimations[i].animate(CurvedAnimation(parent: controller, curve: Interval((1 / colors.length) * (i + 1) - 0.05, (1 / colors.length) * (i + 1), curve: Curves.linear)));
 
       // colorAnimations.add(animation);
       colorAnimations.add(animation);
-        }
+    }
 
     print(colorAnimations.length);
 

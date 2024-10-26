@@ -16,8 +16,7 @@ import '../../setup.dart';
 
 class ProdukCollectionProvider extends ChangeNotifier {
   final dbHelper = DatabaseHelper.instance;
-  ProdukCollectionServices produkCollectionServices =
-      setup<ProdukCollectionServices>();
+  ProdukCollectionServices produkCollectionServices = setup<ProdukCollectionServices>();
   GlobalProvider? gobalProv;
   // daftar produk
   List<ProdukCollection>? _produkCollection;
@@ -28,8 +27,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   List<ProdukCollection>? _produkCollectionMigrasi;
-  List<ProdukCollection>? get produkCollectionMigrasi =>
-      _produkCollectionMigrasi;
+  List<ProdukCollection>? get produkCollectionMigrasi => _produkCollectionMigrasi;
   void refreshProdukCollectionMigrasi() {
     _produkCollectionMigrasi = null;
     notifyListeners();
@@ -89,16 +87,13 @@ class ProdukCollectionProvider extends ChangeNotifier {
     if (listen) notifyListeners();
   }
 
-  Future<void> setAllDatafirstSelectedProduct(
-      {bool isListen = true, BuildContext? context}) async {
+  Future<void> setAllDatafirstSelectedProduct({bool isListen = true, BuildContext? context}) async {
     if (_produkCollection == null) {
       dataProduk(context!);
       //return EasyLoading.show(status: config.Loading);
     }
 
-    var _dataProduk = _produkCollection!.firstWhere(
-        (element) => element.urut_menu.toString() == '1',
-        orElse: () => ProdukCollection());
+    var _dataProduk = _produkCollection!.firstWhere((element) => element.urut_menu.toString() == '1', orElse: () => ProdukCollection());
 
     _selectedRekCdProduk = _dataProduk.rekCd;
     _selectedgroupProdukProduk = _dataProduk.slug;
@@ -110,11 +105,9 @@ class ProdukCollectionProvider extends ChangeNotifier {
     if (isListen) notifyListeners();
   }
 
-  void dataProduk(BuildContext context,
-      {isMessage = true, migrasi = false}) async {
+  void dataProduk(BuildContext context, {isMessage = true, migrasi = false}) async {
     try {
-      dynamic produkCollection = await produkCollectionServices.dataProduk(
-          context: context, migrasi: migrasi);
+      dynamic produkCollection = await produkCollectionServices.dataProduk(context: context, migrasi: migrasi);
       if (produkCollection == null) {
         if (isMessage) DialogUtils.instance.showError(context: context);
         return null;
@@ -134,8 +127,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   void dataProdukMigrasi(BuildContext context, {isMessage = true}) async {
     try {
       // EasyLoading.show(status: 'Loading');
-      var produkCollectionMigrasi = await produkCollectionServices.dataProduk(
-          context: context, migrasi: true);
+      var produkCollectionMigrasi = await produkCollectionServices.dataProduk(context: context, migrasi: true);
       if (produkCollectionMigrasi == null) {
         if (isMessage) DialogUtils.instance.showError(context: context);
         return null;
@@ -248,8 +240,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   //saldokol
 
   List<SaldoKolektorModel>? _saldoKolektorCollection;
-  List<SaldoKolektorModel>? get saldoKolektorCollection =>
-      _saldoKolektorCollection;
+  List<SaldoKolektorModel>? get saldoKolektorCollection => _saldoKolektorCollection;
 
   void refreshSaldoKolektor() {
     _saldoKolektorCollection = null;
@@ -318,8 +309,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   }
 
   List<MutasiProdukCollection>? _mutasiProdukCollectionSearch;
-  List<MutasiProdukCollection>? get mutasiProdukCollectionSearch =>
-      _mutasiProdukCollectionSearch;
+  List<MutasiProdukCollection>? get mutasiProdukCollectionSearch => _mutasiProdukCollectionSearch;
   void refreshMutasiProdukCollectionSearch() {
     _mutasiProdukCollectionSearch = null;
     notifyListeners();
@@ -347,8 +337,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
     var dataJSon = json.encode(_muatasiProdukCollection);
     json.decode(dataJSon).forEach((val) {
       if (val.norek.contains(keyword)) {
-        _mutasiProdukCollectionSearch!
-            .add(MutasiProdukCollection.fromJson(val));
+        _mutasiProdukCollectionSearch!.add(MutasiProdukCollection.fromJson(val));
       }
     });
     notifyListeners();
@@ -422,8 +411,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
     String rekCd,
   ) async {
     try {
-      var listProdukCollection =
-          await produkCollectionServices.getDataProdukByUserId(
+      var listProdukCollection = await produkCollectionServices.getDataProdukByUserId(
         context: context,
         idUser: idUser,
         rekCd: rekCd,
@@ -446,8 +434,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
 
   // detail produk
   List<DetailProdukCollection>? _detailProdukCollection;
-  List<DetailProdukCollection>? get detailProdukCollection =>
-      _detailProdukCollection;
+  List<DetailProdukCollection>? get detailProdukCollection => _detailProdukCollection;
   void refreshDetailProdukCollection() {
     _detailProdukCollection = null;
     notifyListeners();
@@ -466,8 +453,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
     String rekCd,
   ) async {
     try {
-      dynamic detailProdukCollection =
-          await produkCollectionServices.getDataDetailProdukByProdukId(
+      dynamic detailProdukCollection = await produkCollectionServices.getDataDetailProdukByProdukId(
         context: context,
         produkId: produkId,
         rekCd: rekCd,
@@ -496,8 +482,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
     String rekCd,
   ) async {
     try {
-      var detailProdukCollection =
-          await produkCollectionServices.getDataDetailProdukByNasabahId(
+      var detailProdukCollection = await produkCollectionServices.getDataDetailProdukByNasabahId(
         context: context,
         idUser: idUser,
         rekCd: rekCd,
@@ -527,17 +512,14 @@ class ProdukCollectionProvider extends ChangeNotifier {
     EasyLoading.show(status: config.Loading);
     // final globalProv = Provider.of<GlobalProvider>(context, listen: false);
     try {
-      var detailProdukCollection =
-          await produkCollectionServices.getDataProdukByRek(
+      var detailProdukCollection = await produkCollectionServices.getDataProdukByRek(
         context: context,
         norek: norek,
         groupProduk: _selectedgroupProdukProduk,
         rekCd: _selectedRekCdProduk,
       );
 
-      var result = detailProdukCollection == null
-          ? null
-          : json.decode(detailProdukCollection);
+      var result = detailProdukCollection == null ? null : json.decode(detailProdukCollection);
       if (result == null) {
         EasyLoading.dismiss();
         DialogUtils.instance.showError(context: context);
@@ -545,8 +527,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
       } else {
         if (result[0]['res_status'] == 'Gagal') {
           EasyLoading.dismiss();
-          DialogUtils.instance
-              .showError(context: context, text: result[0]['pesan']);
+          DialogUtils.instance.showError(context: context, text: result[0]['pesan']);
           return false;
         } else {
           var jsonData = json.decode(detailProdukCollection);
@@ -596,44 +577,30 @@ class ProdukCollectionProvider extends ChangeNotifier {
         DialogUtils.instance.showError(context: context);
         return false;
       } else {
-        if (result[0]['res_status'] == 'Gagal') {
+        var firstResult = result[0] ?? result["0"];
+        if (firstResult['res_status'] == 'Gagal') {
           EasyLoading.dismiss();
-          DialogUtils.instance
-              .showError(context: context, text: result[0]['pesan']);
+          DialogUtils.instance.showError(context: context, text: result[0]['pesan']);
           return false;
         } else {
           var actionMigrate;
           //if (['ANGGOTA', 'TABUNGAN', 'BERENCANA'].contains(groupProduk))
 
           if (groupProduk == 'DATA_AKUN') {
-            actionMigrate = await dbHelper.manageDataMigrationAccount(
-                dataMigrasi, groupProduk, rekCd);
+            actionMigrate = await dbHelper.manageDataMigrationAccount(dataMigrasi, groupProduk, rekCd);
           } else if (groupProduk == 'MASTER_NASABAH') {
-            actionMigrate = await dbHelper.manageDataMigrationNasabah(
-                dataMigrasi, groupProduk, rekCd);
+            actionMigrate = await dbHelper.manageDataMigrationNasabah(dataMigrasi, groupProduk, rekCd);
           } else if (groupProduk == 'CONFIG') {
-            actionMigrate =
-                await dbHelper.manageDataMigrationConfig(dataMigrasi);
+            actionMigrate = await dbHelper.manageDataMigrationConfig(dataMigrasi);
           } else {
-            actionMigrate = await dbHelper.manageDataMigrationProduct(
-                dataMigrasi, groupProduk, rekCd);
+            actionMigrate = await dbHelper.manageDataMigrationProduct(dataMigrasi, groupProduk, rekCd);
           }
           EasyLoading.dismiss();
           await DialogUtils.instance.showInfo(
             context: context,
             isCancel: false,
             title: "Pemberitahuan!",
-            text: descMigrasi! +
-                " per tanggal " +
-                DateFormat("dd-MM-yyyy").format(tglAwal) +
-                " - " +
-                DateFormat("dd-MM-yyyy").format(tglAkhir) +
-                " berhasil.  \n\n" +
-                "Data ditambahkan : " +
-                actionMigrate['row_add'].toString() +
-                "\n" +
-                "Data diperbarui : " +
-                actionMigrate['row_edit'].toString(),
+            text: descMigrasi! + " per tanggal " + DateFormat("dd-MM-yyyy").format(tglAwal) + " - " + DateFormat("dd-MM-yyyy").format(tglAkhir) + " berhasil.  \n\n" + "Data ditambahkan : " + actionMigrate['row_add'].toString() + "\n" + "Data diperbarui : " + actionMigrate['row_edit'].toString(),
             clickOKText: "TUTUP",
           );
           return true;
@@ -653,8 +620,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
 
   // mutasi produk
   List<MutasiProdukCollection>? _muatasiProdukCollection;
-  List<MutasiProdukCollection>? get muatasiProdukCollection =>
-      _muatasiProdukCollection;
+  List<MutasiProdukCollection>? get muatasiProdukCollection => _muatasiProdukCollection;
 
   void resetMutasiTransaksi({isListen = true}) {
     _muatasiProdukCollection = null;
@@ -702,8 +668,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
   ) async {
     try {
       print("mutasi data called");
-      dynamic muatasiProdukCollection =
-          await produkCollectionServices.getMutasiProdukByProdukIdDateRage(
+      dynamic muatasiProdukCollection = await produkCollectionServices.getMutasiProdukByProdukIdDateRage(
         context: context,
         produkId: produkId,
         rekCd: rekCd,
@@ -729,8 +694,7 @@ class ProdukCollectionProvider extends ChangeNotifier {
 }
 
 class ProdukTabunganProvider extends ChangeNotifier {
-  ProdukCollectionServices produkCollectionServices =
-      setup<ProdukCollectionServices>();
+  ProdukCollectionServices produkCollectionServices = setup<ProdukCollectionServices>();
 
   List<ProdukTabunganUserModel>? _produkTabunganUser;
   List<ProdukTabunganUserModel> get produkTabunganUser => _produkTabunganUser!;
@@ -744,8 +708,7 @@ class ProdukTabunganProvider extends ChangeNotifier {
   String get rekDefaultSumber => _rekDefaultSumber!;
   String get namaDefaultSumber => _namaDefaultSumber!;
   String get saldoDefaultSumber => _saldoDefaultSumber!;
-  String get pemilikNamaRekSumber =>
-      _namaSumber == null ? "" : _rekSumber! + " - " + _namaSumber!;
+  String get pemilikNamaRekSumber => _namaSumber == null ? "" : _rekSumber! + " - " + _namaSumber!;
 
   bool _isLoading = true;
   bool get isLoading => _isLoading;
@@ -759,13 +722,11 @@ class ProdukTabunganProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void spGetTabunganIdUser(BuildContext context, String idUser,
-      [bool isSet = false]) async {
+  void spGetTabunganIdUser(BuildContext context, String idUser, [bool isSet = false]) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try {
-      var produkTabunganUser =
-          await produkCollectionServices.spGetTabunganIdUser(
+      var produkTabunganUser = await produkCollectionServices.spGetTabunganIdUser(
         context: context,
         idUser: idUser,
       );
@@ -778,8 +739,7 @@ class ProdukTabunganProvider extends ChangeNotifier {
           final rekSumberDefault = prefs.getString('rekSumber');
           if (rekSumberDefault == null || rekSumberDefault == "") {
             prefs.setString('rekSumber', produkTabunganUser[0].no_rek!);
-            setDefaultRekSumber(produkTabunganUser[0].no_rek!,
-                produkTabunganUser[0].nama!, produkTabunganUser[0].saldo!);
+            setDefaultRekSumber(produkTabunganUser[0].no_rek!, produkTabunganUser[0].nama!, produkTabunganUser[0].saldo!);
           } else {
             produkTabunganUser.forEach((val) {
               if (val.no_rek == rekSumberDefault) {

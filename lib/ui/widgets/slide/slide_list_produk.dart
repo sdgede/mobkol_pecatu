@@ -39,24 +39,17 @@ class _SlideListProduk extends State<SlideListProduk> {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              if (config.forbidenOffline.contains(widget.dataProduk.slug) &&
-                  globalProv!.getConnectionMode == config.offlineMode) {
-                DialogUtils.instance.showError(
-                    context: context,
-                    text:
-                        "Tidak dapat menggunakan mode offline pada jenis transaksi ini, silakan beralih ke mode online terlebih dahulu");
+              if (config.forbidenOffline.contains(widget.dataProduk.slug) && globalProv!.getConnectionMode == config.offlineMode) {
+                DialogUtils.instance.showError(context: context, text: "Tidak dapat menggunakan mode offline pada jenis transaksi ini, silakan beralih ke mode online terlebih dahulu");
               } else {
                 produkProv!.setSelectedRekCdProduk(widget.dataProduk.rekCd!);
-                produkProv!
-                    .setSelectedgroupProdukProduk(widget.dataProduk.slug!);
+                produkProv!.setSelectedgroupProdukProduk(widget.dataProduk.slug!);
                 produkProv!.setSelectedProdukName(widget.dataProduk.nama!);
                 produkProv!.setSelectedProdukIcon(widget.dataProduk.icon!);
-                produkProv!
-                    .setSelectedMinSetoran(widget.dataProduk.min_setoran!);
+                produkProv!.setSelectedMinSetoran(widget.dataProduk.min_setoran!);
                 print(widget.dataProduk.rekCd);
                 print(widget.dataProduk.slug);
-                produkProv!
-                    .setSelectedRekShortcut(widget.dataProduk.rek_shortcut!);
+                produkProv!.setSelectedRekShortcut(widget.dataProduk.rek_shortcut!);
                 if (widget.isKlad) produkProv!.resetMutasiTransaksi();
               }
             },
@@ -67,41 +60,30 @@ class _SlideListProduk extends State<SlideListProduk> {
                     borderRadius: BorderRadius.circular(7.0),
                   ),
                   elevation: 3.0,
-                  color: (produkProv!.getSelectedRkCdProduk ==
-                          widget.dataProduk.rekCd)
-                      ? accentColor
-                      : Colors.white,
+                  color: (produkProv!.getSelectedRkCdProduk == widget.dataProduk.rekCd) ? accentColor : Colors.white,
                   child: Container(
                     padding: EdgeInsets.all(10),
                     width: 120,
                     child: Column(
                       children: [
                         CircleAvatar(
-                          backgroundColor: (produkProv!.getSelectedRkCdProduk ==
-                                  widget.dataProduk.rekCd)
-                              ? Colors.white
-                              : Colors.grey.shade200,
+                          backgroundColor: (produkProv!.getSelectedRkCdProduk == widget.dataProduk.rekCd) ? Colors.white : Colors.grey.shade200,
                           child: Container(
                             padding: EdgeInsets.all(7),
-                            child: globalProv!.getConnectionMode ==
-                                    config.onlineMode
+                            child: globalProv!.getConnectionMode == config.onlineMode
                                 ? Image.network(
                                     config.iconLink + widget.dataProduk.icon!,
                                     height: 30,
                                     width: 30,
                                   )
-                                : Image.asset(
-                                    'assets/icon/' + widget.dataProduk.icon!),
+                                : Image.asset('assets/icon/' + widget.dataProduk.icon!),
                           ),
                         ),
                         SizedBox(height: 5),
                         Text(
                           widget.dataProduk.nama!.toUpperCase(),
                           style: TextStyle(
-                            color: (produkProv!.getSelectedRkCdProduk ==
-                                    widget.dataProduk.rekCd)
-                                ? Colors.white
-                                : Colors.black,
+                            color: (produkProv!.getSelectedRkCdProduk == widget.dataProduk.rekCd) ? Colors.white : Colors.black,
                           ),
                           textAlign: TextAlign.center,
                         ),

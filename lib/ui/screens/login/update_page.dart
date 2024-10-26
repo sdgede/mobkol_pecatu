@@ -47,24 +47,18 @@ class _UpdatePageState extends State<UpdatePage> {
                     child: Column(
                       children: [
                         SizedBox(height: 30),
-                        ImageNetwork(
-                            urlImage:
-                                config.urlImg + globalProv!.updateInfo!.img!),
+                        ImageNetwork(urlImage: config.urlImg + globalProv!.updateInfo!.img!),
                         SizedBox(height: 30),
                         Html(
-                          data:
-                              '<h3>${globalProv!.updateInfo!.title}</h3>${globalProv!.updateInfo!.desc}',
+                          data: '<h3>${globalProv!.updateInfo!.title}</h3>${globalProv!.updateInfo!.desc}',
                           style: {"h3": Style(textAlign: TextAlign.center)},
                         ),
                       ],
                     ),
                   ),
                 ),
-                if (globalProv!.updateInfo!.type != config.MAINTENANCE)
-                  _updateButton(globalProv!.updateInfo!.url!),
-                if (globalProv!.updateInfo!.type != config.MANDATORY_UPDATE &&
-                    globalProv!.updateInfo!.type != config.MAINTENANCE)
-                  _ignoreButton(route)
+                if (globalProv!.updateInfo!.type != config.MAINTENANCE) _updateButton(globalProv!.updateInfo!.url!),
+                if (globalProv!.updateInfo!.type != config.MANDATORY_UPDATE && globalProv!.updateInfo!.type != config.MAINTENANCE) _ignoreButton(route)
               ],
             ),
           ),
@@ -136,17 +130,13 @@ class ImageNetwork extends StatelessWidget {
       urlImage,
       fit: BoxFit.fill,
       height: ScreenUtil().setHeight(250),
-      loadingBuilder: (BuildContext context, Widget child,
-          ImageChunkEvent? loadingProgress) {
+      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
         if (loadingProgress == null) return child;
         return Container(
           height: ScreenUtil().setHeight(150),
           child: Center(
             child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
-                  : null,
+              value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
             ),
           ),
         );

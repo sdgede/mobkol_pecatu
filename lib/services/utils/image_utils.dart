@@ -19,8 +19,7 @@ class ImageUtils {
 
     fixedImage = img.flipVertical(originalImage!);
 
-    final fixedFile =
-        await originalFile.writeAsBytes(img.encodeJpg(fixedImage));
+    final fixedFile = await originalFile.writeAsBytes(img.encodeJpg(fixedImage));
 
     return fixedFile;
   }
@@ -51,27 +50,21 @@ class ImageUtils {
       }
     }
 
-    final fixedFile =
-        await originalFile.writeAsBytes(img.encodeJpg(fixedImage!));
+    final fixedFile = await originalFile.writeAsBytes(img.encodeJpg(fixedImage!));
 
     return fixedFile;
   }
 
-  Future<File> cropImage(
-      File file, int originX, int originY, int width, int height) async {
-    File croppedFile = await FlutterNativeImage.cropImage(
-        file.path, originX, originY, width, height);
+  Future<File> cropImage(File file, int originX, int originY, int width, int height) async {
+    File croppedFile = await FlutterNativeImage.cropImage(file.path, originX, originY, width, height);
     return croppedFile;
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-        .buffer
-        .asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
   }
 
   Future<String> saveTemporaryImage({

@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-
 import '../base/config_services.dart';
 import '../config/router_generator.dart';
 import '../utils/mcrypt_utils.dart';
@@ -37,7 +35,7 @@ class BaseServices {
 
   _printDecryptData(String title, dynamic data) {
     if (data == null) {
-      log('\x1B[33m$title ${(isPrintDecryptRequest ? 'DECRYPTED ' : '')}:\x1B[0m \x1B[37mNULL_DATA_REQUEST\x1B[0m');
+      debugPrint('\x1B[33m$title ${(isPrintDecryptRequest ? 'DECRYPTED ' : '')}:\x1B[0m \x1B[37mNULL_DATA_REQUEST\x1B[0m');
       return null;
     }
 
@@ -51,12 +49,12 @@ class BaseServices {
         } catch (e) {}
 
         if (decrypted == null) decrypted = v.toString();
-        
+
         decryptData[k.toString()] = decrypted;
       });
-      log('\x1B[33m$title DECRYPTED :\x1B[0m \x1B[37m${jsonEncode(decryptData)}\x1B[0m');
+      debugPrint('\x1B[33m$title DECRYPTED :\x1B[0m \x1B[37m${jsonEncode(decryptData)}\x1B[0m');
     } else {
-      log('\x1B[33m$title :\x1B[0m \x1B[37m${jsonEncode(data)}\x1B[0m');
+      debugPrint('\x1B[33m$title :\x1B[0m \x1B[37m${jsonEncode(data)}\x1B[0m');
     }
   }
 
@@ -68,8 +66,8 @@ class BaseServices {
     RequestTypeToken typeToken = RequestTypeToken.APK,
     TypeEncrypt typeEncrypt = TypeEncrypt.APK,
   }) async {
-    late Response response;
-    DioErrorType? errorType;
+    Response? response;
+    DioExceptionType? errorType;
 
     await _addGlobalvalue(context!, data);
     _printDecryptData('REQUEST', data);
@@ -85,59 +83,54 @@ class BaseServices {
       switch (type) {
         case RequestType.POST:
           if (typeToken == RequestTypeToken.MERCHANT)
-            response =
-                await _dio.post(url!, data: data, options: _headersOption);
+            response = await _dio.post(url!, data: data, options: _headersOption);
           else {
-            response = await _dio.post(url!,
-                data: FormData.fromMap(data), options: _headersOption);
+            response = await _dio.post(url!, data: FormData.fromMap(data), options: _headersOption);
           }
           break;
         case RequestType.GET:
           response = await _dio.get(url!, options: _headersOption);
           break;
         case RequestType.DELETE:
-          response = await _dio.delete(url!,
-              data: data != null ? data : null, options: _headersOption);
+          response = await _dio.delete(url!, data: data != null ? data : null, options: _headersOption);
           break;
         default:
           return null;
       }
-    } on DioError catch (e) {
-      print("Cannot catch $url with error: $e");
-      response = e.response!;
+    } on DioException catch (e) {
+      EasyLoading.dismiss();
+      if (e.response != null) response = e.response!;
       errorType = e.type;
+      print("Cannot catch $url with error (${errorType.toString()}): $e");
     }
 
-    int statusCode = response.statusCode!;
+    int statusCode = response == null ? 500 : response.statusCode!;
 
-    if (errorType == DioExceptionType.connectionTimeout ||
-        errorType == DioExceptionType.receiveTimeout ||
-        errorType == DioExceptionType.unknown ||
-        statusCode != 200) {
+    if (errorType == DioExceptionType.connectionTimeout || errorType == DioExceptionType.receiveTimeout || errorType == DioExceptionType.unknown || statusCode != 200) {
+      EasyLoading.dismiss();
       await DialogUtils.instance.showError(
         context: context,
-        text:
-            "Tidak dapat terhubung ke server. Silakan periksa koneksi internet Anda...",
+        text: "Tidak dapat terhubung ke server. Silakan periksa koneksi internet Anda...",
       );
       return null;
     }
 
     if (statusCode == 403) {
+      EasyLoading.dismiss();
       bool res = await DialogUtils.instance.showError(
             context: context,
             text: "Session Expired, silahkan login kembali...",
           ) ??
           false;
       if (res) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouterGenerator.pageHomeLogin, (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, RouterGenerator.pageHomeLogin, (route) => false);
       }
       return null;
     }
 
     if (typeToken == RequestTypeToken.APK) {
       try {
-        String body = response.data as String;
+        String body = response == null ? '' : response.data as String;
 
         var result;
         if (typeEncrypt == TypeEncrypt.APK) {
@@ -147,7 +140,7 @@ class BaseServices {
         }
 
         String printText = "REQUEST ($url || ${data['req']})::";
-        print('\x1B[33m$printText\x1B[0m \x1B[37m$result\x1B[0m');
+        debugPrint('\x1B[33m$printText\x1B[0m \x1B[37m$result\x1B[0m');
 
         return result;
       } on Exception {
@@ -157,7 +150,7 @@ class BaseServices {
         return null;
       }
     } else {
-      return response.data;
+      return response == null ? null : response.data;
     }
   }
 
@@ -166,10 +159,8 @@ class BaseServices {
     var user = dataLogin.containsKey('username') ? dataLogin['username'] : '0';
     var pwd = dataLogin.containsKey('password') ? dataLogin['password'] : '0';
     var imei = dataLogin.containsKey('imei') ? dataLogin['imei'] : '0';
-    var groupCdKol =
-        dataLogin.containsKey('group_cd') ? dataLogin['group_cd'] : '0';
-    var wilayahCdKol =
-        dataLogin.containsKey('wilayah') ? dataLogin['wilayah'] : '0';
+    var groupCdKol = dataLogin.containsKey('group_cd') ? dataLogin['group_cd'] : '0';
+    var wilayahCdKol = dataLogin.containsKey('wilayah') ? dataLogin['wilayah'] : '0';
 
     dataParse["user_kol"] = _encrypt(user);
     dataParse["pwd_kol"] = _encrypt(pwd);

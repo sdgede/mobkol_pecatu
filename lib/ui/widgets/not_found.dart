@@ -5,8 +5,7 @@ class DataNotFound extends StatelessWidget {
   final String? pesan, icon, title;
   final double? heightParse, widthParse;
 
-  DataNotFound(
-      {this.title, this.pesan, this.icon, this.heightParse, this.widthParse});
+  DataNotFound({this.title, this.pesan, this.icon, this.heightParse, this.widthParse});
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +14,10 @@ class DataNotFound extends StatelessWidget {
         children: <Widget>[
           SizedBox(height: 10),
           Container(
-            width: (widthParse == null)
-                ? MediaQuery.of(context).size.width * 0.6
-                : widthParse,
+            width: (widthParse == null) ? MediaQuery.of(context).size.width * 0.6 : widthParse,
             height: (heightParse == null) ? 300 : heightParse,
             decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(
-                      (icon == null) ? noDataImage : icon as String)),
+              image: DecorationImage(image: AssetImage((icon == null) ? noDataImage : icon as String)),
             ),
           ),
           SizedBox(height: 10),

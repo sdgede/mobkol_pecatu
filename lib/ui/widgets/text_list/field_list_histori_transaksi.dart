@@ -57,8 +57,7 @@ class _FieldListKlad extends State<FieldListKlad> {
         forceSendNotifTrx: true,
       );
     } else {
-      bool deleteAction = await dbHelper.deleteDataGlobalWithCLause(
-          tbTrxGlobal, tbTrxGlobal_id, dataTrans.trans_id);
+      bool deleteAction = await dbHelper.deleteDataGlobalWithCLause(tbTrxGlobal, tbTrxGlobal_id, dataTrans.trans_id);
 
       if (deleteAction) produkProv!.resetMutasiTransaksi();
     }
@@ -69,11 +68,7 @@ class _FieldListKlad extends State<FieldListKlad> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(7),
-            topRight: Radius.circular(7),
-            bottomLeft: Radius.circular(7),
-            bottomRight: Radius.circular(7)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(7), topRight: Radius.circular(7), bottomLeft: Radius.circular(7), bottomRight: Radius.circular(7)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.shade300.withOpacity(0.5),
@@ -131,17 +126,11 @@ class _FieldListKlad extends State<FieldListKlad> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       shape: BoxShape.rectangle,
-                                      color: widget.dataTrans.isUpload == 'Y'
-                                          ? Colors.green
-                                          : Colors.grey.shade500,
+                                      color: widget.dataTrans.isUpload == 'Y' ? Colors.green : Colors.grey.shade500,
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 1),
-                                    child: Text(
-                                        widget.dataTrans.isUpload == 'Y'
-                                            ? 'TERUPLOAD'
-                                            : 'BELUM TERUPLOAD',
+                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                                    child: Text(widget.dataTrans.isUpload == 'Y' ? 'TERUPLOAD' : 'BELUM TERUPLOAD',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -154,9 +143,7 @@ class _FieldListKlad extends State<FieldListKlad> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            widget.dataTrans.nama! +
-                                ' - ' +
-                                widget.dataTrans.norek!,
+                            widget.dataTrans.nama! + ' - ' + widget.dataTrans.norek!,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
@@ -207,8 +194,7 @@ class _FieldListKlad extends State<FieldListKlad> {
                       icon: Icons.upload_rounded,
                       label: 'Upload',
                       icColor: Colors.green,
-                      onTap: () => _actionDataTrxOffline(
-                          widget.dataTrans, 'UPLOAD', context),
+                      onTap: () => _actionDataTrxOffline(widget.dataTrans, 'UPLOAD', context),
                     ),
                     SizedBox(width: 15),
                     btnTxtAndIcon(
@@ -217,12 +203,8 @@ class _FieldListKlad extends State<FieldListKlad> {
                       label: 'Hapus',
                       icColor: Colors.red,
                       onTap: () async {
-                        bool confirm = await DialogUtils.instance.dialogConfirm(
-                            context,
-                            'Anda yakin ingin menghapus data transaksi ini?');
-                        if (confirm)
-                          _actionDataTrxOffline(
-                              widget.dataTrans, 'HAPUS', context);
+                        bool confirm = await DialogUtils.instance.dialogConfirm(context, 'Anda yakin ingin menghapus data transaksi ini?');
+                        if (confirm) _actionDataTrxOffline(widget.dataTrans, 'HAPUS', context);
                       },
                     ),
                   ],
@@ -250,21 +232,24 @@ Widget hisrizontalTxtList({
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          text ?? "",
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: isTextBold ? FontWeight.w600 : FontWeight.normal,
+        Flexible(
+          child: Text(
+            text ?? "",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: isTextBold ? FontWeight.w600 : FontWeight.normal,
+            ),
           ),
         ),
-        Text(
-          isNumber
-              ? TextUtils.instance.numberFormat(value ?? "0")
-              : (value ?? ""),
-          style: TextStyle(
-            fontSize: 14,
-            color: customColor,
-            fontWeight: isValueBold ? FontWeight.w600 : FontWeight.normal,
+        Flexible(
+          child: Text(
+            isNumber ? TextUtils.instance.numberFormat(value ?? "0") : (value ?? ""),
+            style: TextStyle(
+              fontSize: 14,
+              color: customColor,
+              fontWeight: isValueBold ? FontWeight.w600 : FontWeight.normal,
+            ),
+            textAlign: TextAlign.right,
           ),
         ),
       ],

@@ -177,14 +177,12 @@ class _OtaUpdatePageState extends State<OtaUpdatePage> {
                         ),
                       ),
                       SizedBox(height: 16),
-                      Text(
-                          'Pembaharuan tersedia untuk aplikasi $mobileName. Lakukan pembaruan untuk meningkatkan pengalaman pengguna.',
+                      Text('Pembaharuan tersedia untuk aplikasi $mobileName. Lakukan pembaruan untuk meningkatkan pengalaman pengguna.',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                           )),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.1),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                     ],
                   ),
                 ),

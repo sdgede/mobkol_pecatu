@@ -82,12 +82,9 @@ class QrImage extends StatelessWidget {
               fit: BoxFit.contain,
             );
           }),
-          crossFadeState: snapshot.connectionState == ConnectionState.done
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
+          crossFadeState: snapshot.connectionState == ConnectionState.done ? CrossFadeState.showSecond : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 250),
-          layoutBuilder: (Widget topChild, Key topChildKey, Widget bottomChild,
-              Key bottomChildKey) {
+          layoutBuilder: (Widget topChild, Key topChildKey, Widget bottomChild, Key bottomChildKey) {
             return Stack(
               clipBehavior: Clip.none,
               children: <Widget>[

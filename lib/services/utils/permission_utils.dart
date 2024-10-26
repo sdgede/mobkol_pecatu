@@ -9,8 +9,7 @@ class PermissionUtils {
       if (_permissionStatus.isGranted) {
         return true;
       } else {
-        PermissionStatus _permissionStatus =
-            await Permission.location.request();
+        PermissionStatus _permissionStatus = await Permission.location.request();
         if (_permissionStatus.isGranted) {
           return true;
         } else {

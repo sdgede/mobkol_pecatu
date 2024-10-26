@@ -11,9 +11,7 @@ Widget CustomDbCrBox(BuildContext context, String trxType) {
     child: Center(
       child: Text(
         trxType.toUpperCase(),
-        style: TextStyle(
-            color: trxType == 'DB' ? Colors.red : Colors.green,
-            fontWeight: FontWeight.bold),
+        style: TextStyle(color: trxType == 'DB' ? Colors.red : Colors.green, fontWeight: FontWeight.bold),
       ),
     ),
   );

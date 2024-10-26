@@ -29,23 +29,19 @@ class InfoDialog extends StatelessWidget {
         isCancel == null || isCancel == true
             ? TextButton(
                 // color: Colors.red,
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.red)),
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
                 child: Text(
                   clickCancelText ?? "TIDAK",
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
-                  onClickCancel == null
-                      ? Navigator.of(context).pop(false)
-                      : onClickCancel!();
+                  onClickCancel == null ? Navigator.of(context).pop(false) : onClickCancel!();
                 },
               )
             : Container(),
         TextButton(
           // color: Colors.green,
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.green)),
+          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
           child: Text(
             clickOKText ?? "YAKIN",
             style: TextStyle(color: Colors.white),
@@ -67,13 +63,10 @@ class ErrorDialog extends StatelessWidget {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       title: Text("Opps...!"),
-      content: Text((text != null && text != '')
-          ? text!
-          : "Terjadi kesalahan saat terhubung ke server. CODE:500"),
+      content: Text((text != null && text != '') ? text! : "Terjadi kesalahan saat terhubung ke server. CODE:500"),
       actions: <Widget>[
         TextButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.green)),
+          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
           child: Text(
             "TUTUP",
             style: TextStyle(color: Colors.white),

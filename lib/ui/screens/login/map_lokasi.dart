@@ -39,8 +39,7 @@ class _MapLokasiScreenState extends State<MapLokasiScreen> {
   Set<Marker> createMarker() {
     return <Marker>[
       Marker(
-        markerId: MarkerId(widget.lokasiKantor.toString() +
-            DateTime.now().millisecondsSinceEpoch.toString()),
+        markerId: MarkerId(widget.lokasiKantor.toString() + DateTime.now().millisecondsSinceEpoch.toString()),
         position: widget.lokasiKantor!,
         icon: iconLokasiKantor!,
       ),
@@ -48,8 +47,7 @@ class _MapLokasiScreenState extends State<MapLokasiScreen> {
   }
 
   void setIconMarker() async {
-    var iconLokasiKantor1 = await ImageUtils.instance
-        .getBytesFromAsset('assets/icon/office_marker.png', 70);
+    var iconLokasiKantor1 = await ImageUtils.instance.getBytesFromAsset('assets/icon/office_marker.png', 70);
     setState(() {
       iconLokasiKantor = BitmapDescriptor.fromBytes(iconLokasiKantor1);
     });
@@ -61,8 +59,7 @@ class _MapLokasiScreenState extends State<MapLokasiScreen> {
     return Scaffold(
       appBar: AppBarGoogleMaps(
         context: context,
-        title: "Lokasi " +
-            TextUtils.instance.capitalizeEachWord(widget.namaKantor!),
+        title: "Lokasi " + TextUtils.instance.capitalizeEachWord(widget.namaKantor!),
       ),
       body: Stack(
         children: [

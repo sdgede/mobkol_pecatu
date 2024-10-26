@@ -70,15 +70,12 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
                     child: TextButton(
                       onPressed: () async {
                         if (textNextFinish == config.SKIP) {
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
                           prefs.setBool('first_time', false);
-                          Navigator.pushReplacementNamed(
-                              context, RouterGenerator.pageHomeLogin);
+                          Navigator.pushReplacementNamed(context, RouterGenerator.pageHomeLogin);
                         }
 
-                        if (_currentPage !=
-                            SliderUtils.instance.sliderArrayList.length - 1) {
+                        if (_currentPage != SliderUtils.instance.sliderArrayList.length - 1) {
                           _pageController.nextPage(
                             duration: Duration(milliseconds: 500),
                             curve: Curves.ease,
@@ -99,8 +96,7 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
                       // splashColor: Colors.transparent,
                       // highlightColor: Colors.transparent,
                       style: ButtonStyle(
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.transparent),
+                        overlayColor: MaterialStateProperty.all(Colors.transparent),
                       ),
                     ),
                   ),
@@ -109,9 +105,7 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
                       child: TextButton(
                         onPressed: () {
                           if (_currentPage != 0) {
-                            _pageController.previousPage(
-                                duration: Duration(milliseconds: 500),
-                                curve: Curves.ease);
+                            _pageController.previousPage(duration: Duration(milliseconds: 500), curve: Curves.ease);
                             _onPageChanged(_currentPage - 1);
                           }
                         },
@@ -128,8 +122,7 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
                         // splashColor: Colors.transparent,
                         // highlightColor: Colors.transparent,
                         style: ButtonStyle(
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.transparent),
+                          overlayColor: MaterialStateProperty.all(Colors.transparent),
                         ),
                       )),
                   Container(
@@ -138,13 +131,8 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        for (int i = 0;
-                            i < SliderUtils.instance.sliderArrayList.length;
-                            i++)
-                          if (i == _currentPage)
-                            SlideDots(true)
-                          else
-                            SlideDots(false)
+                        for (int i = 0; i < SliderUtils.instance.sliderArrayList.length; i++)
+                          if (i == _currentPage) SlideDots(true) else SlideDots(false)
                       ],
                     ),
                   ),

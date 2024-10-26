@@ -49,8 +49,7 @@ class LocationUtils {
           context: context,
           clickOKText: "OK",
           title: "Opps...",
-          text:
-              'Pastikan Anda mengizinkan $companyName untuk mengakses lokasi Anda.',
+          text: 'Pastikan Anda mengizinkan $companyName untuk mengakses lokasi Anda.',
         );
         return;
       }
@@ -73,13 +72,11 @@ class LocationUtils {
     String finalAddress = 'Alamat tidak ditemukan';
 
     try {
-      List<geo.Placemark> placemarks =
-          await geo.placemarkFromCoordinates(latitude!, longitude!);
+      List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(latitude!, longitude!);
 
       if (placemarks.isNotEmpty) {
         geo.Placemark firstPlacemark = placemarks.first;
-        String address =
-            '${firstPlacemark.subThoroughfare} ${firstPlacemark.thoroughfare}, ${firstPlacemark.subLocality}, ${firstPlacemark.locality}, ${firstPlacemark.country}';
+        String address = '${firstPlacemark.subThoroughfare} ${firstPlacemark.thoroughfare}, ${firstPlacemark.subLocality}, ${firstPlacemark.locality}, ${firstPlacemark.country}';
 
         finalAddress = address;
       } else {
@@ -99,13 +96,11 @@ class LocationUtils {
     String finalAddress = 'Alamat tidak ditemukan';
 
     try {
-      List<geo.Placemark> placemarks =
-          await geo.placemarkFromCoordinates(latitude!, longitude!);
+      List<geo.Placemark> placemarks = await geo.placemarkFromCoordinates(latitude!, longitude!);
 
       if (placemarks.isNotEmpty) {
         geo.Placemark firstPlacemark = placemarks.first;
-        String address =
-            '${firstPlacemark.subThoroughfare} ${firstPlacemark.thoroughfare}, ${firstPlacemark.subLocality}, ${firstPlacemark.locality}, ${firstPlacemark.country}';
+        String address = '${firstPlacemark.subThoroughfare} ${firstPlacemark.thoroughfare}, ${firstPlacemark.subLocality}, ${firstPlacemark.locality}, ${firstPlacemark.country}';
 
         finalAddress = address;
       } else {
@@ -125,29 +120,14 @@ class LocationUtils {
     double? longitude2,
   }) async {
     Dio dio = new Dio();
-    Response response = await dio.get(
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" +
-            latitude1.toString() +
-            "," +
-            longitude1.toString() +
-            "&destinations=" +
-            latitude2.toString() +
-            "," +
-            longitude2.toString() +
-            "&language=id&key=" +
-            (Platform.isAndroid ? apiMapMobile : apiMapIOS));
+    Response response = await dio.get("https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + latitude1.toString() + "," + longitude1.toString() + "&destinations=" + latitude2.toString() + "," + longitude2.toString() + "&language=id&key=" + (Platform.isAndroid ? apiMapMobile : apiMapIOS));
 
     if (response.data == null) return {'distance': "0", 'time': "0 menit"};
 
     return {
-      'distanceValue': response.data['rows'][0]['elements'][0]['distance']
-          ['value'],
-      'distance':
-          (response.data['rows'][0]['elements'][0]['distance']['value'] / 1000)
-                  .toStringAsFixed(2) +
-              " km",
-      'time': response.data['rows'][0]['elements'][0]['duration']['text']
-          .replaceAll('min', 'menit'),
+      'distanceValue': response.data['rows'][0]['elements'][0]['distance']['value'],
+      'distance': (response.data['rows'][0]['elements'][0]['distance']['value'] / 1000).toStringAsFixed(2) + " km",
+      'time': response.data['rows'][0]['elements'][0]['duration']['text'].replaceAll('min', 'menit'),
     };
   }
 
@@ -158,8 +138,7 @@ class LocationUtils {
     @required double? longitude2,
   }) {
     double theta = longitude1! - longitude2!;
-    double dist = sin(deg2rad(latitude1!)) * sin(deg2rad(latitude2!)) +
-        cos(deg2rad(latitude1)) * cos(deg2rad(latitude2)) * cos(deg2rad(theta));
+    double dist = sin(deg2rad(latitude1!)) * sin(deg2rad(latitude2!)) + cos(deg2rad(latitude1)) * cos(deg2rad(latitude2)) * cos(deg2rad(theta));
     dist = acos(dist);
     dist = rad2deg(dist);
     dist = dist * 60 * 1.1515;

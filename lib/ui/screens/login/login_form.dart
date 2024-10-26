@@ -114,8 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         Container(
-                          margin:
-                              EdgeInsets.only(top: deviceHeight(context) / 4),
+                          margin: EdgeInsets.only(top: deviceHeight(context) / 4),
                           child: Column(
                             children: <Widget>[
                               SizedBox(
