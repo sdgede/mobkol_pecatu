@@ -31,7 +31,7 @@ class GlobalCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: urlApiLogin,
+      url: ConfigURL().urlApiLogin,
       type: RequestType.POST,
       data: dataCustom,
     );
@@ -71,7 +71,7 @@ class GlobalCollectionServices extends BaseServices {
     else {
       resp = await request(
         context: context,
-        url: urlApiLogin,
+        url: ConfigURL().urlApiLogin,
         type: RequestType.POST,
         data: dataLogin,
       );
@@ -149,7 +149,7 @@ class GlobalCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: urlApiLogin,
+      url: ConfigURL().urlApiLogin,
       type: RequestType.POST,
       data: dataLogin,
     );
@@ -169,7 +169,7 @@ class GlobalCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: urlApiLogin,
+      url: ConfigURL().urlApiLogin,
       type: RequestType.POST,
       data: dataReset,
     );
@@ -189,7 +189,7 @@ class GlobalCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: urlApiLogin,
+      url: ConfigURL().urlApiLogin,
       type: RequestType.POST,
       data: dataReset,
     );
@@ -209,7 +209,7 @@ class GlobalCollectionServices extends BaseServices {
 
       var resp = await request(
         context: context,
-        url: urlApiLogin,
+        url: ConfigURL().urlApiLogin,
         type: RequestType.POST,
         typeEncrypt: TypeEncrypt.MERCHANT,
         data: dataReset,
@@ -230,7 +230,7 @@ class GlobalCollectionServices extends BaseServices {
     print(dataLogin);
     var resp = await request(
       context: context,
-      url: urlApiLogin,
+      url: ConfigURL().urlApiLogin,
       type: RequestType.POST,
       data: dataLogin,
     );
@@ -250,7 +250,7 @@ class GlobalCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: urlApiLogin,
+      url: ConfigURL().urlApiLogin,
       type: RequestType.POST,
       data: dataLogin,
     );
@@ -270,7 +270,7 @@ class GlobalCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: urlApiLogin,
+      url: ConfigURL().urlApiLogin,
       type: RequestType.POST,
       data: dataLogin,
     );

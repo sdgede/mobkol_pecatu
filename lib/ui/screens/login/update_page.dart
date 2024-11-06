@@ -47,7 +47,7 @@ class _UpdatePageState extends State<UpdatePage> {
                     child: Column(
                       children: [
                         SizedBox(height: 30),
-                        ImageNetwork(urlImage: config.urlImg + globalProv!.updateInfo!.img!),
+                        ImageNetwork(urlImage: config.ConfigURL().urlImg + globalProv!.updateInfo!.img!),
                         SizedBox(height: 30),
                         Html(
                           data: '<h3>${globalProv!.updateInfo!.title}</h3>${globalProv!.updateInfo!.desc}',

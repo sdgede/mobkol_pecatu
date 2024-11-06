@@ -35,22 +35,43 @@ String apiBeritaLink = "https://newsapi.org/v2/top-headlines?country=id&category
 // api ws link
 String vendorApp = dotenv.env['VENDOR_APP'] ?? '';
 String baseURL = dotenv.env['BASE_URL'] ?? '';
-String iconLink = "${baseURL}assets/icon/";
-String urlApiLogin = "${baseURL}Login";
-String urlApiNasabah = "${baseURL}Nasabah";
-String urlApiNasabahProduk = "${baseURL}Nasabah_tabungan";
-String urlApiNasabahKredit = "${baseURL}Nasabah_kredit";
-String urlApiNasabahDeposito = "${baseURL}Nasabah_deposito";
-String urlApiPembelian = "${baseURL}Pembelian";
-String urlApiMerchant = "${baseURL}Merchant";
-String urlApiTransaksiTabungan = "${baseURL}Trans_tabungan";
-String urlApiTransaksiDeposito = "${baseURL}Trans_deposito";
-String urlApiTransaksiKredit = "${baseURL}Trans_kredit";
-String urlApiNotifikasi = "${baseURL}Notifikasi";
-String urlApiEform = "${baseURL}Eform";
-String urlApiTransferBank = "${baseURL}Transfer_bank";
 bool isAlvaibleTfBank = false;
-String urlImg = "${baseURL}assets/foto/";
+
+class ConfigURL {
+  String iconLink = "assets/icon/";
+  String urlApiLogin = "Login";
+  String urlApiNasabah = "Nasabah";
+  String urlApiNasabahProduk = "Nasabah_tabungan";
+  String urlApiNasabahKredit = "Nasabah_kredit";
+  String urlApiNasabahDeposito = "Nasabah_deposito";
+  String urlApiPembelian = "Pembelian";
+  String urlApiMerchant = "Merchant";
+  String urlApiTransaksiTabungan = "Trans_tabungan";
+  String urlApiTransaksiDeposito = "Trans_deposito";
+  String urlApiTransaksiKredit = "Trans_kredit";
+  String urlApiNotifikasi = "Notifikasi";
+  String urlApiEform = "Eform";
+  String urlApiTransferBank = "Transfer_bank";
+  String urlImg = "assets/foto/";
+
+  ConfigURL() {
+    this.iconLink = "$baseURL${this.iconLink}";
+    this.urlApiLogin = "$baseURL${this.urlApiLogin}";
+    this.urlApiNasabah = "$baseURL${this.urlApiNasabah}";
+    this.urlApiNasabahProduk = "$baseURL${this.urlApiNasabahProduk}";
+    this.urlApiNasabahKredit = "$baseURL${this.urlApiNasabahKredit}";
+    this.urlApiNasabahDeposito = "$baseURL${this.urlApiNasabahDeposito}";
+    this.urlApiPembelian = "$baseURL${this.urlApiPembelian}";
+    this.urlApiMerchant = "$baseURL${this.urlApiMerchant}";
+    this.urlApiTransaksiTabungan = "$baseURL${this.urlApiTransaksiTabungan}";
+    this.urlApiTransaksiDeposito = "$baseURL${this.urlApiTransaksiDeposito}";
+    this.urlApiTransaksiKredit = "$baseURL${this.urlApiTransaksiKredit}";
+    this.urlApiNotifikasi = "$baseURL${this.urlApiNotifikasi}";
+    this.urlApiEform = "$baseURL${this.urlApiEform}";
+    this.urlApiTransferBank = "$baseURL${this.urlApiTransferBank}";
+    this.urlImg = "$baseURL${this.urlImg}";
+  }
+}
 
 // mcrypt
 String saltHashKey = dotenv.env['SALT_HASH_KEY'] ?? '';

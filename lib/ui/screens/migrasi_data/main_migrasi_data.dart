@@ -152,7 +152,7 @@ class _MainMigrasiData extends State<MainMigrasiData> {
                     contentPadding: EdgeInsets.all(20),
                     leading: globalProv!.getConnectionMode == config.onlineMode && !dataListMigrasi[index]['isMaster']
                         ? Image.network(
-                            config.iconLink + dataListMigrasi[index]['icon'],
+                            config.ConfigURL().iconLink + dataListMigrasi[index]['icon'],
                           )
                         : Image.asset('assets/icon/' + dataListMigrasi[index]['icon']),
                     title: Text(

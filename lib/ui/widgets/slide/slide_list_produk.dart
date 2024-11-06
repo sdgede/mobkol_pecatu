@@ -72,7 +72,7 @@ class _SlideListProduk extends State<SlideListProduk> {
                             padding: EdgeInsets.all(7),
                             child: globalProv!.getConnectionMode == config.onlineMode
                                 ? Image.network(
-                                    config.iconLink + widget.dataProduk.icon!,
+                                    config.ConfigURL().iconLink + widget.dataProduk.icon!,
                                     height: 30,
                                     width: 30,
                                   )

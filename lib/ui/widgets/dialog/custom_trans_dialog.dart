@@ -288,7 +288,7 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
               child: globalProv!.getConnectionMode == config.offlineMode
                   ? Image.asset('assets/icon/' + widget.img!)
                   : Image.network(
-                      config.iconLink + widget.img!,
+                      config.ConfigURL().iconLink + widget.img!,
                       width: 60,
                       height: 60,
                     ),

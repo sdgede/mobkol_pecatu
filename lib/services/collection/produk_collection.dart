@@ -24,7 +24,7 @@ class ProdukCollectionServices extends BaseServices {
     if (_globalProv!.getConnectionMode == config.onlineMode)
       resp = await request(
         context: context,
-        url: config.urlApiLogin,
+        url: config.ConfigURL().urlApiLogin,
         type: RequestType.POST,
         data: dataProduk,
       );
@@ -51,19 +51,19 @@ class ProdukCollectionServices extends BaseServices {
     String? norek,
   }) async {
     var dataProduk = Map<String, dynamic>();
-    var urlWs = config.urlApiNasabahProduk;
+    var urlWs = config.ConfigURL().urlApiNasabahProduk;
     if (groupProduk == 'TABUNGAN') {
       dataProduk["req"] = "getMutasiTabungan";
-      urlWs = config.urlApiNasabahProduk;
+      urlWs = config.ConfigURL().urlApiNasabahProduk;
     } else if (groupProduk == 'ANGGOTA') {
       dataProduk["req"] = "getMutasiAnggota";
-      urlWs = config.urlApiNasabahProduk;
+      urlWs = config.ConfigURL().urlApiNasabahProduk;
     } else if (groupProduk == 'BERENCANA') {
       dataProduk["req"] = "getMutasiBerencana";
-      urlWs = config.urlApiNasabahDeposito;
+      urlWs = config.ConfigURL().urlApiNasabahDeposito;
     } else if (groupProduk == 'KREDIT') {
       dataProduk["req"] = "getMutasiKredit";
-      urlWs = config.urlApiNasabahKredit;
+      urlWs = config.ConfigURL().urlApiNasabahKredit;
     }
 
     dataProduk["id_produk"] = McryptUtils.instance.encrypt(idProduk!);
@@ -105,19 +105,19 @@ class ProdukCollectionServices extends BaseServices {
     String? endDate,
   }) async {
     var dataProduk = Map<String, dynamic>();
-    var urlWs = config.urlApiTransaksiTabungan;
+    var urlWs = config.ConfigURL().urlApiTransaksiTabungan;
     if (groupProduk == 'TABUNGAN') {
       dataProduk["req"] = "getHistoryTransTabByDate";
-      urlWs = config.urlApiTransaksiTabungan;
+      urlWs = config.ConfigURL().urlApiTransaksiTabungan;
     } else if (groupProduk == 'ANGGOTA') {
       dataProduk["req"] = "getHistoryTransAnggotaByDate";
-      urlWs = config.urlApiTransaksiTabungan;
+      urlWs = config.ConfigURL().urlApiTransaksiTabungan;
     } else if (groupProduk == 'BERENCANA') {
       dataProduk["req"] = "getHistoryBerencanaByDate";
-      urlWs = config.urlApiTransaksiDeposito;
+      urlWs = config.ConfigURL().urlApiTransaksiDeposito;
     } else if (groupProduk == 'KREDIT') {
       dataProduk["req"] = "getHistoryKreditByDate";
-      urlWs = config.urlApiTransaksiKredit;
+      urlWs = config.ConfigURL().urlApiTransaksiKredit;
     }
 
     dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
@@ -163,7 +163,7 @@ class ProdukCollectionServices extends BaseServices {
   }) async {
     _globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     var dataProduk = Map<String, dynamic>();
-    var urlWs = config.urlApiNasabahProduk;
+    var urlWs = config.ConfigURL().urlApiNasabahProduk;
     dataProduk["req"] = "getSaldoKolektor";
 
     dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
@@ -206,7 +206,7 @@ class ProdukCollectionServices extends BaseServices {
     _globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     var dataProduk = Map<String, dynamic>();
 
-    var urlWs = config.urlApiNasabahProduk;
+    var urlWs = config.ConfigURL().urlApiNasabahProduk;
     dataProduk["req"] = "getSaldoKolektor";
 
     var resp;
@@ -238,16 +238,16 @@ class ProdukCollectionServices extends BaseServices {
   }) async {
     _globalProv = Provider.of<GlobalProvider>(context!, listen: false);
     var dataProduk = Map<String, dynamic>();
-    var urlWs = config.urlApiNasabahProduk;
+    var urlWs = config.ConfigURL().urlApiNasabahProduk;
 
     if (groupProduk == 'TABUNGAN' || groupProduk == 'ANGGOTA') {
-      urlWs = config.urlApiNasabahProduk;
+      urlWs = config.ConfigURL().urlApiNasabahProduk;
       dataProduk["req"] = "getDataPencarianProdukTab";
     } else if (groupProduk == 'BERENCANA') {
-      urlWs = config.urlApiNasabahDeposito;
+      urlWs = config.ConfigURL().urlApiNasabahDeposito;
       dataProduk["req"] = "getDataPencarianTabBerencana";
     } else if (groupProduk == 'KREDIT') {
-      urlWs = config.urlApiNasabahKredit;
+      urlWs = config.ConfigURL().urlApiNasabahKredit;
       dataProduk["req"] = "getDataPencarianKredit";
     }
 
@@ -293,7 +293,7 @@ class ProdukCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: config.urlApiNasabahKredit,
+      url: config.ConfigURL().urlApiNasabahKredit,
       type: RequestType.POST,
       data: dataProduk,
     );
@@ -329,7 +329,7 @@ class ProdukCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: config.urlApiNasabah,
+      url: config.ConfigURL().urlApiNasabah,
       type: RequestType.POST,
       data: dataProduk,
     );
@@ -365,7 +365,7 @@ class ProdukCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: config.urlApiNasabah,
+      url: config.ConfigURL().urlApiNasabah,
       type: RequestType.POST,
       data: dataProduk,
     );
@@ -399,7 +399,7 @@ class ProdukCollectionServices extends BaseServices {
     dataProduk["longi"] = McryptUtils.instance.encrypt("0");
     var resp = await request(
       context: context,
-      url: config.urlApiNasabah,
+      url: config.ConfigURL().urlApiNasabah,
       type: RequestType.POST,
       data: dataProduk,
     );
@@ -425,19 +425,19 @@ class ProdukCollectionServices extends BaseServices {
     String? long,
   }) async {
     var dataProduk = Map<String, dynamic>();
-    var urlWs = config.urlApiNasabahProduk;
+    var urlWs = config.ConfigURL().urlApiNasabahProduk;
     if (groupProduk == 'TABUNGAN') {
       dataProduk["req"] = "getDataProdukTabByRek";
-      urlWs = config.urlApiNasabahProduk;
+      urlWs = config.ConfigURL().urlApiNasabahProduk;
     } else if (groupProduk == 'ANGGOTA') {
       dataProduk["req"] = "getDataProdukAnggotaByRek";
-      urlWs = config.urlApiNasabahProduk;
+      urlWs = config.ConfigURL().urlApiNasabahProduk;
     } else if (groupProduk == 'BERENCANA') {
       dataProduk["req"] = "getDataProdukBerencanaByRek";
-      urlWs = config.urlApiNasabahDeposito;
+      urlWs = config.ConfigURL().urlApiNasabahDeposito;
     } else if (groupProduk == 'KREDIT') {
       dataProduk["req"] = "getRincianKreditByRek";
-      urlWs = config.urlApiNasabahKredit;
+      urlWs = config.ConfigURL().urlApiNasabahKredit;
     }
 
     dataProduk["norek"] = McryptUtils.instance.encrypt(norek!);
@@ -470,25 +470,25 @@ class ProdukCollectionServices extends BaseServices {
     String? long,
   }) async {
     var dataProduk = Map<String, dynamic>();
-    var urlWs = config.urlApiNasabahProduk;
+    var urlWs = config.ConfigURL().urlApiNasabahProduk;
     if (groupProduk == 'TABUNGAN') {
       dataProduk["req"] = "getDataMigrasiTab";
-      urlWs = config.urlApiNasabahProduk;
+      urlWs = config.ConfigURL().urlApiNasabahProduk;
     } else if (groupProduk == 'ANGGOTA') {
       dataProduk["req"] = "getDataMigrasiAgt";
-      urlWs = config.urlApiNasabahProduk;
+      urlWs = config.ConfigURL().urlApiNasabahProduk;
     } else if (groupProduk == 'BERENCANA') {
       dataProduk["req"] = "getDataMigrasiBerencana";
-      urlWs = config.urlApiNasabahDeposito;
+      urlWs = config.ConfigURL().urlApiNasabahDeposito;
     } else if (groupProduk == 'MASTER_NASABAH') {
       dataProduk["req"] = "getDataMigrasiMasterNasabah";
-      urlWs = config.urlApiNasabah;
+      urlWs = config.ConfigURL().urlApiNasabah;
     } else if (groupProduk == 'DATA_AKUN') {
       dataProduk["req"] = "getMigrasiDataAKun";
-      urlWs = config.urlApiLogin;
+      urlWs = config.ConfigURL().urlApiLogin;
     } else if (groupProduk == 'CONFIG') {
       dataProduk["req"] = "getMigrasiDataConfig";
-      urlWs = config.urlApiLogin;
+      urlWs = config.ConfigURL().urlApiLogin;
     }
 
     dataProduk["tglAwal"] = McryptUtils.instance.encrypt(tglAwal!);
@@ -532,7 +532,7 @@ class ProdukCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: config.urlApiNasabah,
+      url: config.ConfigURL().urlApiNasabah,
       type: RequestType.POST,
       data: dataProduk,
     );
@@ -565,7 +565,7 @@ class ProdukCollectionServices extends BaseServices {
 
     var resp = await request(
       context: context,
-      url: config.urlApiNasabah,
+      url: config.ConfigURL().urlApiNasabah,
       type: RequestType.POST,
       data: dataProduk,
     );

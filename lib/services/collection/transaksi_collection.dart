@@ -32,20 +32,20 @@ class TransaksiCollectionServices extends BaseServices {
     String? action,
   }) async {
     var dataTransaksi = Map<String, dynamic>();
-    String urlWs = urlApiTransaksiTabungan;
+    String urlWs = ConfigURL().urlApiTransaksiTabungan;
 
     if (groupProduk == 'TABUNGAN') {
       dataTransaksi["req"] = "insertTtransTab";
-      urlWs = urlApiTransaksiTabungan;
+      urlWs = ConfigURL().urlApiTransaksiTabungan;
     } else if (groupProduk == 'ANGGOTA') {
       dataTransaksi["req"] = "insertTtransAnggota";
-      urlWs = urlApiTransaksiTabungan;
+      urlWs = ConfigURL().urlApiTransaksiTabungan;
     } else if (groupProduk == 'BERENCANA') {
       dataTransaksi["req"] = "insertTtransSirena";
-      urlWs = urlApiTransaksiDeposito;
+      urlWs = ConfigURL().urlApiTransaksiDeposito;
     } else if (groupProduk == 'KREDIT') {
       dataTransaksi["req"] = "insertTtransKredit";
-      urlWs = urlApiTransaksiKredit;
+      urlWs = ConfigURL().urlApiTransaksiKredit;
     }
 
     dataTransaksi["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
@@ -103,7 +103,7 @@ class TransaksiCollectionServices extends BaseServices {
 
     await request(
       context: context,
-      url: urlApiNotifikasi,
+      url: ConfigURL().urlApiNotifikasi,
       type: RequestType.POST,
       data: dataNotifikasi,
     );
