@@ -9,7 +9,6 @@ import 'package:countup/countup.dart';
 import '../../../services/config/config.dart' as config;
 import '../../../services/viewmodel/produk_provider.dart';
 import '../../../services/viewmodel/global_provider.dart';
-import '../../../ui/screens/nasabah/SearchController.dart' as sc;
 import '../../../ui/widgets/datetime_periode.dart';
 import '../../../ui/widgets/floating_action_button.dart';
 import '../../../ui/widgets/loader/lottie_loader.dart';
@@ -465,26 +464,6 @@ class _MainKlad extends State<MainKlad> {
               return SlideListProduk(dataProduk: dataProduk, isKlad: true);
             },
           ),
-        );
-      },
-    );
-  }
-
-  Widget _searchForm() {
-    return Builder(
-      builder: (context) {
-        return Consumer<ProdukCollectionProvider>(
-          builder: (context, produkProv, _) {
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: sc.SearchController(
-                controller: searchController,
-                onClick: () => produkProv.goToSearchNasbah(context),
-                readOnly: true,
-                placeHolder: 'Cari Norek / Nama / Jumlah / Saldo',
-              ),
-            );
-          },
         );
       },
     );

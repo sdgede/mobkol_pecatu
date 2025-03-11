@@ -1,6 +1,32 @@
 import 'package:intl/intl.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+enum ClientType { lpd, koperasi }
+
+extension ClientTypeExtension on ClientType {
+  String get name {
+    switch (this) {
+      case ClientType.lpd:
+        return 'LPD';
+      case ClientType.koperasi:
+        return 'Koperasi';
+      default:
+        return '';
+    }
+  }
+
+  static ClientType fromString(String type) {
+    switch (type) {
+      case 'LPD':
+        return ClientType.lpd;
+      case 'KOPERASI':
+        return ClientType.koperasi;
+      default:
+        return ClientType.koperasi;
+    }
+  }
+}
+
 //con mode
 String onlineMode = "ONLINE";
 String offlineMode = "OFFLINE";
@@ -23,7 +49,7 @@ String companyShortName = dotenv.env['COMPANY_SHORT_NAME'] ?? '';
 String nomorCompany = dotenv.env['COMPANY_NOMOR'] ?? '';
 String nomorWhatsAppCompany = dotenv.env['COMPANY_NOMOR_WA'] ?? '';
 String emailCompany = dotenv.env['COMPANY_EMAIL'] ?? '';
-String clientType = dotenv.env['CLIENT_TYPE'] ?? '';
+ClientType clientType = ClientTypeExtension.fromString(dotenv.env['CLIENT_TYPE'] ?? '');
 
 String imageName = dotenv.env['IMAGE_NAME'] ?? '';
 String jamAwalVC = "09.00";

@@ -53,10 +53,6 @@ class DatabaseHelper {
     return McryptUtils.instance.decrypt(val ?? '');
   }
 
-  String _encrypt(String? val) {
-    return McryptUtils.instance.encrypt(val ?? '');
-  }
-
   Future getLasIdTbTarns() async {
     Database db = await instance.database;
     Map<String, dynamic> result;

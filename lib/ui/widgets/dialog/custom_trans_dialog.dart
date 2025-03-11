@@ -365,22 +365,6 @@ class _CustomTransDialogState extends State<CustomTransDialog> {
     ));
   }
 
-  Widget _formResult() {
-    return Consumer<TransaksiProvider>(
-      builder: (context, transProvider, _) {
-        return Container(
-          child: Column(
-            children: [
-              Center(
-                child: Text(transProvider.dataSuksesTransaksi.pesan ?? '404 Not found'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   Widget buttonKirim() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),

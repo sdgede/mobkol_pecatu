@@ -174,8 +174,4 @@ class BaseServices {
   String _encrypt(String? val) {
     return McryptUtils.instance.encrypt(val ?? '0');
   }
-
-  String _decrypt(String? val) {
-    return McryptUtils.instance.decrypt(val ?? '0');
-  }
 }

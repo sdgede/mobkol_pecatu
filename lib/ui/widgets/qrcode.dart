@@ -58,9 +58,14 @@ class QrImage extends StatelessWidget {
       data: data!,
       version: qr.QrVersions.auto,
       errorCorrectionLevel: errorCorrectionLevel,
-      color: color,
       gapless: true,
-      emptyColor: backgroundColor,
+      eyeStyle: QrEyeStyle(
+        eyeShape: QrEyeShape.square,
+        color: color,
+      ),
+      dataModuleStyle: QrDataModuleStyle(
+        color: color,
+      ),
     );
 
     return FutureBuilder<ByteData>(
@@ -68,6 +73,7 @@ class QrImage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<ByteData> snapshot) {
         return AnimatedCrossFade(
           firstChild: Container(
+            color: backgroundColor,
             alignment: Alignment.center,
           ),
           secondChild: Builder(builder: (BuildContext context) {

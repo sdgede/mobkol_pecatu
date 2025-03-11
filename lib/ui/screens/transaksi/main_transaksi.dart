@@ -23,7 +23,9 @@ class _MainTransaksi extends State<MainTransaksi> {
   bool? _isScan;
   ScrollController? produkScrollCOntroller;
   TextEditingController nomorRekController = new TextEditingController(), _controllerReq = new TextEditingController();
+  // ignore: unused_field
   List<DropdownMenuItem<NorekShortcut>>? _countryItems;
+  // ignore: unused_field
   NorekShortcut? _selectedShortcut;
 
   void _initNorekShortCut() {
@@ -88,25 +90,6 @@ class _MainTransaksi extends State<MainTransaksi> {
           ),
         );
       },
-    );
-  }
-
-  Widget _kreditOption() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
-      child: DropdownButton<NorekShortcut>(
-        isExpanded: true,
-        //underline: 10,
-        icon: Icon(Iconsax.arrow_down_2),
-        value: _selectedShortcut,
-        items: _countryItems,
-        onChanged: (newValue) {
-          setState(() {
-            _controllerReq.text = newValue!.key;
-            _selectedShortcut = newValue;
-          });
-        },
-      ),
     );
   }
 

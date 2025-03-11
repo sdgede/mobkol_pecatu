@@ -296,7 +296,7 @@ class GlobalCollectionServices extends BaseServices {
       config.nomorCompany = localCfg['no_hp_instansi'];
       config.nomorWhatsAppCompany = localCfg['no_wa_instansi'];
       config.emailCompany = localCfg['email_instansi'];
-      config.clientType = localCfg['client_type'];
+      config.clientType = config.ClientTypeExtension.fromString(localCfg['client_type'] ?? '');
       constant.primaryColor = Color(int.parse(localCfg['primaryColor']));
       constant.accentColor = Color(int.parse(localCfg['accentColor']));
 

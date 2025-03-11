@@ -119,7 +119,7 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
                             if (_isConnected)
                               Column(
                                 children: [
-                                  if (clientType == 'KOPERASI')
+                                  if (clientType == ClientType.koperasi)
                                     _btnSamplePrint(
                                       tittle: 'PRINT SAMPLE SIMP ANGGOTA',
                                       printAction: _formatAgt,
@@ -133,7 +133,7 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
                                     printAction: _formatJangka,
                                   ),
                                   _btnSamplePrint(
-                                    tittle: clientType == 'KOPERASI' ? 'PRINT SAMPLE SIMP PINJAMAN' : 'PRINT SAMPLE KREDIT',
+                                    tittle: clientType == ClientType.koperasi ? 'PRINT SAMPLE SIMP PINJAMAN' : 'PRINT SAMPLE KREDIT',
                                     printAction: _formatKredit,
                                   ),
                                   _disconnect(),
@@ -507,21 +507,6 @@ class _MainSettingPrinter extends State<MainSettingPrinter> {
         bluetooth.printNewLine();
       }
     });
-  }
-
-  Future _show(String message, {Duration duration = const Duration(seconds: 3), BuildContext? ctx}) async {
-    await new Future.delayed(new Duration(milliseconds: 100));
-    ScaffoldMessenger.of(ctx!).showSnackBar(
-      new SnackBar(
-        content: new Text(
-          message,
-          style: new TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        duration: duration,
-      ),
-    );
   }
 
   void alertSnack(BuildContext ctx, String message) {

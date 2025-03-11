@@ -49,14 +49,6 @@ class _LoginPageState extends State<LoginPage> {
     EasyLoading.dismiss();
   }
 
-  void _testRowCount() async {
-    var dataLogin = Map<String, dynamic>();
-    dataLogin['username'] = 'malik';
-    dataLogin['pwd'] = 'malik';
-    var data = await dbHelper.getLoginOffline(dataLogin);
-    print(data);
-  }
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(750, 1334));

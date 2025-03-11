@@ -49,7 +49,7 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk> with SingleTicke
   String _getNoRekDesc() {
     if (widget.arguments!['tipe'] == 'ANGGOTA') return 'No Anggota';
     if (widget.arguments!['tipe'] == 'KREDIT')
-      return config.clientType == 'KOPERASI' ? 'No Pinjaman' : 'No Kredit';
+      return config.clientType == config.ClientType.koperasi ? 'No Pinjaman' : 'No Kredit';
     else
       return 'No Rekening';
   }

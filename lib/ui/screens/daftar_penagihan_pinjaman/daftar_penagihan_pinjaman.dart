@@ -30,7 +30,7 @@ class _DaftarPenagihanPinjaman extends State<DaftarPenagihanPinjaman> {
     produkProvider!.clearSearchNasabah(isListen: false);
     produkProvider!.setTglAwal(_tglAwal);
     produkProvider!.setTglAkhir(_tglAkhir);
-    produkProvider!.setSelectedProdukName(clientType == "KOPERASI" ? "Pinjaman" : "Kredit", listen: false);
+    produkProvider!.setSelectedProdukName(clientType == ClientType.koperasi ? "Pinjaman" : "Kredit", listen: false);
     produkProvider!.setSelectedgroupProdukProduk("KREDIT", listen: false);
     produkProvider!.setSelectedRekCdProduk("KREDIT", listen: false);
     produkProvider!.setSelectedProdukIcon("kredit.png", listen: false);
