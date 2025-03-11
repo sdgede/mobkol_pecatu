@@ -7,10 +7,10 @@ class FirestoreCollectionServices {
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   Future<String> getBaseURL() async {
+    String baseURL = config.baseURL;
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String clientPackageName = packageInfo.packageName;
 
-    String baseURL = config.baseURL;
     final docRef = db.collection("mobkol_base_url").doc(clientPackageName);
     const source = Source.server;
 

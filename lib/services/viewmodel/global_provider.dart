@@ -28,7 +28,7 @@ class GlobalProvider extends ChangeNotifier {
   ProdukCollectionServices produkCollectionServices = setup<ProdukCollectionServices>();
   FirestoreCollectionServices firestoreService = setup<FirestoreCollectionServices>();
 
-  void setBaseURL() async {
+  Future<void> setBaseURL() async {
     String baseURL = await firestoreService.getBaseURL();
     config.baseURL = baseURL;
   }

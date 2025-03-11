@@ -59,9 +59,8 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   loadAllData() async {
     // load data config
-    globalProv.setBaseURL();
+    await globalProv.setBaseURL();
     await globalProv.getLocalConfig();
-
     await dbHelper.database;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var nama = prefs.getString('nama');
