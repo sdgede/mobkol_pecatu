@@ -78,6 +78,7 @@ class ConfigURL {
   String urlApiNotifikasi = "Notifikasi";
   String urlApiEform = "Eform";
   String urlApiTransferBank = "Transfer_bank";
+  String urlProductCollector = "productCollector";
   String urlImg = "assets/foto/";
 
   ConfigURL() {
@@ -95,6 +96,7 @@ class ConfigURL {
     this.urlApiNotifikasi = "$baseURL${this.urlApiNotifikasi}";
     this.urlApiEform = "$baseURL${this.urlApiEform}";
     this.urlApiTransferBank = "$baseURL${this.urlApiTransferBank}";
+    this.urlProductCollector = "$baseURL${this.urlProductCollector}";
     this.urlImg = "$baseURL${this.urlImg}";
   }
 }

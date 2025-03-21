@@ -60,11 +60,20 @@ Widget dateTimeField({required BuildContext context, required String title, requ
   );
 }
 
-Widget getDatePeriode(BuildContext context, {bool isKlad = false}) {
+Widget getDatePeriode(
+  BuildContext context, {
+  bool isKlad = false,
+  EdgeInsetsGeometry? margin,
+  EdgeInsetsGeometry? padding,
+  Color? color,
+  Function(DateTime)? fnChangeStart,
+  Function(DateTime)? fnChangeEnd,
+}) {
   return Consumer<ProdukCollectionProvider>(builder: (contex, produkProv, _) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 0),
-      margin: EdgeInsets.only(top: 20),
+      color: color,
+      padding: padding ?? EdgeInsets.symmetric(horizontal: 0),
+      margin: margin ?? EdgeInsets.only(top: 20),
       child: Consumer<ProdukCollectionProvider>(
         builder: (context, produkProv, _) {
           return Row(
@@ -75,6 +84,8 @@ Widget getDatePeriode(BuildContext context, {bool isKlad = false}) {
                 title: 'Tanggal Awal',
                 initDate: produkProv.tglAwal,
                 onChange: (currentValue) {
+                  if (fnChangeStart != null) fnChangeStart(currentValue);
+
                   produkProv.setTglAwal(currentValue, true);
                   if (produkProv.tglAwal.difference(produkProv.tglAkhir).inDays < 1) {
                     produkProv.setMutasiLoading(true, true);
@@ -100,6 +111,8 @@ Widget getDatePeriode(BuildContext context, {bool isKlad = false}) {
                 title: 'Tanggal Akhir',
                 initDate: produkProv.tglAkhir,
                 onChange: (currentValue) {
+                  if (fnChangeEnd != null) fnChangeEnd(currentValue);
+
                   produkProv.setTglAkhir(currentValue, true);
                   if (produkProv.tglAkhir.difference(produkProv.tglAwal).inDays > 0) {
                     produkProv.setMutasiLoading(true, true);

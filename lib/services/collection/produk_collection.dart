@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sevanam_mobkol/model/model_datatable.dart';
 
 import '../../database/databaseHelper.dart';
 import '../../services/viewmodel/global_provider.dart';
@@ -93,6 +95,63 @@ class ProdukCollectionServices extends BaseServices {
       });
     }
     return listProdukCollection;
+  }
+
+  Future<ModelDatatable> getDataMutasiV2(
+    BuildContext context, {
+    required int page,
+    int limit = 20,
+    String? idProduk,
+    String? rekCd,
+    String? groupProduk,
+    String? norek,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    try {
+      Map<String, String> productReq = {
+        "TABUNGAN": "getMutasiTabungan",
+        "ANGGOTA": "getMutasiAnggota",
+        "BERENCANA": "getMutasiBerencana",
+        "KREDIT": "getMutasiKredit",
+      };
+
+      var response = await request(
+        context: context,
+        url: config.ConfigURL().urlProductCollector,
+        type: RequestType.POST,
+        data: {
+          "req": productReq[groupProduk],
+          "id_produk": McryptUtils.instance.encrypt(idProduk!),
+          "rekCd": McryptUtils.instance.encrypt(rekCd!),
+          "groupProduk": McryptUtils.instance.encrypt(groupProduk!),
+          "norek": McryptUtils.instance.encrypt(norek ?? '0'),
+          "user": McryptUtils.instance.encrypt(config.dataLogin['username']),
+          "pwd": config.dataLogin['password'],
+          "imei": McryptUtils.instance.encrypt(config.dataLogin['imei']),
+          "activity": McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd),
+          "remark": McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd),
+          "lat": McryptUtils.instance.encrypt("0"),
+          "longi": McryptUtils.instance.encrypt("0"),
+          "page": McryptUtils.instance.encrypt("$page"),
+          "limit": McryptUtils.instance.encrypt("$limit"),
+          "start_date": McryptUtils.instance.encrypt(DateFormat("yyyy-MM-dd").format(startDate).toString()),
+          "end_date": McryptUtils.instance.encrypt(DateFormat("yyyy-MM-dd").format(endDate).toString()),
+        },
+      );
+
+      if (response != null) {
+        var jsonData = json.decode(response);
+        return ModelDatatable.fromJson(jsonData as Map<String, dynamic>, (Map<String, dynamic> row) {
+          return MutasiProdukCollection.fromJson(row);
+        });
+      }
+
+      return ModelDatatable(total: 0, limit: limit, page: page, totalPage: 0, data: []);
+    } catch (e) {
+      debugPrint(e.toString());
+      return ModelDatatable(total: 0, limit: limit, page: page, totalPage: 0, data: []);
+    }
   }
 
   Future<List<MutasiProdukCollection>> getDataKlad({

@@ -141,4 +141,8 @@ class TextUtils {
     if (input is String) return input;
     return null;
   }
+
+  String allToStringStrict(dynamic input) {
+    return (allToString(input) ?? '').trim();
+  }
 }

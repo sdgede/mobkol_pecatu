@@ -57,6 +57,7 @@ class _PencarianNasabah extends State<PencarianNasabah> {
               child: Column(
                 children: <Widget>[
                   scrollTag(context),
+                  SizedBox(height: 10),
                   _descPage(),
                   Divider(),
                   SizedBox(height: 10),

@@ -43,9 +43,12 @@ AppBar DefaultAppBar(
   Function? onBack,
   bool isBack = true,
   List<Widget>? actions,
+  PreferredSizeWidget? bottom,
+  double? elevation,
 }) {
   return new AppBar(
     backgroundColor: accentColor,
+    elevation: elevation,
     leading: isBack
         ? IconButton(
             icon: new Icon(
@@ -79,6 +82,7 @@ AppBar DefaultAppBar(
       )),
     ),
     centerTitle: isCenter,
+    bottom: bottom,
   );
 }
 
