@@ -23,6 +23,8 @@ class MutasiTransaksi extends StatefulWidget {
 }
 
 class _MutasiTransaksi extends State<MutasiTransaksi> with SingleTickerProviderStateMixin {
+  final bool _showFilterDate = false;
+
   final scaffoldKey = GlobalKey<ScaffoldState>(), _formKeyStep1 = GlobalKey<FormState>();
   String? _idProduk, _rekCd, _groupProduk;
   ProdukCollectionProvider? produkProvider;
@@ -45,8 +47,8 @@ class _MutasiTransaksi extends State<MutasiTransaksi> with SingleTickerProviderS
       rekCd: _rekCd,
       groupProduk: _groupProduk,
       norek: "0",
-      startDate: _startDate,
-      endDate: _endDate,
+      startDate: _showFilterDate ? _startDate : null,
+      endDate: _showFilterDate ? _endDate : null,
     );
     setState(() {
       _datatable = _datatable.addReplaceData(responseDatatable, isReset: page <= 1);
@@ -85,27 +87,29 @@ class _MutasiTransaksi extends State<MutasiTransaksi> with SingleTickerProviderS
           if (!_isLoading) refreshPage(1);
         },
         elevation: 0,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(83),
-          child: getDatePeriode(
-            context,
-            margin: EdgeInsets.zero,
-            padding: EdgeInsets.only(left: 15, top: 20, right: 15, bottom: 15),
-            color: Colors.white,
-            fnChangeStart: (date) {
-              setState(() {
-                _startDate = date;
-                refreshPage(1);
-              });
-            },
-            fnChangeEnd: (date) {
-              setState(() {
-                _endDate = date;
-                refreshPage(1);
-              });
-            },
-          ),
-        ),
+        bottom: _showFilterDate
+            ? PreferredSize(
+                preferredSize: Size.fromHeight(83),
+                child: getDatePeriode(
+                  context,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.only(left: 15, top: 20, right: 15, bottom: 15),
+                  color: Colors.white,
+                  fnChangeStart: (date) {
+                    setState(() {
+                      _startDate = date;
+                      refreshPage(1);
+                    });
+                  },
+                  fnChangeEnd: (date) {
+                    setState(() {
+                      _endDate = date;
+                      refreshPage(1);
+                    });
+                  },
+                ),
+              )
+            : null,
       ),
       key: scaffoldKey,
       body: SafeArea(

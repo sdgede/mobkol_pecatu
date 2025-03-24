@@ -105,8 +105,8 @@ class ProdukCollectionServices extends BaseServices {
     String? rekCd,
     String? groupProduk,
     String? norek,
-    required DateTime startDate,
-    required DateTime endDate,
+    DateTime? startDate,
+    DateTime? endDate,
   }) async {
     try {
       Map<String, String> productReq = {
@@ -116,28 +116,36 @@ class ProdukCollectionServices extends BaseServices {
         "KREDIT": "getMutasiKredit",
       };
 
+      Map<String, dynamic> reqData = {
+        "req": productReq[groupProduk],
+        "id_produk": McryptUtils.instance.encrypt(idProduk!),
+        "rekCd": McryptUtils.instance.encrypt(rekCd!),
+        "groupProduk": McryptUtils.instance.encrypt(groupProduk!),
+        "norek": McryptUtils.instance.encrypt(norek ?? '0'),
+        "user": McryptUtils.instance.encrypt(config.dataLogin['username']),
+        "pwd": config.dataLogin['password'],
+        "imei": McryptUtils.instance.encrypt(config.dataLogin['imei']),
+        "activity": McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd),
+        "remark": McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd),
+        "lat": McryptUtils.instance.encrypt("0"),
+        "longi": McryptUtils.instance.encrypt("0"),
+        "page": McryptUtils.instance.encrypt("$page"),
+        "limit": McryptUtils.instance.encrypt("$limit"),
+      };
+
+      if (startDate != null) {
+        reqData["start_date"] = McryptUtils.instance.encrypt(DateFormat("yyyy-MM-dd").format(startDate).toString());
+      }
+
+      if (endDate != null) {
+        reqData["end_date"] = McryptUtils.instance.encrypt(DateFormat("yyyy-MM-dd").format(endDate).toString());
+      }
+
       var response = await request(
         context: context,
         url: config.ConfigURL().urlProductCollector,
         type: RequestType.POST,
-        data: {
-          "req": productReq[groupProduk],
-          "id_produk": McryptUtils.instance.encrypt(idProduk!),
-          "rekCd": McryptUtils.instance.encrypt(rekCd!),
-          "groupProduk": McryptUtils.instance.encrypt(groupProduk!),
-          "norek": McryptUtils.instance.encrypt(norek ?? '0'),
-          "user": McryptUtils.instance.encrypt(config.dataLogin['username']),
-          "pwd": config.dataLogin['password'],
-          "imei": McryptUtils.instance.encrypt(config.dataLogin['imei']),
-          "activity": McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd),
-          "remark": McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd),
-          "lat": McryptUtils.instance.encrypt("0"),
-          "longi": McryptUtils.instance.encrypt("0"),
-          "page": McryptUtils.instance.encrypt("$page"),
-          "limit": McryptUtils.instance.encrypt("$limit"),
-          "start_date": McryptUtils.instance.encrypt(DateFormat("yyyy-MM-dd").format(startDate).toString()),
-          "end_date": McryptUtils.instance.encrypt(DateFormat("yyyy-MM-dd").format(endDate).toString()),
-        },
+        data: reqData,
       );
 
       if (response != null) {
