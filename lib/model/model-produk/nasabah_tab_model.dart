@@ -57,7 +57,7 @@ class NasabahTabModel implements BaseProdukModelInterface {
   @override
   factory NasabahTabModel.fromJson(Map<String, dynamic> json) {
     return NasabahTabModel(
-      nasabahTabId: json['nasabah_tab_id'] ?? "",
+      nasabahTabId: json['nasabah_tab_id'] ?? (json['produk_id'] ?? ""),
       nasabahId: json['nasabah_id'] ?? "",
       noMaster: json['no_master'] ?? "",
       wilayahCd: json['wilayah_cd'] ?? "",
