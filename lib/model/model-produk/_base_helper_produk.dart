@@ -28,7 +28,7 @@ SELECT
 		),
 		'-'
 	) AS `status`,
-  a.`status` AS status_val,
+  'Sukses' AS res_status
 FROM $dbTable a
 INNER JOIN m_nasabah b ON a.nasabah_id = b.nasabah_id
 WHERE
@@ -64,7 +64,7 @@ WHERE
     return response;
   }
 
-  Future<dynamic>? searchByNorekNasabahTab(String norek, String? rekCd, String dbTable, String dbPk) async {
+  Future<dynamic>? searchByNorekNasabahTab(String norek, String? rekCd, String dbTable, String dbPk, {String dbNorekField = 'no_rek'}) async {
     Database db = await DatabaseHelper.instance.database;
     var rows = await db.rawQuery("""
 SELECT
@@ -76,11 +76,11 @@ FROM
 			'Sukses' AS res_status,
 			IFNULL(a.$dbPk, 0) AS tab_id,
 			IFNULL(a.nasabah_id, 0) AS nas_id,
-			IFNULL(a.no_rek, '') AS norek,
+			IFNULL(a.$dbNorekField, '') AS norek,
 			'0' AS saldo,
 			'0' AS val_blokir,
 			'0' AS trx_date,
-			${getQuerySelectNamaNasabah('b', 'nama')} AS nama,
+			${getQuerySelectNamaNasabah('b', 'nama')},
 			b.alamat AS alamat,
 			IFNULL(
 				(
@@ -119,7 +119,7 @@ FROM
 			$dbTable a,
 			m_nasabah b
 		WHERE
-			a.no_rek = '$norek'
+			a.$dbNorekField = '$norek'
 			AND a.nasabah_id = b.nasabah_id
 		LIMIT
 			1
@@ -138,7 +138,7 @@ SELECT
     a.no_anggota AS norek,
     '0' AS saldo,
     '-' AS trx_date,
-    ${getQuerySelectNamaNasabah('b', 'nama')} AS nama,
+    ${getQuerySelectNamaNasabah('b', 'nama')},
     b.alamat AS alamat,
     IFNULL(
         (
@@ -183,7 +183,7 @@ WHERE
     return rows;
   }
 
-  Future<dynamic>? searchByNorekNasabahBerencana(String norek, String? rekCd, String dbTable, String dbPk) async {
+  Future<dynamic>? searchByNorekNasabahBerencana(String norek, String? rekCd, String dbTable, String dbPk, {String dbNorekField = 'no_rek'}) async {
     Database db = await DatabaseHelper.instance.database;
     var rows = await db.rawQuery("""
 SELECT
@@ -227,7 +227,7 @@ FROM
 				'-'
 			) AS wilayah,
 			IFNULL(a.wilayah_cd, '00') AS wilayahCd,
-			IFNULL(a.no_rek, '') AS norek,
+			IFNULL(a.$dbNorekField, '') AS norek,
 			IFNULL(a.jangka_waktu, '0') || ' Bulan' AS jw,
 			IFNULL(ROUND(a.setoran_per_bulan), '0') as setoranPerBulan,
 			IFNULL(
@@ -269,7 +269,7 @@ FROM
 		FROM
 			$dbTable a
 		WHERE
-			a.no_rek = '$norek'
+			a.$dbNorekField = '$norek'
 		LIMIT
 			1
 	) tb
