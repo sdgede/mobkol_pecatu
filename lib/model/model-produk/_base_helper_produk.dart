@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 class BaseHelperProduk {
   String getQuerySelectNamaNasabah(String tbName, String columnAlias) {
-    return "(TRIM(TRIM(IFNULL($tbName.nama_depan,'')) ||' '|| TRIM(IFNULL($tbName.nama_belakang,'')))) AS $columnAlias";
+    return "(TRIM(TRIM(IFNULL($tbName.nama_depan,'')) ||' '|| TRIM(IFNULL($tbName.nama_belakang,''))))${columnAlias == "" ? "" : " AS $columnAlias"}";
   }
 
   Future<dynamic>? searchByNameNasabah(String keyword, String? rekCd, String dbTable, String dbPk) async {
@@ -27,13 +27,15 @@ SELECT
 				END
 		),
 		'-'
-	) AS `status`
+	) AS `status`,
+  a.`status` AS status_val,
 FROM $dbTable a
 INNER JOIN m_nasabah b ON a.nasabah_id = b.nasabah_id
 WHERE
-  b.nama LIKE '%$keyword%'
+  ${getQuerySelectNamaNasabah('b', '')} LIKE '%$keyword%'
   AND a.`status` IN ('A', 'D')
 """);
+
     return rows;
   }
 
