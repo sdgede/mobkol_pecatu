@@ -14,11 +14,11 @@ double deviceHeightWithoutAppBar(BuildContext context, {double height = 25}) {
 }
 
 //colors
-Color primaryColor = Color(0xfff78104);
-Color accentColor = Color(0xfffaab36);
+Color primaryColor = Color(0xff388e3c);
+Color accentColor = Color(0xfffbc02d);
 
 //images
-String bgCustom = "assets/images/bg_custom.jpg";
+String bgCustom = "assets/images/bg_mobkol_default.jpg";
 final String companyLogo = "assets/images/logo.png";
 final String splashLogo = "assets/images/logo.png";
 final String noDataImage = "assets/images/no_data.png";

@@ -62,7 +62,7 @@ class NasabahAnggotaModel implements BaseProdukModelInterface {
       nasabahAnggotaId: json['nasabah_anggota_id'] ?? (json['produk_id'] ?? ""),
       nasabahId: json['nasabah_id'] ?? "",
       noMaster: json['no_master'] ?? "",
-      noAnggota: json['no_anggota'] ?? "",
+      noAnggota: (json['no_anggota'] ?? json['no_rek']) ?? "",
       pokok: json['pokok'] ?? "",
       wajibAwal: json['wajib_awal'] ?? "",
       tglDaftar: json['tgl_daftar'] ?? "",
