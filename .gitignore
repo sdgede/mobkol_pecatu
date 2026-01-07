@@ -43,3 +43,6 @@ test_suite_analysis/
 
 # FVM Version Cache
 .fvm/
+
+# Firebase
+android/app/google-services.json
