@@ -75,9 +75,17 @@ Future<void> setupFirebaseMessaging(BuildContext context) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  
+  // Check if Firebase is already initialized, if not, initialize it
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      name: DefaultFirebaseOptions.currentPlatform.projectId,
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } else {
+    // Use existing Firebase app
+    Firebase.app();
+  }
 
   await dotenv.load(fileName: ".env");
   setupApp();
@@ -110,8 +118,11 @@ class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
   final MethodChannel platform = MethodChannel('crossingthestreams.io/resourceResolver');
   bool _modalOpened = false;
+  bool _firebaseInitialized = false;
 
   Future<void> _initFirebase(BuildContext context) async {
+    if (_firebaseInitialized) return;
+    _firebaseInitialized = true;
     await setupFirebaseMessaging(context);
   }
 
@@ -121,6 +132,7 @@ class _MyAppState extends State<MyApp> {
     _requestIOSPermissions();
     Future.delayed(Duration.zero, () {
       ConnectivityUtils.distance.onCheckConnectivity(navigatorKey.currentState!.overlay!.context);
+      _initFirebase(navigatorKey.currentState!.overlay!.context);
     });
   }
 
@@ -195,8 +207,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: Builder(builder: (context) {
-        _initFirebase(context);
-
         return MaterialApp(
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
