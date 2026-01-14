@@ -233,14 +233,14 @@ class ProdukCollectionServices extends BaseServices {
     var urlWs = config.ConfigURL().urlApiNasabahProduk;
     dataProduk["req"] = "getSaldoKolektor";
 
-    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd!);
-    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk!);
+    dataProduk["rekCd"] = McryptUtils.instance.encrypt(rekCd ?? '');
+    dataProduk["groupProduk"] = McryptUtils.instance.encrypt(groupProduk ?? '');
 
     dataProduk["user"] = McryptUtils.instance.encrypt(config.dataLogin['username']);
     dataProduk["pwd"] = config.dataLogin['password'];
     dataProduk["imei"] = McryptUtils.instance.encrypt(config.dataLogin['imei']);
-    dataProduk["activity"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
-    dataProduk["remark"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + rekCd);
+    dataProduk["activity"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + (rekCd ?? ''));
+    dataProduk["remark"] = McryptUtils.instance.encrypt("GET_ALL_PRODUK_" + (rekCd ?? ''));
     dataProduk["lat"] = McryptUtils.instance.encrypt("0");
     dataProduk["longi"] = McryptUtils.instance.encrypt("0");
 
