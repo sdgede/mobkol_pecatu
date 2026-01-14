@@ -4,6 +4,7 @@ import 'package:flutter_bcrypt/flutter_bcrypt.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:sevanam_mobkol/model/produk_model.dart';
+import 'package:sevanam_mobkol/services/utils/log_utils.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:io' as io;
@@ -57,13 +58,18 @@ class DatabaseHelper {
     Database db = await instance.database;
     Map<String, dynamic> result;
 
-    var row = await db.rawQuery("SELECT trans_id FROM t_trans_simpanan order by trans_id desc LIMIT 1");
+    String query = "SELECT trans_id FROM t_trans_simpanan order by trans_id desc LIMIT 1";
+    var row = await db.rawQuery(query);
     if (row.length == 0) {
       result = {"trans_id": 0, "pesan": "No data transaction"};
     } else {
       result = row.first;
     }
-    debugPrint("last trx data : " + result.toString());
+
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
+
     return result;
   }
 
@@ -167,7 +173,8 @@ class DatabaseHelper {
     Database db = await instance.database;
     Map<String, dynamic> result, resultFinal;
 
-    var row = await db.rawQuery("SELECT 'Y' as status,username,password,IFNULL(imei,'0') as imei,IFNULL(sn_number,'0') as sn_number,username as nama,kolektor_id as id_user,apk_version, create_date FROM s_user_kolektor WHERE username ='" + _decrypt(dataParse['username']) + "'");
+    String query = "SELECT 'Y' as status,username,password,IFNULL(imei,'0') as imei,IFNULL(sn_number,'0') as sn_number,username as nama,kolektor_id as id_user,apk_version, create_date FROM s_user_kolektor WHERE username ='" + _decrypt(dataParse['username']) + "'";
+    var row = await db.rawQuery(query);
     if (row.length == 0) {
       result = {"status": "Gagal", "pesan": "Username tidak ditemukan"};
     } else {
@@ -201,6 +208,10 @@ class DatabaseHelper {
       };
     }
 
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(resultFinal)}\x1B[0m');
+
     return resultFinal;
   }
 
@@ -228,7 +239,8 @@ class DatabaseHelper {
     List<Map<String, Object?>> result;
     String whereIsMigration = isMigration ? "AND is_migration = 'Y'" : "";
 
-    var row = await db.rawQuery("SELECT nama_menu as nama,remark as slug,rek_cd,icon,min_setoran,min_tarikan,rek_shortcut,urut_menu FROM s_menu_mobkol WHERE active_flag='Y' $whereIsMigration ORDER BY urut_menu ASC");
+    String query = "SELECT nama_menu as nama,remark as slug,rek_cd,icon,min_setoran,min_tarikan,rek_shortcut,urut_menu FROM s_menu_mobkol WHERE active_flag='Y' $whereIsMigration ORDER BY urut_menu ASC";
+    var row = await db.rawQuery(query);
     if (row.length == 0) {
       result = [
         {"status": "Gagal", "pesan": "Data tidak ditemukan"}
@@ -236,6 +248,11 @@ class DatabaseHelper {
     } else {
       result = row;
     }
+
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
+
     return json.encode(result);
   }
 
@@ -243,12 +260,18 @@ class DatabaseHelper {
     Database db = await instance.database;
     Map<String, dynamic> result;
 
-    var row = await db.rawQuery("SELECT * FROM s_menu_mobkol WHERE group_menu='" + produkCd + "' AND rek_cd='" + rekCd + "'");
+    String query = "SELECT * FROM s_menu_mobkol WHERE group_menu='" + produkCd + "' AND rek_cd='" + rekCd + "'";
+    var row = await db.rawQuery(query);
     if (row.length == 0) {
       result = {"status": "Gagal", "pesan": "Data tidak ditemukan"};
     } else {
       result = row.first;
     }
+
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
+
     return result;
   }
 
@@ -261,10 +284,16 @@ class DatabaseHelper {
     String rekDesc = groupProduk == 'ANGGOTA' ? 'anggota' : 'rekening';
     List<Map<String, Object?>> result;
 
+    String returnResult = "";
+
     /** Produk Koperasi **/
     if (ProdukModel().products.contains(groupProduk.toString().toUpperCase())) {
-      var productClass = ProdukModel(stringClass: groupProduk).getProductModel();
-      if (productClass == null) return;
+      var productClass = ProdukModel(stringClass: groupProduk).getProductModel(mode: 'rek_cd', productClass: rekCd);
+      if (productClass == null) {
+        productClass = ProdukModel(stringClass: groupProduk).getProductModel();
+        if (productClass == null) return;
+      }
+
       var rows = (await productClass.searchByNorek(norek, rekCd)) as List<Map<String, Object?>>?;
       if (rows == null || rows.length == 0) {
         result = [
@@ -273,12 +302,17 @@ class DatabaseHelper {
       } else {
         result = rows.toList();
       }
-      return json.encode(result);
+      returnResult = json.encode(result);
     }
 
-    return json.encode([
-      {"res_status": "Gagal", "pesan": "Produk tidak valid"}
-    ]);
+    if (returnResult == "")
+      returnResult = json.encode([
+        {"res_status": "Gagal", "pesan": "Produk tidak valid"}
+      ]);
+
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m $returnResult\x1B[0m');
+    return returnResult;
   }
 
   Future<dynamic> getKladOffline({
@@ -346,6 +380,10 @@ ORDER BY a.trans_id DESC
       result = row.toList();
     }
 
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
+
     return json.encode(result);
   }
 
@@ -358,13 +396,14 @@ ORDER BY a.trans_id DESC
     String trxDate = DateSystem;
     String kolektor = _decrypt(dataParse['user']);
     List<Map<String, Object?>> result;
-    List<Map<String, Object?>> rows = await db.rawQuery("""
+
+    String query = """
 SELECT
   tb.*,
   IFNULL(debet_tab, 0) AS tot_debet,
-  IFNULL(kredit_tab + kredit_anggota + kredit_berencana, 0) AS tot_kredit,
+  IFNULL(kredit_tab + kredit_anggota + kredit_sirena, 0) AS tot_kredit,
   IFNULL(
-    IFNULL(kredit_tab + kredit_anggota + kredit_berencana, 0)
+    IFNULL(kredit_tab + kredit_anggota + kredit_sirena, 0)
     -
     IFNULL(debet_tab, 0)
     , 0
@@ -373,7 +412,7 @@ FROM (
   SELECT
     0 AS debet_tab,
     0 AS debet_anggota,
-    0 AS debet_berencana,
+    0 AS debet_sirena,
 
     0 AS kredit_kredit,
     IFNULL(sum(a.jumlah), 0) AS kredit_tab,
@@ -394,10 +433,10 @@ FROM (
         IFNULL(sum(a.jumlah), 0)
       FROM t_trans_simpanan a WHERE
         a.uploaded = 'N'
-        AND a.rek_cd = 'BERENCANA'
+        AND a.rek_cd = 'SIRENA'
         AND a.create_who LIKE '%$kolektor%'
         AND a.trx_date = '$trxDate'
-    ) AS kredit_berencana,
+    ) AS kredit_sirena,
 
     0 AS kas_awal,
     0 AS kas_keluar2,
@@ -410,7 +449,8 @@ FROM (
     AND a.create_who LIKE '%$kolektor%'
     AND a.trx_date = '$trxDate'
 ) tb
-""");
+""";
+    List<Map<String, Object?>> rows = await db.rawQuery(query);
 
     result = [];
     if (rows.length > 0) {
@@ -449,13 +489,17 @@ FROM (
         {
           "title": "Transaksi BERENCANA",
           "data": [
-            {"subtitle": "Kas Masuk", "value": int.parse(row['kredit_berencana'].toString())},
-            {"subtitle": "Kas Keluar", "value": int.parse(row['debet_berencana'].toString())},
-            {"subtitle": "Selisih Saldo", "value": int.parse(row['kredit_berencana'].toString())}
+            {"subtitle": "Kas Masuk", "value": int.parse(row['kredit_sirena'].toString())},
+            {"subtitle": "Kas Keluar", "value": int.parse(row['debet_sirena'].toString())},
+            {"subtitle": "Selisih Saldo", "value": int.parse(row['kredit_sirena'].toString())}
           ]
         },
       ];
     }
+
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
 
     return json.encode(result);
   }
@@ -463,6 +507,8 @@ FROM (
   Future<dynamic> pencarianNasabahTabOffline({
     Map<String, dynamic>? dataParse,
   }) async {
+    String returnResult = "";
+
     String groupProduk = _decrypt(dataParse!['groupProduk']);
     String rekCd = _decrypt(dataParse['rekCd']);
     String keyword = _decrypt(dataParse['keyword']);
@@ -470,8 +516,12 @@ FROM (
 
     /** Produk Koperasi **/
     if (ProdukModel().products.contains(groupProduk.toString().toUpperCase())) {
-      var productClass = ProdukModel(stringClass: groupProduk).getProductModel();
-      if (productClass == null) return;
+      var productClass = ProdukModel(stringClass: groupProduk).getProductModel(mode: 'rek_cd', productClass: rekCd);
+      if (productClass == null) {
+        productClass = ProdukModel(stringClass: groupProduk).getProductModel();
+        if (productClass == null) return;
+      }
+
       var rows = (await productClass.searchByName(keyword, rekCd)) as List<Map<String, Object?>>?;
       if (rows == null || rows.length == 0) {
         result = [
@@ -481,12 +531,18 @@ FROM (
         result = rows.toList();
       }
 
-      return json.encode(result);
+      returnResult = json.encode(result);
     }
 
-    return json.encode([
-      {"res_status": "Gagal", "pesan": "Produk tidak valid"}
-    ]);
+    if (returnResult == "")
+      returnResult = json.encode([
+        {"res_status": "Gagal", "pesan": "Produk tidak valid"}
+      ]);
+
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m $returnResult\x1B[0m');
+
+    return returnResult;
   }
 
   Future insertTransaksiOffline(
@@ -572,8 +628,12 @@ FROM (
     if (ProdukModel().products.contains(groupProduk.toString().toUpperCase())) {
       // Upsert product
       await Future.forEach(productJson, (dynamic row) async {
-        var productClass = ProdukModel(stringClass: groupProduk).getProductModel(json: row);
-        if (productClass == null) return;
+        var productClass = ProdukModel(stringClass: groupProduk).getProductModel(mode: 'rek_cd', productClass: rekCd, json: row);
+        if (productClass == null) {
+          productClass = ProdukModel(stringClass: groupProduk).getProductModel();
+          if (productClass == null) return;
+        }
+
         Map<String, int>? response = await productClass.upsertMigration();
         if (response == null) return;
 

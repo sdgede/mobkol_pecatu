@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:sevanam_mobkol/database/databaseHelper.dart';
 import 'package:sevanam_mobkol/model/produk_model.dart';
+import 'package:sevanam_mobkol/services/utils/log_utils.dart';
 import 'package:sqflite/sqflite.dart';
 
 class BaseHelperProduk {
@@ -9,7 +11,8 @@ class BaseHelperProduk {
 
   Future<dynamic>? searchByNameNasabah(String keyword, String? rekCd, String dbTable, String dbPk) async {
     Database db = await DatabaseHelper.instance.database;
-    var rows = await db.rawQuery("""
+
+    String query = """
 SELECT
   'Sukses' AS res_status,
   a.$dbPk AS tab_id,
@@ -34,7 +37,12 @@ INNER JOIN m_nasabah b ON a.nasabah_id = b.nasabah_id
 WHERE
   ${getQuerySelectNamaNasabah('b', '')} LIKE '%$keyword%'
   AND a.`status` IN ('A', 'D')
-""");
+""";
+
+    var rows = await db.rawQuery(query);
+
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
 
     return rows;
   }
@@ -66,7 +74,8 @@ WHERE
 
   Future<dynamic>? searchByNorekNasabahTab(String norek, String? rekCd, String dbTable, String dbPk, {String dbNorekField = 'no_rek'}) async {
     Database db = await DatabaseHelper.instance.database;
-    var rows = await db.rawQuery("""
+
+    String query = """
 SELECT
 	tb.*,
 	'0' AS remark
@@ -124,13 +133,19 @@ FROM
 		LIMIT
 			1
 	) tb
-""");
+""";
+
+    var rows = await db.rawQuery(query);
+
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+
     return rows;
   }
 
   Future<dynamic>? searchByNorekNasabahAnggota(String norek, String? rekCd, String dbTable, String dbPk) async {
     Database db = await DatabaseHelper.instance.database;
-    var rows = await db.rawQuery("""
+    String query = """
 SELECT
     a.$dbPk AS tab_id,
     a.nasabah_id AS nas_id,
@@ -179,13 +194,20 @@ WHERE
     a.no_anggota = '$norek'
     AND a.`nasabah_id` = b.`nasabah_id`
     and a.status = 'A'
-""");
+""";
+
+    var rows = await db.rawQuery(query);
+
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+
     return rows;
   }
 
   Future<dynamic>? searchByNorekNasabahBerencana(String norek, String? rekCd, String dbTable, String dbPk, {String dbNorekField = 'no_rek'}) async {
     Database db = await DatabaseHelper.instance.database;
-    var rows = await db.rawQuery("""
+
+    String query = """
 SELECT
 	tb.*
 FROM
@@ -273,7 +295,13 @@ FROM
 		LIMIT
 			1
 	) tb
-""");
+""";
+
+    var rows = await db.rawQuery(query);
+
+    String methodName = LogUtils().getCurrentMethodName();
+    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+
     return rows;
   }
 }

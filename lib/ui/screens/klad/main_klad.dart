@@ -2,6 +2,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:sevanam_mobkol/services/utils/date_time_extensions.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:countup/countup.dart';
@@ -210,7 +211,7 @@ class _MainKlad extends State<MainKlad> {
                         ),
                         SizedBox(width: 10),
                         Text(
-                          config.Date,
+                          DateTime.now().format("dd MMMM yyyy"),
                           style: TextStyle(color: Colors.white),
                         ),
                       ],

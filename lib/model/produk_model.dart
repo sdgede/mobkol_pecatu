@@ -632,6 +632,10 @@ class ProdukModel {
     productClass = productClass ?? stringClass;
 
     if ((mode == "group_menu" && productClass == "BERENCANA") || (mode == "rek_cd" && productClass == "SIRENA")) {
+      if (mode == "rek_cd" && productClass == "SIRENA") {
+        return json == null ? NasabahSirenaModel() : NasabahSirenaModel.fromJson(json);
+      }
+
       return json == null ? NasabahSirenaModel() : NasabahSirenaModel.fromJson(json);
     } else if ((mode == "group_menu" && productClass == "ANGGOTA") || (mode == "rek_cd" && productClass == "SIMP_ANGGOTA")) {
       return json == null ? NasabahAnggotaModel() : NasabahAnggotaModel.fromJson(json);

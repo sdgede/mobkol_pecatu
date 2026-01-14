@@ -36,7 +36,6 @@ class _HasilPencarianProduk extends State<HasilPencarianProduk> with SingleTicke
       setState(() {
         if (['ANGGOTA', 'DEPOSITO', 'BERENCANA'].contains(widget.arguments!['tipe']) || _globalProvider!.getConnectionMode == config.offlineMode) {
           _btnTarikStatus = false;
-          if (_produkProv!.getSelectedRkCdProduk == 'SIHARI') _btnTarikStatus = true;
         } else {
           _btnTarikStatus = true;
         }
