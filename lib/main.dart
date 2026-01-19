@@ -27,11 +27,14 @@ import 'services/utils/connectivity_utils.dart';
 import 'setup.dart';
 import 'ui/constant/constant.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
-Future<void> firebaseMessagingBackgroundHandler(BuildContext context, RemoteMessage message) async {
+Future<void> firebaseMessagingBackgroundHandler(
+    BuildContext context, RemoteMessage message) async {
   if (message.notification == null) return;
-  NotificationUtils.instance.showNotification(context, message.notification?.title ?? "", message.notification?.body ?? "");
+  NotificationUtils.instance.showNotification(context,
+      message.notification?.title ?? "", message.notification?.body ?? "");
 }
 
 Future<void> setupFirebaseMessaging(BuildContext context) async {
@@ -75,7 +78,7 @@ Future<void> setupFirebaseMessaging(BuildContext context) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Check if Firebase is already initialized, if not, initialize it
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp(
@@ -116,7 +119,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
-  final MethodChannel platform = MethodChannel('crossingthestreams.io/resourceResolver');
+  final MethodChannel platform =
+      MethodChannel('crossingthestreams.io/resourceResolver');
   bool _modalOpened = false;
   bool _firebaseInitialized = false;
 
@@ -131,13 +135,17 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _requestIOSPermissions();
     Future.delayed(Duration.zero, () {
-      ConnectivityUtils.distance.onCheckConnectivity(navigatorKey.currentState!.overlay!.context);
+      ConnectivityUtils.distance
+          .onCheckConnectivity(navigatorKey.currentState!.overlay!.context);
       _initFirebase(navigatorKey.currentState!.overlay!.context);
     });
   }
 
   void _requestIOSPermissions() {
-    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
           alert: true,
           badge: true,
           sound: true,
@@ -150,17 +158,21 @@ class _MyAppState extends State<MyApp> {
       _modalOpened = true;
       return showModal(
         context: navigatorKey.currentState!.overlay!.context,
-        configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
+        configuration:
+            FadeScaleTransitionConfiguration(barrierDismissible: false),
         builder: (context) {
           return InfoDialog(
             title: "Opps...",
-            text: "Pastikan Anda mengizinkan $mobileName untuk mengakses lokasi Anda.",
+            text:
+                "Pastikan Anda mengizinkan $mobileName untuk mengakses lokasi Anda.",
             clickOKText: "OK",
             onClickOK: () async {
-              Navigator.of(navigatorKey.currentState!.overlay!.context, rootNavigator: true).pop();
+              Navigator.of(navigatorKey.currentState!.overlay!.context,
+                      rootNavigator: true)
+                  .pop();
               location = await LocationUtils.instance.getLocationOnly();
-              if (!location) AppSettings.openLocationSettings();
-              // if (!location)
+              if (!location) AppSettings.openAppSettings();
+              // if (!location)t
               //   AppSettings.openAppSettings(type: AppSettingsType.location);
             },
             isCancel: false,
@@ -180,7 +192,8 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Platform.isAndroid ? Brightness.dark : Brightness.light,
+      statusBarBrightness:
+          Platform.isAndroid ? Brightness.dark : Brightness.light,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.grey,
       systemNavigationBarIconBrightness: Brightness.dark,
@@ -218,7 +231,7 @@ class _MyAppState extends State<MyApp> {
               cardColor: Colors.white,
             ).copyWith(
               secondary: accentColor,
-              background: Colors.white,
+              surface: Colors.white,
               surfaceTint: Colors.white,
             ),
             primaryColor: primaryColor,
@@ -247,7 +260,9 @@ class _MyAppState extends State<MyApp> {
                     currentFocus.unfocus();
                   }
                 },
-                child: Listener(onPointerUp: (PointerEvent details) => _checkLocation(), child: child),
+                child: Listener(
+                    onPointerUp: (PointerEvent details) => _checkLocation(),
+                    child: child),
               ),
             );
           },

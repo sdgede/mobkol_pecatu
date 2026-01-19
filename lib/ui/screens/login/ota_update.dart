@@ -4,7 +4,7 @@ import 'package:sevanam_mobkol/ui/constant/constant.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 
-final _shorebirdCodePush = ShorebirdCodePush();
+final _shorebirdUpdater = ShorebirdUpdater();
 
 class OtaUpdatePage extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class OtaUpdatePage extends StatefulWidget {
 }
 
 class _OtaUpdatePageState extends State<OtaUpdatePage> {
-  final _isShorebirdAvailable = _shorebirdCodePush.isShorebirdAvailable();
+  final _isShorebirdAvailable = _shorebirdUpdater.isAvailable;
   bool downloading = false;
   bool updated = false;
 
@@ -21,15 +21,29 @@ class _OtaUpdatePageState extends State<OtaUpdatePage> {
       downloading = true;
     });
 
-    await Future.wait([
-      _shorebirdCodePush.downloadUpdateIfAvailable(),
-      Future<void>.delayed(const Duration(milliseconds: 500)),
-    ]);
+    try {
+      await Future.wait([
+        _shorebirdUpdater.update(),
+        Future<void>.delayed(const Duration(milliseconds: 500)),
+      ]);
 
-    setState(() {
-      downloading = false;
-      updated = true;
-    });
+      setState(() {
+        downloading = false;
+        updated = true;
+      });
+    } on UpdateException catch (error) {
+      // Handle error
+      setState(() {
+        downloading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gagal mengunduh pembaharuan: ${error.message}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   Widget downloadingUpdate() {
@@ -177,12 +191,14 @@ class _OtaUpdatePageState extends State<OtaUpdatePage> {
                         ),
                       ),
                       SizedBox(height: 16),
-                      Text('Pembaharuan tersedia untuk aplikasi $mobileName. Lakukan pembaruan untuk meningkatkan pengalaman pengguna.',
+                      Text(
+                          'Pembaharuan tersedia untuk aplikasi $mobileName. Lakukan pembaruan untuk meningkatkan pengalaman pengguna.',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                           )),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.1),
                     ],
                   ),
                 ),
@@ -209,7 +225,6 @@ class _OtaUpdatePageState extends State<OtaUpdatePage> {
                   textAlign: TextAlign.center,
                 );
               })
-              // _showDownloadingBanner(),
             ],
           ),
         ),

@@ -11,7 +11,7 @@ import '../../../services/viewmodel/produk_provider.dart';
 import '../../../database/databaseHelper.dart';
 import '../../constant/constant.dart';
 
-final _shorebirdCodePush = ShorebirdCodePush();
+final _shorebirdUpdater = ShorebirdUpdater();
 
 class SplashPage extends StatefulWidget {
   SplashPage({Key? key}) : super(key: key);
@@ -20,7 +20,8 @@ class SplashPage extends StatefulWidget {
   _SplashPageState createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
+class _SplashPageState extends State<SplashPage>
+    with SingleTickerProviderStateMixin {
   final dbHelper = DatabaseHelper.instance;
   AnimationController? animationController;
   Animation<double>? animation;
@@ -34,9 +35,17 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   int durationSplashScreen = 5;
 
   startTimeout() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // bool firstTime = prefs.getBool('first_time') ?? false;
-    bool isOTAUpdateAvailable = await _shorebirdCodePush.isNewPatchAvailableForDownload();
+    bool isOTAUpdateAvailable = false;
+    // Check if updater is available first
+    if (_shorebirdUpdater.isAvailable) {
+      try {
+        final status = await _shorebirdUpdater.checkForUpdate();
+        isOTAUpdateAvailable = (status == UpdateStatus.outdated);
+      } catch (e) {
+        print('Error checking for OTA update: $e');
+      }
+    }
+
     var _redirectPage;
 
     await globalProv.checkUpdate(context);
@@ -44,7 +53,9 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     if (isOTAUpdateAvailable) {
       _redirectPage = RouterGenerator.otaUpdate;
     } else if (globalProv.updateInfo != null) {
-      if (globalProv.updateInfo!.type == config.MANDATORY_UPDATE || globalProv.updateInfo!.type == config.NORMAL_UPDATE || globalProv.updateInfo!.type == config.MAINTENANCE) {
+      if (globalProv.updateInfo!.type == config.MANDATORY_UPDATE ||
+          globalProv.updateInfo!.type == config.NORMAL_UPDATE ||
+          globalProv.updateInfo!.type == config.MAINTENANCE) {
         _redirectPage = RouterGenerator.pageUpdate;
       } else {
         _redirectPage = RouterGenerator.pageLogin;
@@ -52,8 +63,10 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     } else {
       _redirectPage = RouterGenerator.pageLogin;
     }
+
     Future.delayed(Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, _redirectPage, arguments: {'route': RouterGenerator.pageLogin});
+      Navigator.pushReplacementNamed(context, _redirectPage,
+          arguments: {'route': RouterGenerator.pageLogin});
     });
   }
 
