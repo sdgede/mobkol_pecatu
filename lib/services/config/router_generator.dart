@@ -74,14 +74,14 @@ class RouterGenerator {
   // menu printer
   static const mainSettingPrinter = "/printer/mainSettingPrinter";
   static const listPrinterDevice = "/printer/listPrinterDevice";
-  // menu printer
+  // menu migrasi
   static const mainMigrasiData = "/migrasi/mainMigrasiDataPage";
   // menu daftar pinjaman jatuh tempo
   static const pinjamanJatuhTempo = "/migrasi/pinjamanJatuhTempoPage";
-  // menu daftar pinjaman jatuh tempo
+  // menu export database
   static const exportDatabase = "/export_database/exportDatabasePage";
-  // ignore: missing_return
-  static Route<dynamic>? generateRoute(RouteSettings settings) {
+
+  static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
 
     switch (settings.name) {
@@ -90,10 +90,16 @@ class RouterGenerator {
         return MaterialPageRoute(builder: (_) => SplashPage());
 
       case pageUpdate:
-        return MaterialPageRoute(settings: settings, builder: (_) => UpdatePage());
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => UpdatePage(),
+        );
 
       case otaUpdate:
-        return MaterialPageRoute(settings: settings, builder: (_) => OtaUpdatePage());
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => OtaUpdatePage(),
+        );
 
       case pageLanding:
         return MaterialPageRoute(builder: (_) => LandingPage());
@@ -103,32 +109,37 @@ class RouterGenerator {
 
       case homeKolektor:
         return MaterialPageRoute(
-            builder: (_) => ShowCaseWidget(
-                  enableAutoPlayLock: true,
-                  disableMovingAnimation: false,
-                  onFinish: () async {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                    prefs.setBool('first_time', false);
-                  },
-                  builder: Builder(
-                    builder: (context) => HomeKolektor(),
-                  ),
-                ));
+          builder: (_) => ShowCaseWidget(
+            enableAutoPlayLock: true,
+            disableMovingAnimation: false,
+            onFinish: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool('first_time', false);
+            },
+            builder: (context) => HomeKolektor(),
+          ),
+        );
 
       //setting
       case resetPassword:
-        var param = args as Map;
-        return MaterialPageRoute(
+        if (args is Map) {
+          return MaterialPageRoute(
             builder: (_) => ResetPassword(
-                  isBuat: param['isBuat'] ?? false,
-                ));
+              isBuat: args['isBuat'] ?? false,
+            ),
+          );
+        }
+        return _errorRoute('Invalid arguments for resetPassword');
 
       case resetPin:
-        var param = args as Map;
-        return MaterialPageRoute(
+        if (args is Map) {
+          return MaterialPageRoute(
             builder: (_) => ResetPin(
-                  isBuat: param['isBuat'] ?? false,
-                ));
+              isBuat: args['isBuat'] ?? false,
+            ),
+          );
+        }
+        return _errorRoute('Invalid arguments for resetPin');
 
       case about:
         return MaterialPageRoute(builder: (_) => AboutScreen());
@@ -138,11 +149,14 @@ class RouterGenerator {
         return MaterialPageRoute(builder: (_) => MainTransaksi());
 
       case hasilPencarianProduk:
-        return MaterialPageRoute(
-          builder: (_) => HasilPencarianProduk(
-            arguments: args as Map<String, dynamic>,
-          ),
-        );
+        if (args is Map<String, dynamic>) {
+          return MaterialPageRoute(
+            builder: (_) => HasilPencarianProduk(
+              arguments: args,
+            ),
+          );
+        }
+        return _errorRoute('Invalid arguments for hasilPencarianProduk');
 
       case suksesTransaksi:
         if (args is SuksesTransaksiModel) {
@@ -152,22 +166,27 @@ class RouterGenerator {
             ),
           );
         }
-        break;
+        return _errorRoute('Invalid arguments for suksesTransaksi');
+
       case mutasiTransaksi:
-        return MaterialPageRoute(
-          builder: (_) => MutasiTransaksi(
-            arguments: args as Map<String, dynamic>,
-          ),
-        );
+        if (args is Map<String, dynamic>) {
+          return MaterialPageRoute(
+            builder: (_) => MutasiTransaksi(
+              arguments: args,
+            ),
+          );
+        }
+        return _errorRoute('Invalid arguments for mutasiTransaksi');
 
       case mutasiKredit:
-        return MaterialPageRoute(
-          builder: (_) => MutasiKredit(
-            arguments: args as Map<String, dynamic>,
-          ),
-        );
-
-      //
+        if (args is Map<String, dynamic>) {
+          return MaterialPageRoute(
+            builder: (_) => MutasiKredit(
+              arguments: args,
+            ),
+          );
+        }
+        return _errorRoute('Invalid arguments for mutasiKredit');
 
       //klad
       case mainKlad:
@@ -176,7 +195,7 @@ class RouterGenerator {
       case adapterPencarianKlad:
         return MaterialPageRoute(builder: (_) => AdapterPencarianKlad());
 
-      //klad
+      //saldo kolektor
       case saldoKolektor:
         return MaterialPageRoute(builder: (_) => MainSaldoKolektor());
 
@@ -204,7 +223,60 @@ class RouterGenerator {
       //export database
       case exportDatabase:
         return MaterialPageRoute(builder: (_) => ExportDatabase());
+
+      default:
+        return _errorRoute('Route not found: ${settings.name}');
     }
-    return null;
+  }
+
+  /// Returns an error route when navigation fails
+  static MaterialPageRoute _errorRoute(String message) {
+    return MaterialPageRoute(
+      builder: (_) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Error'),
+          backgroundColor: Colors.red,
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Navigation Error',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    // This will be handled by the navigator
+                  },
+                  child: const Text('Go Back'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

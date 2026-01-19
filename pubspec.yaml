@@ -20,65 +20,65 @@ dependencies:
   flutter:
     sdk: flutter
   animations: ^2.0.8
-  app_settings: ^4.3.0
+  app_settings: ^7.0.0
   badges: ^3.1.2
   barcode_scan2: ^4.2.4
   blue_thermal_printer: ^1.2.3
   bootstrap_icons: ^1.10.5+2
-  connectivity_plus: ^3.0.6
+  connectivity_plus: ^7.0.0
   countup: ^0.1.4
-  device_info_plus: ^6.0.0
+  device_info_plus: ^12.3.0
   dio: ^5.3.2
   exif: ^3.1.4
-  filesystem_picker: ^3.1.0
-  firebase_messaging: ^14.6.7
+  filesystem_picker: ^4.1.0
+  firebase_messaging: ^16.1.0
   flare_flutter: ^3.0.2
   flutter_dash: ^1.0.0
   flutter_easyloading: ^3.0.5
   flutter_html: ^3.0.0-beta.2
-  flutter_local_notifications: ^15.1.1
-  flutter_localization: ^0.1.13
+  flutter_local_notifications: ^18.0.1
+  flutter_localization: ^0.3.3
   flutter_masked_text2: ^0.9.1
   flutter_native_image: ^0.0.6+1
   flutter_screenutil: ^5.9.0
   geocoder2: ^1.4.0
-  get_it: ^7.6.4
+  get_it: ^9.2.0
   google_fonts: ^4.0.0
-  google_maps_flutter: 2.0.0
+  google_maps_flutter: ^2.14.0
   iconsax: ^0.0.8
-  intl: ^0.18.0
-  location: ^4.4.0
-  lottie: ^2.6.0
-  path_provider: 2.0.2
-  permission_handler: ^10.4.3
+  intl: ^0.20.2
+  location: ^8.0.1
+  lottie: ^3.0.0
+  path_provider: ^2.1.5
+  permission_handler: ^12.0.1
   pin_code_fields: ^8.0.1
   provider: ^6.0.5
   qr_flutter: ^4.1.0
-  rxdart: ^0.27.7
+  rxdart: ^0.28.0
   shared_preferences: ^2.2.1
-  showcaseview: ^2.0.3
+  showcaseview: ^5.0.1
   flutter_bcrypt: 1.0.8
   sqflite: ^2.3.0
   steel_crypt: ^3.0.0+1
-  syncfusion_flutter_datepicker: ^22.2.12
-  ticket_widget: ^0.0.1
+  syncfusion_flutter_datepicker: ^32.1.23
+  ticket_widget: ^1.0.2
   webview_flutter: ^4.2.4
-  firebase_core: ^2.15.1
+  firebase_core: ^4.3.0
   encrypt: ^5.0.1
-  url_launcher: 6.0.5
+  url_launcher: ^6.3.2
   flutter_initicon: ^3.0.0+1
-  geocoding: ^2.1.0
-  shorebird_code_push: ^1.1.3
+  geocoding: ^4.0.0
+  shorebird_code_push: ^2.0.5
   restart_app: ^1.2.1
-  flutter_dotenv: ^5.1.0
-  cloud_firestore: ^4.9.1
-  package_info_plus: ^3.1.2
+  flutter_dotenv: ^6.0.0
+  cloud_firestore: ^6.1.1
+  package_info_plus: ^9.0.0
   uuid: ^4.2.2
 
 dev_dependencies:
-  carousel_slider: ^4.2.1
+  carousel_slider: ^5.1.1
   change_app_package_name: ^1.1.0
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: ^0.14.4
   flutter_staggered_animations: ^1.0.0
   flutter_test:
     sdk: flutter
