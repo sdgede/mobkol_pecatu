@@ -36,7 +36,6 @@ class _SplashPageState extends State<SplashPage>
 
   startTimeout() async {
     bool isOTAUpdateAvailable = false;
-    // Check if updater is available first
     if (_shorebirdUpdater.isAvailable) {
       try {
         final status = await _shorebirdUpdater.checkForUpdate();

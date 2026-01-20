@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bcrypt/flutter_bcrypt.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:sevanam_mobkol/model/produk_model.dart';
@@ -34,8 +34,10 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), _databaseName);
 
     if (!(await databaseExists(path))) {
-      ByteData data = await rootBundle.load(join("assets/database", _databaseName));
-      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      ByteData data =
+          await rootBundle.load(join("assets/database", _databaseName));
+      List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await new io.File(path).writeAsBytes(bytes);
     }
     return await openDatabase(path, version: _databaseVersion);
@@ -45,7 +47,10 @@ class DatabaseHelper {
     if (sqlQuery.trim() == "") return;
     Database db = await instance.database;
     var results = await db.rawQuery(sqlQuery);
-    debugPrint("SQLITE TESTING DATA" + (debugTitle.trim() == "" ? "" : " ($debugTitle)") + " : " + (new JsonEncoder.withIndent('  ')).convert(results));
+    debugPrint("SQLITE TESTING DATA" +
+        (debugTitle.trim() == "" ? "" : " ($debugTitle)") +
+        " : " +
+        (new JsonEncoder.withIndent('  ')).convert(results));
   }
 
   //QUERY
@@ -58,7 +63,8 @@ class DatabaseHelper {
     Database db = await instance.database;
     Map<String, dynamic> result;
 
-    String query = "SELECT trans_id FROM t_trans_simpanan order by trans_id desc LIMIT 1";
+    String query =
+        "SELECT trans_id FROM t_trans_simpanan order by trans_id desc LIMIT 1";
     var row = await db.rawQuery(query);
     if (row.length == 0) {
       result = {"trans_id": 0, "pesan": "No data transaction"};
@@ -67,8 +73,10 @@ class DatabaseHelper {
     }
 
     String methodName = LogUtils().getCurrentMethodName();
-    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
-    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
 
     return result;
   }
@@ -87,7 +95,8 @@ class DatabaseHelper {
   ) async {
     Database db = await instance.database;
     return Sqflite.firstIntValue(
-      await db.rawQuery('SELECT COUNT(*) FROM $tbName WHERE $whereClause = $whereParam'),
+      await db.rawQuery(
+          'SELECT COUNT(*) FROM $tbName WHERE $whereClause = $whereParam'),
     )!;
   }
 
@@ -104,7 +113,8 @@ class DatabaseHelper {
     return isSukses;
   }
 
-  Future<bool> deleteDataGlobalWithCLause(String table, String columnId, int id) async {
+  Future<bool> deleteDataGlobalWithCLause(
+      String table, String columnId, int id) async {
     Database db = await instance.database;
     // Map<String, dynamic> result;
     bool isSukses = false;
@@ -159,11 +169,17 @@ class DatabaseHelper {
     return isSukses;
   }
 
-  Future<bool> passwordVerify(String password, Map<String, Object?> user) async {
+  Future<bool> passwordVerify(
+      String password, Map<String, Object?> user) async {
     debugPrint(jsonEncode(password));
-    bool validatePassword = await FlutterBcrypt.verify(
-      password: _decrypt(password) + (user['create_date'] == null ? "" : user['create_date'] as String) + saltHashKey,
-      hash: (user['password'] as String),
+
+    String passwordToVerify = _decrypt(password) +
+        (user['create_date'] == null ? "" : user['create_date'] as String) +
+        saltHashKey;
+
+    bool validatePassword = BCrypt.checkpw(
+      passwordToVerify,
+      user['password'] as String,
     );
 
     return validatePassword;
@@ -173,7 +189,10 @@ class DatabaseHelper {
     Database db = await instance.database;
     Map<String, dynamic> result, resultFinal;
 
-    String query = "SELECT 'Y' as status,username,password,IFNULL(imei,'0') as imei,IFNULL(sn_number,'0') as sn_number,username as nama,kolektor_id as id_user,apk_version, create_date FROM s_user_kolektor WHERE username ='" + _decrypt(dataParse['username']) + "'";
+    String query =
+        "SELECT 'Y' as status,username,password,IFNULL(imei,'0') as imei,IFNULL(sn_number,'0') as sn_number,username as nama,kolektor_id as id_user,apk_version, create_date FROM s_user_kolektor WHERE username ='" +
+            _decrypt(dataParse['username']) +
+            "'";
     var row = await db.rawQuery(query);
     if (row.length == 0) {
       result = {"status": "Gagal", "pesan": "Username tidak ditemukan"};
@@ -181,10 +200,18 @@ class DatabaseHelper {
       bool isValidPassword = await passwordVerify(dataParse['pwd'], row.first);
 
       if (isValidPassword) {
-        result = {"status": "Gagal", "pesan": "Username atau password tidak valid"};
+        result = {
+          "status": "Gagal",
+          "pesan": "Username atau password tidak valid"
+        };
       } else {
-        if (_decrypt(row.first['imei'] as String) != _decrypt(dataParse['imei'])) {
-          result = {"status": "Gagal", "pesan": "Upaya masuk gagal, perangkat ini telah terdaftar dengan akun lain. silakan login menggunakan akun yang biasa anda gunakan"};
+        if (_decrypt(row.first['imei'] as String) !=
+            _decrypt(dataParse['imei'])) {
+          result = {
+            "status": "Gagal",
+            "pesan":
+                "Upaya masuk gagal, perangkat ini telah terdaftar dengan akun lain. silakan login menggunakan akun yang biasa anda gunakan"
+          };
         } else {
           result = {"status": "Sukses", "pesan": "Auth sukses"};
         }
@@ -198,7 +225,11 @@ class DatabaseHelper {
 
       resultFinal = {
         "responLogin": row.first,
-        'dataSetting': {'min_setoran_tabungan': '10000', 'min_setoran_wajib': '20000', 'min_saldo_pengendapan': '30000'},
+        'dataSetting': {
+          'min_setoran_tabungan': '10000',
+          'min_setoran_wajib': '20000',
+          'min_saldo_pengendapan': '30000'
+        },
         'dataUser': {
           'username': row.first['username'],
           'nama': row.first['nama'],
@@ -209,8 +240,10 @@ class DatabaseHelper {
     }
 
     String methodName = LogUtils().getCurrentMethodName();
-    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
-    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(resultFinal)}\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(resultFinal)}\x1B[0m');
 
     return resultFinal;
   }
@@ -219,7 +252,8 @@ class DatabaseHelper {
     Database db = await instance.database;
     List<Map<String, Object?>> result;
 
-    var row = await db.rawQuery("SELECT * FROM t_trans_simpanan order by trans_id desc");
+    var row = await db
+        .rawQuery("SELECT * FROM t_trans_simpanan order by trans_id desc");
     if (row.length == 0) {
       result = [
         {"status": "Gagal", "pesan": "Data tidak ditemukan"}
@@ -239,7 +273,8 @@ class DatabaseHelper {
     List<Map<String, Object?>> result;
     String whereIsMigration = isMigration ? "AND is_migration = 'Y'" : "";
 
-    String query = "SELECT nama_menu as nama,remark as slug,rek_cd,icon,min_setoran,min_tarikan,rek_shortcut,urut_menu FROM s_menu_mobkol WHERE active_flag='Y' $whereIsMigration ORDER BY urut_menu ASC";
+    String query =
+        "SELECT nama_menu as nama,remark as slug,rek_cd,icon,min_setoran,min_tarikan,rek_shortcut,urut_menu FROM s_menu_mobkol WHERE active_flag='Y' $whereIsMigration ORDER BY urut_menu ASC";
     var row = await db.rawQuery(query);
     if (row.length == 0) {
       result = [
@@ -250,8 +285,10 @@ class DatabaseHelper {
     }
 
     String methodName = LogUtils().getCurrentMethodName();
-    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
-    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
 
     return json.encode(result);
   }
@@ -260,7 +297,11 @@ class DatabaseHelper {
     Database db = await instance.database;
     Map<String, dynamic> result;
 
-    String query = "SELECT * FROM s_menu_mobkol WHERE group_menu='" + produkCd + "' AND rek_cd='" + rekCd + "'";
+    String query = "SELECT * FROM s_menu_mobkol WHERE group_menu='" +
+        produkCd +
+        "' AND rek_cd='" +
+        rekCd +
+        "'";
     var row = await db.rawQuery(query);
     if (row.length == 0) {
       result = {"status": "Gagal", "pesan": "Data tidak ditemukan"};
@@ -269,8 +310,10 @@ class DatabaseHelper {
     }
 
     String methodName = LogUtils().getCurrentMethodName();
-    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
-    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
 
     return result;
   }
@@ -288,16 +331,22 @@ class DatabaseHelper {
 
     /** Produk Koperasi **/
     if (ProdukModel().products.contains(groupProduk.toString().toUpperCase())) {
-      var productClass = ProdukModel(stringClass: groupProduk).getProductModel(mode: 'rek_cd', productClass: rekCd);
+      var productClass = ProdukModel(stringClass: groupProduk)
+          .getProductModel(mode: 'rek_cd', productClass: rekCd);
       if (productClass == null) {
         productClass = ProdukModel(stringClass: groupProduk).getProductModel();
         if (productClass == null) return;
       }
 
-      var rows = (await productClass.searchByNorek(norek, rekCd)) as List<Map<String, Object?>>?;
+      var rows = (await productClass.searchByNorek(norek, rekCd))
+          as List<Map<String, Object?>>?;
       if (rows == null || rows.length == 0) {
         result = [
-          {"res_status": "Gagal", "pesan": "Tidak ditemukan data dengan nomor " + rekDesc + " " + norek}
+          {
+            "res_status": "Gagal",
+            "pesan":
+                "Tidak ditemukan data dengan nomor " + rekDesc + " " + norek
+          }
         ];
       } else {
         result = rows.toList();
@@ -311,7 +360,8 @@ class DatabaseHelper {
       ]);
 
     String methodName = LogUtils().getCurrentMethodName();
-    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m $returnResult\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m $returnResult\x1B[0m');
     return returnResult;
   }
 
@@ -319,13 +369,15 @@ class DatabaseHelper {
     Map<String, dynamic>? dataParse,
   }) async {
     Database db = await instance.database;
-    String groupProduk = McryptUtils.instance.decrypt(dataParse!['groupProduk']);
+    String groupProduk =
+        McryptUtils.instance.decrypt(dataParse!['groupProduk']);
     String rekCd = McryptUtils.instance.decrypt(dataParse['rekCd']);
     String trxDate = DateFormat("yyyy-MM-dd").format(new DateTime.now());
     String kolektor = McryptUtils.instance.decrypt(dataParse['user']);
     String tglAwal = McryptUtils.instance.decrypt(dataParse['tglAwal']);
     String tglAkhir = McryptUtils.instance.decrypt(dataParse['tglAkhir']);
-    dynamic configProduk = await DatabaseHelper.instance.getDataGroupProduk(groupProduk, rekCd);
+    dynamic configProduk =
+        await DatabaseHelper.instance.getDataGroupProduk(groupProduk, rekCd);
     List<Map<String, Object?>> result;
 
     String query = """
@@ -381,8 +433,10 @@ ORDER BY a.trans_id DESC
     }
 
     String methodName = LogUtils().getCurrentMethodName();
-    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
-    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
 
     return json.encode(result);
   }
@@ -459,47 +513,88 @@ FROM (
         {
           "title": "Kas Awal",
           "data": [
-            {"subtitle": "Kas Awal Kolektor", "value": int.parse(row['kas_awal'].toString())}
+            {
+              "subtitle": "Kas Awal Kolektor",
+              "value": int.parse(row['kas_awal'].toString())
+            }
           ]
         },
         {
           "title": "Kas Dari Transaksi",
           "data": [
-            {"subtitle": "Kas Masuk", "value": int.parse(row['tot_kredit'].toString())},
-            {"subtitle": "Kas Keluar", "value": int.parse(row['tot_debet'].toString())},
-            {"subtitle": "Selisih Saldo", "value": int.parse(row['tot_saldo'].toString())}
+            {
+              "subtitle": "Kas Masuk",
+              "value": int.parse(row['tot_kredit'].toString())
+            },
+            {
+              "subtitle": "Kas Keluar",
+              "value": int.parse(row['tot_debet'].toString())
+            },
+            {
+              "subtitle": "Selisih Saldo",
+              "value": int.parse(row['tot_saldo'].toString())
+            }
           ]
         },
         {
           "title": "Transaksi ANGGOTA",
           "data": [
-            {"subtitle": "Kas Masuk", "value": int.parse(row['kredit_anggota'].toString())},
-            {"subtitle": "Kas Keluar", "value": int.parse(row['debet_anggota'].toString())},
-            {"subtitle": "Selisih Saldo", "value": int.parse(row['kredit_anggota'].toString())}
+            {
+              "subtitle": "Kas Masuk",
+              "value": int.parse(row['kredit_anggota'].toString())
+            },
+            {
+              "subtitle": "Kas Keluar",
+              "value": int.parse(row['debet_anggota'].toString())
+            },
+            {
+              "subtitle": "Selisih Saldo",
+              "value": int.parse(row['kredit_anggota'].toString())
+            }
           ]
         },
         {
           "title": "Transaksi TABUNGAN",
           "data": [
-            {"subtitle": "Kas Masuk", "value": int.parse(row['kredit_tab'].toString())},
-            {"subtitle": "Kas Keluar", "value": int.parse(row['debet_tab'].toString())},
-            {"subtitle": "Selisih Saldo", "value": int.parse(row['kredit_tab'].toString())}
+            {
+              "subtitle": "Kas Masuk",
+              "value": int.parse(row['kredit_tab'].toString())
+            },
+            {
+              "subtitle": "Kas Keluar",
+              "value": int.parse(row['debet_tab'].toString())
+            },
+            {
+              "subtitle": "Selisih Saldo",
+              "value": int.parse(row['kredit_tab'].toString())
+            }
           ]
         },
         {
           "title": "Transaksi BERENCANA",
           "data": [
-            {"subtitle": "Kas Masuk", "value": int.parse(row['kredit_sirena'].toString())},
-            {"subtitle": "Kas Keluar", "value": int.parse(row['debet_sirena'].toString())},
-            {"subtitle": "Selisih Saldo", "value": int.parse(row['kredit_sirena'].toString())}
+            {
+              "subtitle": "Kas Masuk",
+              "value": int.parse(row['kredit_sirena'].toString())
+            },
+            {
+              "subtitle": "Kas Keluar",
+              "value": int.parse(row['debet_sirena'].toString())
+            },
+            {
+              "subtitle": "Selisih Saldo",
+              "value": int.parse(row['kredit_sirena'].toString())
+            }
           ]
         },
       ];
     }
 
     String methodName = LogUtils().getCurrentMethodName();
-    debugPrint('\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
-    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE QUERY ($methodName)::\x1B[0m\x1B[37m $query\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m ${json.encode(result)}\x1B[0m');
 
     return json.encode(result);
   }
@@ -516,16 +611,21 @@ FROM (
 
     /** Produk Koperasi **/
     if (ProdukModel().products.contains(groupProduk.toString().toUpperCase())) {
-      var productClass = ProdukModel(stringClass: groupProduk).getProductModel(mode: 'rek_cd', productClass: rekCd);
+      var productClass = ProdukModel(stringClass: groupProduk)
+          .getProductModel(mode: 'rek_cd', productClass: rekCd);
       if (productClass == null) {
         productClass = ProdukModel(stringClass: groupProduk).getProductModel();
         if (productClass == null) return;
       }
 
-      var rows = (await productClass.searchByName(keyword, rekCd)) as List<Map<String, Object?>>?;
+      var rows = (await productClass.searchByName(keyword, rekCd))
+          as List<Map<String, Object?>>?;
       if (rows == null || rows.length == 0) {
         result = [
-          {"res_status": "Gagal", "pesan": "Tidak ditemukan data nasabah dengan nama " + keyword}
+          {
+            "res_status": "Gagal",
+            "pesan": "Tidak ditemukan data nasabah dengan nama " + keyword
+          }
         ];
       } else {
         result = rows.toList();
@@ -540,7 +640,8 @@ FROM (
       ]);
 
     String methodName = LogUtils().getCurrentMethodName();
-    debugPrint('\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m $returnResult\x1B[0m');
+    debugPrint(
+        '\x1B[33mOFFLINE SQLITE RESULT ($methodName)::\x1B[0m\x1B[37m $returnResult\x1B[0m');
 
     return returnResult;
   }
@@ -587,7 +688,10 @@ FROM (
 
     if (!isSukses) {
       result = [
-        {"status": "Gagal", "pesan": "Terjadi kesalahan saat menginput transaksi [QUERY_ERR]"}
+        {
+          "status": "Gagal",
+          "pesan": "Terjadi kesalahan saat menginput transaksi [QUERY_ERR]"
+        }
       ];
     } else {
       //int lastId = await queryRowCount(table);
@@ -601,7 +705,8 @@ FROM (
           "bunga": "0",
           "denda": "0",
           "groupProduk": _decrypt(dataParse['groupProduk']),
-          "keterangan": insertVal['remark'] == '' ? '-' : insertVal['remark'] ?? '-',
+          "keterangan":
+              insertVal['remark'] == '' ? '-' : insertVal['remark'] ?? '-',
           "kode": "-",
           "trx_date": "-",
           "no_referensi": "-",
@@ -620,7 +725,8 @@ FROM (
     return json.encode(result);
   }
 
-  Future manageDataMigrationProduct(dynamic dataParse, groupProduk, rekCd) async {
+  Future manageDataMigrationProduct(
+      dynamic dataParse, groupProduk, rekCd) async {
     int rowEffectedAdd = 0, rowEffectedEdit = 0;
     dynamic productJson = json.decode(dataParse);
 
@@ -628,9 +734,11 @@ FROM (
     if (ProdukModel().products.contains(groupProduk.toString().toUpperCase())) {
       // Upsert product
       await Future.forEach(productJson, (dynamic row) async {
-        var productClass = ProdukModel(stringClass: groupProduk).getProductModel(mode: 'rek_cd', productClass: rekCd, json: row);
+        var productClass = ProdukModel(stringClass: groupProduk)
+            .getProductModel(mode: 'rek_cd', productClass: rekCd, json: row);
         if (productClass == null) {
-          productClass = ProdukModel(stringClass: groupProduk).getProductModel();
+          productClass =
+              ProdukModel(stringClass: groupProduk).getProductModel();
           if (productClass == null) return;
         }
 
@@ -645,7 +753,8 @@ FROM (
     return {'row_edit': rowEffectedEdit, 'row_add': rowEffectedAdd};
   }
 
-  Future manageDataMigrationAccount(dynamic dataParse, groupProduk, rekCd) async {
+  Future manageDataMigrationAccount(
+      dynamic dataParse, groupProduk, rekCd) async {
     int isDataExist = 0, rowEffectedAdd = 0, rowEffectedEdit = 0;
     bool actionQuery = false;
     String actionType = '';
@@ -712,7 +821,8 @@ FROM (
     dataVal['create_date'] = val['create_date'];
 
     if (isDataExist > 1) {
-      await db.rawDelete('DELETE FROM s_user_kolektor WHERE username = ?', [val['username']]);
+      await db.rawDelete(
+          'DELETE FROM s_user_kolektor WHERE username = ?', [val['username']]);
       actionType = 'INSERT';
       actionQuery = await insertDataGlobal('s_user_kolektor', dataVal);
     } else if (isDataExist != 0) {
@@ -733,7 +843,8 @@ FROM (
     return {'row_edit': rowEffectedEdit, 'row_add': rowEffectedAdd};
   }
 
-  Future<Map<String, int>> manageDataMigrationNasabah(dynamic dataParse, groupProduk, rekCd) async {
+  Future<Map<String, int>> manageDataMigrationNasabah(
+      dynamic dataParse, groupProduk, rekCd) async {
     int isDataExist = 0, rowEffectedAdd = 0, rowEffectedEdit = 0;
     bool actionQuery = false;
     String actionType = '';
