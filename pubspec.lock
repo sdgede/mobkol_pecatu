@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.7.2"
+  bcrypt:
+    dependency: "direct main"
+    description:
+      name: bcrypt
+      sha256: "6073a700cbbc59f1d4ab27cd532755e3de5e676c4941f535f351374df849270b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   blue_thermal_printer:
     dependency: "direct main"
     description:
@@ -390,14 +398,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_bcrypt:
-    dependency: "direct main"
-    description:
-      name: flutter_bcrypt
-      sha256: "47dd6d864732ec0e19f950ba7e67b5b245bcdbe8bada288689de4b6c405c2d37"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
   flutter_dash:
     dependency: "direct main"
     description:
